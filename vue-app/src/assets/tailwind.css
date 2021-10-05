@@ -1,0 +1,36 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+.mb-content {
+    @apply text-left w-full overflow-x-hidden;
+}
+.mb-content ul li {
+    @apply mx-3 my-1 p-2 w-auto h-auto bg-gray-100 rounded text-black text-left border-l-4 border-rhulorange truncate;
+}
+
+.mb-content ul li i {
+    @apply mx-4;
+}
+
+.student-h3 {
+    @apply p-2 m-2 font-bold;
+}
+
+#core li {
+    @apply border-l-4 border-rhulorange;
+}
+
+#optional li {
+    @apply border-l-4 border-purple-800;
+}
+
+#moreInfo-short {
+    @apply inline-block md:hidden;
+}
+
+#moreInfo-long {
+    @apply hidden md:inline-block;
+}
