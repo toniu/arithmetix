@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
-# factory reset db
+# Factory script to reset database
 if [ "$1" = "reset" ]
 then
-    echo "DROP DATABASE arithmetix_db;"| psql postgres 
+    echo "DROP DATABASE arithmetixDB;"| psql postgres 
 fi
 
-createdb arithmetix_db
+createdb arithmetixDB
 
-psql arithmetix_db -v ON_ERROR_STOP=on -f ./sql/1-tables.sql 
-psql arithmetix_db -f ./sql/2-user.sql 
-psql arithmetix_db -v ON_ERROR_STOP=on -f ./sql/3-populate.sql
+psql arithmetixDB -v ON_ERROR_STOP=on -f ./arithmetix-backend/sql/1-tables.sql 
+psql arithmetixDB -f ./arithmetix-backend/sql/2-users.sql 
+psql arithmetixDB -v ON_ERROR_STOP=on -f ./arithmetix-backend/sql/3-populate.sql
