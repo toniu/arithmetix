@@ -8,9 +8,9 @@ var pool;
 switch (process.env.NODE_ENV) {
     default:
         pool = new Pool({
-            user: "arithmetixAdmin",
+            user: "arithmetix_admin",
             host: "localhost",
-            database: "arithmetixDB",
+            database: "arithmetix_db",
             password: "admin",
             port: 5432,
         });
@@ -51,6 +51,37 @@ class Db {
         );
         return !!rows.length;
     }
+
+    /**
+     * Retrieve the user's full name from the database using their email
+     * @param {String} email - used to uniquely identify the user.
+     * @returns {String} Full name of the user
+     */
+    async getFullName(email) {
+        const {rows} = await pool.query(
+            `
+            SELECT 
+              first_name,
+              last_name
+            FROM users
+            WHERE email = $1`,
+            [email],
+        );
+        return rows[0].first_name + ' ' + rows[0].last_name;
+    }
+
+    /**
+     * Gets all of the existing teachers
+     * @returns {rows}
+     */
+     async get_office_members() {
+        const {rows} = await pool.query(`
+        SELECT *
+        FROM teachers
+        `);
+        return rows;
+      }
+
 }
 
 module.exports = Db;

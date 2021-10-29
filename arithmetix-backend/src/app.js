@@ -56,18 +56,32 @@ router.post(
     const email = req.body.email;
     const password = req.body.password;
 
-    /* Create new JSON web token */
-    const token = jwt.sign({id: email},
-       config.secret,
-       {expiresIn: 86400}
-    );
+    try {
+      let teachers = await db.getTeachers();
+      /* Convert to array of emails */
+      let teacherEmails = teachers.map((e) => e.email); 
 
-    /* Values for client's local storage */
-    res.status(200).send({
-      auth: true,
-      token: token,
-      user: email,
-    });
+      let isTeacher = false;
+      if (teacherEmails.contains(email)) {
+        isTeacher = true;
+      }
+
+      /* Create new JSON web token */
+      const token = jwt.sign({id: email}, config.secret, {expiresIn: 86400});
+
+      /* Values for client's local storage */
+      res.status(200).send({
+        auth: true,
+        token: token,
+        user: email,
+        student: true,
+        staff: false,
+      });
+
+    } catch (err) {
+      console.error(e);
+      res.status(404).send('No user found.');
+    }
   }
 )
 

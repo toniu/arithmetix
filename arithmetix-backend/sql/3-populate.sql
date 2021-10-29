@@ -1,6 +1,11 @@
 
---- Test users ---
-INSERT INTO users (email, firstName, lastName, password, role, userDOB) VALUES ('testuser1@gmail.com','John','Smith','password1','student','2004-02-25');
-INSERT INTO users (email, firstName, lastName, password, role, userDOB) VALUES ('testuser2@gmail.com','Jeremy','White','password2','student','2005-07-01');
-INSERT INTO users (email, firstName, lastName, password, role, userDOB) VALUES ('testuser3@gmail.com','Micheal','Stones','password3','student','2004-04-08');
-INSERT INTO users (email, firstName, lastName, password, role, userDOB) VALUES ('testteacher1@gmail.com','Andy','Robinson','password4','teacher','1987-02-08');
+INSERT INTO users (email, first_name, last_name, password, role, user_dob)
+VALUES ('testuser1@gmail.com','Abigail','Smith','student','student','2005-05-03');
+INSERT INTO users (email, first_name, last_name, password, role, user_dob)
+VALUES ('testuser2@gmail.com','Demarcus','Thompson','student','student','2005-06-01');
+INSERT INTO users (email, first_name, last_name, password, role, user_dob)
+VALUES ('testuser3@gmail.com','Phillip','White','student','student','2005-11-21');
+INSERT INTO users (email, first_name, last_name, password, role, user_dob)
+VALUES ('testteacher1@gmail.com','Jeremy','Kingston','teacher','teacher','1984-07-18');
+INSERT INTO users (email, first_name, last_name, password, role, user_dob)
+VALUES ('testteacher2@gmail.com','Nancy','Daphne','teacher','teacher','1988-02-01');
