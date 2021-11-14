@@ -4,6 +4,3 @@
 [submodule "vue-tailwind-webpack-boilerplate"]
 	path = vue-tailwind-webpack-boilerplate
 	url = https://github.com/Aridez/vue-tailwind-webpack-boilerplate.git
-[submodule "app-frontend"]
-	path = app-frontend
-	url = https://github.com/Aridez/vue-tailwind-webpack-boilerplate.git
