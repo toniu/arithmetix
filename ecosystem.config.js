@@ -1,8 +1,8 @@
 module.exports = {
   apps : [
   {
-    "name": "arithmetix-backend",
-    "cwd": "arithmetix-backend",
+    "name": "app-backend",
+    "cwd": "app-backend",
     "script": "npm",
     "args": "run start",
     "watch": true,
