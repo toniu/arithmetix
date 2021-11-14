@@ -1,0 +1,3 @@
+[submodule "arithmetix-app"]
+	path = arithmetix-app
+	url = https://github.com/Aridez/vue-tailwind-webpack-boilerplate.git
