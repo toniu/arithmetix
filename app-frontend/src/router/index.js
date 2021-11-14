@@ -3,7 +3,7 @@ import Router from 'vue-router';
 // import Home from '@/components/general/Home';
 import Login from '@/components/general/Login';
 import Student from '@/components/student/Student';
-import Office from '@/components/teacher/Teacher';
+import Teacher from '@/components/teacher/Teacher';
 
 Vue.use(Router);
 
@@ -30,7 +30,7 @@ const router = new Router({
     {
       path: '/teacher',
       name: 'teacher',
-      component: Office,
+      component: Teacher,
       meta: {
         requiresAuth: true,
         isTeacher: true,
