@@ -1,4 +1,5 @@
 
+-- Hard-coded users
 INSERT INTO users (email, first_name, last_name, password, role, user_dob)
 VALUES ('testuser1@gmail.com','Abigail','Smith','student','student','2005-05-03');
 INSERT INTO users (email, first_name, last_name, password, role, user_dob)
@@ -9,3 +10,6 @@ INSERT INTO users (email, first_name, last_name, password, role, user_dob)
 VALUES ('testteacher1@gmail.com','Jeremy','Kingston','teacher','teacher','1984-07-18');
 INSERT INTO users (email, first_name, last_name, password, role, user_dob)
 VALUES ('testteacher2@gmail.com','Nancy','Daphne','teacher','teacher','1988-02-01');
+
+
+-- Assign roles to users

@@ -13,9 +13,7 @@ const {body, evResult} = require('express-validator');
 order based on populate.sql to avoid errors,
 related to primary/foriegn keys */
 
-const tables = [
-    'users',
-];
+const tables = ['users'];
 
 const db = new DB();
 const app = express();
@@ -26,11 +24,11 @@ router.use(bodyParser.json());
 
 /* Middle-ware for CORS - allow cross domain */
 const allowCD = function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', '*');
-    res.header('Access-Control-Allow-Headers', '*');
-    next();
-  };
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Access-Control-Allow-Headers', '*');
+  next();
+};
 app.use(allowCD);
 
 /* Router requests */
@@ -59,7 +57,7 @@ router.post(
     try {
       let teachers = await db.getTeachers();
       /* Convert to array of emails */
-      let teacherEmails = teachers.map((e) => e.email); 
+      let teacherEmails = teachers.map((e) => e.email);
 
       let isTeacher = false;
       if (teacherEmails.contains(email)) {
@@ -75,15 +73,29 @@ router.post(
         token: token,
         user: email,
         student: true,
-        staff: false,
+        teacher: isTeacher,
       });
-
     } catch (err) {
       console.error(e);
       res.status(404).send('No user found.');
     }
+  },
+);
+
+/**
+ * Get all teachers
+ * Returns the list of all existing teachers in the system
+ */
+router.get('/get_teachers', async (req, res) => {
+  try {
+    let teachers = await db.getTeachers();
+    res.send({success: true, data: teachers});
+  } catch (e) {
+    console.error(e);
+    res.send({success: false, error: 'Could not get teachers.'});
+    return false;
   }
-)
+});
 
 /* ---- */
 

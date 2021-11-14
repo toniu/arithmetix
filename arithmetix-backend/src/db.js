@@ -74,7 +74,7 @@ class Db {
      * Gets all of the existing teachers
      * @returns {rows}
      */
-     async get_office_members() {
+     async getTeachers() {
         const {rows} = await pool.query(`
         SELECT *
         FROM teachers
