@@ -28,7 +28,11 @@
             <div class="div">
               <h5>email</h5>
               <input
-                type="text"
+                id="email"
+                type="email"
+                v-model="email"
+                required
+                autofocus
                 class="
                   absolute
                   w-full
@@ -61,7 +65,10 @@
             <div class="div">
               <h5>password</h5>
               <input
+                id="password"
                 type="password"
+                v-model="password"
+                required
                 class="
                   absolute
                   w-full
@@ -83,11 +90,13 @@
           >
           <button
             type="submit"
+            @click="handleSubmit"
             class="
               w-full
               py-2
               rounded-full
               bg-green-600
+              hover:bg-green-700
               text-gray-100
               focus:outline-none
             "

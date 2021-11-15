@@ -1,12 +1,16 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// import Home from '@/components/general/Home';
+
+/* Router components */
+import Home from '@/components/general/Home';
 import Login from '@/components/general/Login';
 import Student from '@/components/student/Student';
 import Teacher from '@/components/teacher/Teacher';
 
+/* Vue uses router */
 Vue.use(Router);
 
+/* Router has history mode */
 const router = new Router({
   mode: 'history',
   routes: [
@@ -39,6 +43,7 @@ const router = new Router({
   ],
 });
 
+/* User's route depends on role and whether they have been authenticated */
 router.beforeEach((to, from, next) => {
   /* Requested URL requires authentication. */
   if (to.matched.some((record) => record.meta.requiresAuth)) {
