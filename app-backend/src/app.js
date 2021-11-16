@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 
 const DB = require('./db');
 const mail = require('./mail');
-const {body, evResult} = require('express-validator');
+const {body, validationResult} = require('express-validator');
 
 /* Tables of the arithmetix database,
 order based on populate.sql to avoid errors,
@@ -31,7 +31,7 @@ const allowCD = function (req, res, next) {
 };
 app.use(allowCD);
 
-/* Router requests */
+/*-- Router requests --*/
 
 /**
  * User authentication
@@ -45,22 +45,22 @@ router.post(
   body('password').isLength({min: 6}),
   async (req, res) => {
     /* Call function to find any validation errors using Express validator */
-    const errorsFound = evResult(req);
-    if (!errorsFound.isEmpty()) {
-      console.log({errorsFound: errorsFound.array()});
-      return res.status(400).json({errorsFound: errorsFound.array()});
-    }
-
-    const email = req.body.email;
-    const password = req.body.password;
-
     try {
+      const errorsFound = validationResult(req);
+      if (!errorsFound.isEmpty()) {
+        console.log({errorsFound: errorsFound.array()});
+        return res.status(400).json('Invalid username and/or password');;
+      }
+
+      const email = req.body.email;
+
       let teachers = await db.getTeachers();
       /* Convert to array of emails */
       let teacherEmails = teachers.map((e) => e.email);
+      console.log('Teacher emails: ', teacherEmails);
 
       let isTeacher = false;
-      if (teacherEmails.contains(email)) {
+      if (teacherEmails.includes(email)) {
         isTeacher = true;
       }
 
@@ -72,10 +72,10 @@ router.post(
         auth: true,
         token: token,
         user: email,
-        student: true,
+        student: !isTeacher,
         teacher: isTeacher,
       });
-    } catch (err) {
+    } catch (e) {
       console.error(e);
       res.status(404).send('No user found.');
     }
@@ -97,12 +97,13 @@ router.get('/get_teachers', async (req, res) => {
   }
 });
 
-/* ---- */
-
+/* -- End of router requests -- */
 app.use(router);
 
 let port = config.port;
+console.log(process.env);
 
+/* Server listening to port */
 let server = app.listen(port, function () {
   console.log('Express server listening on port ' + port);
 });

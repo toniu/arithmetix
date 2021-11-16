@@ -11,5 +11,14 @@ VALUES ('testteacher1@gmail.com','Jeremy','Kingston','teacher','teacher','1984-0
 INSERT INTO users (email, first_name, last_name, password, role, user_dob)
 VALUES ('testteacher2@gmail.com','Nancy','Daphne','teacher','teacher','1988-02-01');
 
+-- Hard-coded schools
 
--- Assign roles to users
+-- Hard-coded classes
+
+-- Hardcoded students - assign users to student role
+
+-- Hardcoded teachers - assign users to teacher role
+
+-- Hardcoded tests
+
+-- Hardcoded assignments
