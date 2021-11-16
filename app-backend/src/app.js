@@ -64,6 +64,10 @@ router.post(
         isTeacher = true;
       }
 
+      /* Get name of user */
+      const firstName = await db.getFirstName(email);
+      const lastName = await db.getLastName(email);
+
       /* Create new JSON web token */
       const token = jwt.sign({id: email}, config.secret, {expiresIn: 86400});
 
@@ -72,6 +76,8 @@ router.post(
         auth: true,
         token: token,
         user: email,
+        firstName: firstName,
+        lastName: lastName,
         student: !isTeacher,
         teacher: isTeacher,
       });

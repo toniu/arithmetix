@@ -235,6 +235,8 @@ export default {
             console.log('User attempt logging in...', r);
             /* Set user details in local storage - if needed elsewhere */
             localStorage.setItem('user', r.user);
+            localStorage.setItem('firstName', r.firstName);
+            localStorage.setItem('lastName', r.lastName);
             localStorage.setItem('jwt', r.token);
             localStorage.setItem('student', r.student);
             localStorage.setItem('teacher', r.teacher);

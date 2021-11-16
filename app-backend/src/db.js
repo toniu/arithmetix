@@ -53,21 +53,37 @@ class Db {
     }
 
     /**
-     * Retrieve the user's full name from the database using their email
+     * Retrieve the user's first name from the database using their email
      * @param {String} email - used to uniquely identify the user.
-     * @returns {String} Full name of the user
+     * @returns {String} First name of the user
      */
-    async getFullName(email) {
+    async getFirstName(email) {
         const {rows} = await pool.query(
             `
             SELECT 
-              first_name,
+              first_name
+            FROM users
+            WHERE email = $1`,
+            [email],
+        );
+        return rows[0].first_name;
+    }
+
+    /**
+     * Retrieve the user's last name from the database using their email
+     * @param {String} email - used to uniquely identify the user.
+     * @returns {String} Last name of the user
+     */
+     async getLastName(email) {
+        const {rows} = await pool.query(
+            `
+            SELECT 
               last_name
             FROM users
             WHERE email = $1`,
             [email],
         );
-        return rows[0].first_name + ' ' + rows[0].last_name;
+        return rows[0].last_name;
     }
 
     /**
