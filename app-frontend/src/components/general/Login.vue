@@ -10,6 +10,11 @@
             <i class="fas fa-calculator text-blue-400 mx-2"></i>
             <span class="font-bold">arith</span>metix.
           </h2>
+          <div v-if="errorMsg != ''">
+            <p class="block m-2 p-2 w-full text-center text-base bg-red-100 text-red-900">
+              {{ errorMsg }}
+            </p>
+          </div>
           <div
             class="
               input-div
@@ -223,10 +228,11 @@ export default {
           },
         )
           .then((r) => {
+            console.log(r);
             return r.json();
           })
           .then((r) => {
-            console.log(r);
+            console.log('User attempt logging in...', r);
             /* Set user details in local storage - if needed elsewhere */
             localStorage.setItem('user', r.user);
             localStorage.setItem('jwt', r.token);
@@ -238,12 +244,12 @@ export default {
               this.$router.push(['student', 'teacher'].find((e) => r[e]));
             }
           })
-          .catch((error) => {
-            this.errorMsg = 'Incorrect Username and/or Password!';
-            console.error(error);
+          .catch((e) => {
+            this.errorMsg = 'Incorrect username and/or password';
+            console.error(e);
           });
       } else {
-        this.errorMsg = 'Please enter Username and Password!';
+        this.errorMsg = 'Please enter username and password';
       }
     },
   },
