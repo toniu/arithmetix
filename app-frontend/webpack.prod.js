@@ -1,7 +1,7 @@
 const path = require('path');
 const common = require('./webpack.common');
 var webpack = require('webpack');
-const {merge} = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
 const env =
   process.env.NODE_ENV === 'testing' ?

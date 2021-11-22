@@ -33,26 +33,26 @@
       }"
     >
       <div class="mt-4">
-        <a href="#" class="px-4 py-2 flex align-center hover:bg-gray-700">
+        <a href="#" class="px-4 py-2 flex align-center hover:bg-gray-700 border-transparent border-l-4 hover:border-white transition 0.1s">
           <i class="fas fa-home text-lg mx-3"></i>
           <span class="flex-auto">home</span>
         </a>
-        <a href="#" class="px-4 py-2 flex align-center hover:bg-gray-700">
+        <a href="#" class="px-4 py-2 flex align-center hover:bg-gray-700 border-transparent border-l-4 hover:border-white transition 0.1s">
           <i class="fas fa-book text-lg mx-3"></i>
           <span class="flex-auto">syllabus</span>
           <i class="fas fa-chevron-down"></i>
         </a>
-        <a href="#" class="px-4 py-2 flex align-center hover:bg-gray-700">
+        <a href="#" class="px-4 py-2 flex align-center hover:bg-gray-700 border-transparent border-l-4 hover:border-white transition 0.1s">
           <i class="fas fa-book-open text-lg mx-3"></i>
           <span class="flex-auto">modules</span>
           <i class="fas fa-chevron-down"></i>
         </a>
-        <a href="#" class="px-4 py-2 flex align-center hover:bg-gray-700">
+        <a href="#" class="px-4 py-2 flex align-center hover:bg-gray-700 border-transparent border-l-4 hover:border-white transition 0.1s">
           <i class="fas fa-school text-lg mx-3"></i>
           <span class="flex-auto">homework</span>
           <i class="fas fa-chevron-down"></i>
         </a>
-        <a href="#" class="px-4 py-2 flex align-center hover:bg-gray-700">
+        <a href="#" class="px-4 py-2 flex align-center hover:bg-gray-700 border-transparent border-l-4 hover:border-white transition 0.1s">
           <i class="fas fa-book-reader text-lg mx-3"></i>
           <span class="flex-auto">exam papers</span>
           <i class="fas fa-chevron-down"></i>
@@ -206,6 +206,7 @@
         right-0
         z-50
         bg-gray-900 bg-opacity-95
+        shadow-lg
       "
       v-if="notifOpen"
     >
@@ -322,6 +323,7 @@
         right-0
         z-50
         bg-white
+        shadow-xl
         rounded-b-lg
       "
       v-if="profileOpen"
@@ -390,13 +392,15 @@
             <i class="fas fa-cog text-lg mx-3"></i>
             <span class="flex-auto">Settings</span>
           </a>
-          <a
+          <button
             href="#"
+            @click="handleLogout()"
             class="
               px-4
               py-2
               flex
-              align-center
+              w-full
+              
               text-white
               bg-gray-800
               hover:bg-gray-700
@@ -405,8 +409,8 @@
             "
           >
             <i class="fas fa-sign-out-alt text-lg mx-3"></i>
-            <span class="flex-auto font-semibold">Sign out</span>
-          </a>
+            <span class="font-semibold">Sign out</span>
+          </button>
         </div>
       </div>
     </div>
@@ -461,16 +465,39 @@
       <section
         class="
           block
-          md:grid md:grid-cols-3
+          
+        "
+      >
+        <div class="px-3 py-2 m-4">
+          <h1 class="font-bold my-4 text-xl"> Running modules</h1>
+          <div class="bg-gray-200"> L </div>
+        </div>
+        <div class="block
+          md:grid md:grid-cols-2
           space-y-5
           md:space-y-0 md:space-x-5
           px-3
-          py-5
-        "
-      >
-        <div class="bg-gray-800">Hello 1</div>
-        <div class="bg-gray-800">Hello 2</div>
-        <div class="bg-gray-800">Hello 3</div>
+          py-5">
+          <div class="p-2 h-28">
+              <h1 class="font-bold my-4 text-xl"> Timeline </h1>
+              <div class="bg-gray-800 text-white rounded-xl">
+                  <ul class="space-y-1 p-1 text-sm md:text-base">
+                      <li class="flex">
+                          <i class="far fa-clock p-2 bg-blue-500 text-2xl rounded"></i>
+                          <div class="bg-white text-black text-normal w-full p-3"> 
+                              Assignment 1
+                          </div>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+          <div class="p-2">
+              <h1 class="font-bold my-4 text-xl"> Modules overview </h1>
+              <div class="bg-gray-800 text-white rounded-xl">
+                  Hello
+              </div>
+          </div>
+        </div>
       </section>
     </div>
     <!-- Footer -->
@@ -560,7 +587,20 @@ export default {
     /* Notifications -- will be coded later */
   }),
   mounted() {},
-  methods: {},
+  methods: {
+    /**
+     * Removes all webtokens which were assigned to the logged-in user
+     */
+    handleLogout() {
+      localStorage.removeItem('jwt');
+      localStorage.removeItem('user');
+      localStorage.removeItem('firstName');
+      localStorage.removeItem('lastName');
+      localStorage.removeItem('student');
+      localStorage.removeItem('teacher');
+      window.location.href = '/';
+    },
+  },
 };
 </script>
 
