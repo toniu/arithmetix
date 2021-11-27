@@ -13,8 +13,8 @@
       h-full
     "
     :class="{
-      'translate-x-0 ease-in opacity-100': sidebarOpen === true,
-      '-translate-x-full ease-out opacity-100': sidebarOpen === false,
+      'translate-x-0 ease-in opacity-100': isOpen === true,
+      '-translate-x-full ease-out opacity-100': isOpen === false,
     }"
   >
     <div class="mt-4">
@@ -113,9 +113,9 @@
 
 <script>
 export default {
-  components: {},
+  name: 'Sidebar',
+  props: ['isOpen'],
   data: () => ({
-    sidebarOpen: false,
     menuButtons: {
       name: '',
       icon: '',

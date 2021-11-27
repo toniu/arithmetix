@@ -35,7 +35,7 @@ class Db {
 
     /**
      * User authentication which checks the users credentials
-     * against credientials stored in the table for users in the database
+     * against credentials stored in the table for users in the database
      * @param {String} email - Used to uniquely identify the user
      * @param {String} password - Used for user authentication
      * @returns {Boolean} Returns if the query has any existing rows

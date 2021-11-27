@@ -214,6 +214,7 @@ export default {
      * @arg {response} r - A response argument from server.
      */
     handleSubmit(e) {
+      /* Prevent from submitting login form */
       e.preventDefault();
 
       if (this.password.length > 0 && this.email.length > 0) {
@@ -232,7 +233,6 @@ export default {
             return r.json();
           })
           .then((r) => {
-            console.log('User attempt logging in...', r);
             /* Set user details in local storage - if needed elsewhere */
             localStorage.setItem('user', r.user);
             localStorage.setItem('firstName', r.firstName);
