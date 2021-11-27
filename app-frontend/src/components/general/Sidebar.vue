@@ -16,10 +16,10 @@
       'translate-x-0 ease-in opacity-100': isOpen === true,
       '-translate-x-full ease-out opacity-100': isOpen === false,
     }"
-  >
+  >  
     <div class="mt-4">
-      <a
-        href="#"
+      <router-link
+        to="/student"
         class="
           px-4
           py-2
@@ -34,9 +34,9 @@
       >
         <i class="fas fa-home text-lg mx-3"></i>
         <span class="flex-auto">home</span>
-      </a>
-      <a
-        href="#"
+      </router-link>
+      <router-link
+        to="/student/syllabus"
         class="
           px-4
           py-2
@@ -52,9 +52,9 @@
         <i class="fas fa-book text-lg mx-3"></i>
         <span class="flex-auto">syllabus</span>
         <i class="fas fa-chevron-down"></i>
-      </a>
-      <a
-        href="#"
+      </router-link>
+      <router-link
+        to="/student/modules"
         class="
           px-4
           py-2
@@ -70,9 +70,9 @@
         <i class="fas fa-book-open text-lg mx-3"></i>
         <span class="flex-auto">modules</span>
         <i class="fas fa-chevron-down"></i>
-      </a>
-      <a
-        href="#"
+      </router-link>
+      <router-link
+        to="/student/homework"
         class="
           px-4
           py-2
@@ -88,9 +88,9 @@
         <i class="fas fa-school text-lg mx-3"></i>
         <span class="flex-auto">homework</span>
         <i class="fas fa-chevron-down"></i>
-      </a>
-      <a
-        href="#"
+      </router-link>
+      <router-link
+        to="/student/exam-papers"
         class="
           px-4
           py-2
@@ -106,24 +106,21 @@
         <i class="fas fa-book-reader text-lg mx-3"></i>
         <span class="flex-auto">exam papers</span>
         <i class="fas fa-chevron-down"></i>
-      </a>
+      </router-link>
     </div>
   </nav>
 </template>
 
 <script>
 export default {
+  /* For each button in the sidebar -- 
+  Name, Icon, subMenuButtons if exists */
   name: 'Sidebar',
   props: ['isOpen'],
   data: () => ({
-    menuButtons: {
-      name: '',
-      icon: '',
-      subMenuButtons: {
-        name: '',
-        icon: '',
-      },
-    },
+    menuItem: -1,
+    menuHover: false,
+    menu: [],
   }),
 };
 </script>

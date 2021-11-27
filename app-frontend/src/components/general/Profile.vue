@@ -113,6 +113,20 @@ export default {
     this.firstName = localStorage.getItem('firstName'),
     this.lastName = localStorage.getItem('lastName')
   },
+  methods: {
+    /**
+     * Removes all webtokens which were assigned to the logged-in user
+     */
+    handleLogout() {
+      localStorage.removeItem('jwt');
+      localStorage.removeItem('user');
+      localStorage.removeItem('firstName');
+      localStorage.removeItem('lastName');
+      localStorage.removeItem('student');
+      localStorage.removeItem('teacher');
+      window.location.href = '/';
+    },
+  }
 };
 </script>
 

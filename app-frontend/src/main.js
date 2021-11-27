@@ -25,6 +25,22 @@ new Vue({
   el: '#app',
   router,
   components: {App},
+  data() {
+    return {
+      children: []
+    }
+  },
   template: '<App/>',
+  watch: {
+    $route: function(currentRoute) {
+      const route = this.$router.options.routes.find(route => route.path === currentRoute.path)
+
+      if (route && Array.isArray(route.children)) {
+        this.children = route.children
+      } else if (route) {
+        this.children = []
+      }
+    }
+  }
 });
 
