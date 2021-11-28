@@ -60,6 +60,9 @@
           </a>
         </div>
         <p class="mt-8 text-base leading-6 text-center text-gray-400">
+          Credit for resources to mathsgenie.com
+        </p>
+        <p class="mt-8 text-base leading-6 text-center text-gray-400">
           © 2021 arithmetix, Inc. All rights reserved.
         </p>
       </div>
