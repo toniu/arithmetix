@@ -1,10 +1,10 @@
 <template>
   <div id="main" class="container block py-12 mx-auto h-full max-w-none text-center">
-      <section class="p-5 bg-gray-900 flex justify-center items-center">
+      <section class="block p-5 bg-gray-900 justify-center items-center">
         <i
           class="
             fas fa-book-reader
-            p-3
+            p-5
             m-2
             flex
             text-4xl text-white
@@ -16,10 +16,10 @@
         ></i>
         <h1
           class="
+            block
             py-2
             mx-5
             text-4xl
-            inline
             font-extrabold
             text-gray-100
             md:text-center
@@ -39,7 +39,7 @@
           >
           </span>
         </h1>
-        <span class="block p-2 m-2 text-gray-200 text-base"> Solutions from mathsgenie.com </span>
+        <span class="block p-2 m-2 text-gray-300 text-base "> Solutions from mathsgenie.com </span>
       </section>
       <!-- -->
       <section>
@@ -67,38 +67,49 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+
+            <!-- Load it up -->
+            <tr v-for="exam in examPapers" :key="exam.title" class="bg-red-500">
+              <td class="px-5 py-1 border-b border-gray-200 bg-white text-sm">
                 <div class="flex">
                   <div class="flex-shrink-0 w-10 h-10">
                     <i class="fas fa-book-open bg-gray-900 text-white px-2 py-1 text-lg rounded-full "></i>
                   </div>
                   <div class="ml-3">
                     <p class="text-gray-900 uppercase font-semibold">
-                      June 2019
+                      {{ exam.title }}
                     </p>
-                    <p class="text-gray-600">Paper 1</p>
                   </div>
                 </div>
               </td>
               <td class="px-5 py-5 border-b border-gray-200 bg-white">
-                <a class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-800 transition 0.1s"> 
-                  <i class="fas fa-file-pdf text-white p-2 md:text-lg text-2xl"></i>
+                <a class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-800 transition 0.1s"
+                :href="exam.PDFLink"
+                download> 
+                  <i class="fas fa-file-pdf  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> .pdf </span>
                 </a>
 
-                <a class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-800 transition 0.1s"> 
+                <a class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-800 transition 0.1s"
+                :href="exam.docLink"
+                download> 
                   <i class="fas fa-file-word  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> .doc </span>
                 </a>
               </td>
               <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <a class="block md:inline-block bg-blue-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-blue-800 transition 0.1s"> 
+                <a class="block md:inline-block bg-blue-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-blue-800 transition 0.1s"
+                :href="exam.solLink"
+                download
+                v-if="exam.solLink != ''"> 
                   <i class="fas fa-marker  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> solutions </span>
                 </a>
 
-                <a class="block md:inline-block bg-green-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-green-800 transition 0.1s"> 
+                <a class="block md:inline-block bg-green-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-green-800 transition 0.1s"
+                :href="exam.MSLink"
+                download
+                v-if="exam.MSLink != ''">
                   <i class="far fa-check-square  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> mark scheme </span>
                 </a>
@@ -110,38 +121,39 @@
   </div>
 </template>
 
-<script>
-export default {
-    name: 'ExamPapers',
-    data() {
-    return {
-      examPapers: [
-        {
-          title: '',
-          /* URL for download */
-          pdfURL: '',
-          docURL: '',
-          /* MS for download */
-          MSURL: '',
-          ansURL: '',
-        }
-      ],
-    };
-  },
-    methods: {
-      populateTable() {
-        let table;
-        for (var board in this.examPaperss) {
-          /* For every board - AQA, OCR or Edexcel */
-          if (board[i]) {
-            
-          }
-        }
-      },
-    },
-}
-</script>
-
-<style>
+<style scoped>
 
 </style>
+
+<script>
+
+export default {
+  name: 'ExamPapers',
+  data() {
+    return {
+      examPapers: [],
+    };
+  },
+  mounted() {
+    this.getExamPapers();
+  },
+  methods: {
+    async getExamPapers() {
+      fetch(
+        `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/get_exam_papers`,
+        {
+          method: 'GET',
+          headers: {},
+        },
+      )
+      .then((response) => {
+        return response.json();
+      })
+      .then((response) => {
+        this.examPapers = response.data.papers;
+        console.log(this.examPapers);
+      });
+    }
+  },
+};
+</script>

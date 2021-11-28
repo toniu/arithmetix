@@ -122,6 +122,9 @@ export default {
     menuHover: false,
     menu: [],
   }),
+  methods: {
+    
+  }
 };
 </script>
 

@@ -175,7 +175,12 @@ export default {
       this.sidebarOpen = false;
       this.notifOpen = false;
     },
-  }
+  },
+  watch:{
+    $route (to, from){
+        this.sidebarOpen = false;
+    }
+} 
 };
 </script>
 

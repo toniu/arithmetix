@@ -5,6 +5,7 @@ const format = require('pg-format');
 
 var pool; 
 
+/* Set the pool as the Postgres database */
 switch (process.env.NODE_ENV) {
     default:
         pool = new Pool({
@@ -17,21 +18,11 @@ switch (process.env.NODE_ENV) {
         break;
 }
 
-/* Class for database connection */
+/**
+ * Class for database connection 
+ */
 class Db {
     constructor() {};
-
-    async getMethodExample(param) {
-        const {rows} = await pool.query(
-            `
-            SELECT 
-            attribute
-            FROM table1
-            WHERE condition = $1`,
-            [param],
-        );
-        return rows;
-    }
 
     /**
      * User authentication which checks the users credentials
@@ -87,8 +78,8 @@ class Db {
     }
 
     /**
-     * Gets all of the existing teachers
-     * @returns {rows}
+     * Gets all of the existing teachers in the system
+     * @returns {rows} - The teachers
      */
      async getTeachers() {
         const {rows} = await pool.query(`

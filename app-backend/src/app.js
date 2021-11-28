@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 
 const DB = require('./db');
+const EP = require('./ep');
 const mail = require('./mail');
 const {body, validationResult} = require('express-validator');
 
@@ -16,6 +17,7 @@ related to primary/foriegn keys */
 const tables = ['users'];
 
 const db = new DB();
+const exampapers = new EP();
 const app = express();
 const router = express.Router();
 
@@ -102,6 +104,21 @@ router.get('/get_teachers', async (req, res) => {
     return false;
   }
 });
+
+/**
+ * Gets exam papers and returns a list of all exam papers
+ */
+ router.get('/get_exam_papers', async (req, res) => {
+  try {
+    let list = exampapers;
+    console.log('List here: ', list);
+    res.send({success: true, data: list});
+  } catch (e) {
+    res.send({success: true, error: 'Could not get exams'});
+    return false;
+  }
+});
+
 
 /* -- End of router requests -- */
 app.use(router);

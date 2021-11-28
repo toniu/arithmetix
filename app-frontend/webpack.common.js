@@ -9,11 +9,11 @@ module.exports = {
   entry: path.join(__dirname, 'src/main.js'),
   devtool: 'source-map',
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.ts','.js', '.vue', '.json'],
     alias: {
       '@': path.resolve('src'),
       vue: 'vue/dist/vue.js'
-    }
+    },
   },
   module: {
     rules: [
