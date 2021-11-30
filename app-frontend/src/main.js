@@ -2,10 +2,6 @@
 import Vue from 'vue'
 import App from './App.vue'
 import './css/tailwind.css';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-// import { library } from '@fortawesome/fontawesome-svg-core'
-
-// Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 import VueTailwind from 'vue-tailwind';
 import router from './router';
@@ -13,6 +9,7 @@ import VueToastify from 'vue-toastify';
 import VueCookies from 'vue-cookies';
 import VueAxios from './plugins/axios';
 
+/* Vue libraries to use */
 Vue.use(VueTailwind);
 Vue.use(VueToastify);
 Vue.use(VueCookies);
@@ -31,10 +28,10 @@ new Vue({
     }
   },
   template: '<App/>',
+  /* Watch for current route and its children */
   watch: {
     $route: function(currentRoute) {
       const route = this.$router.options.routes.find(route => route.path === currentRoute.path)
-
       if (route && Array.isArray(route.children)) {
         this.children = route.children
       } else if (route) {

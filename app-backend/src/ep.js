@@ -8,8 +8,8 @@ class ExamPaperList {
 
   loadExamPapers() {
     let examPapers = [];
-    var walkPath = path.resolve(__dirname, 'exam-papers');
-
+    var walkPath = './src/exam-papers';
+  
     var walk = function (directory, finished) {
         /* Initial search for the new file's question paper (in docx. and pdf format), its mark scheme and solutions */
         let npDOC = '';
@@ -18,6 +18,7 @@ class ExamPaperList {
         let npSOL = '';
         let paperFound = false;
 
+      /* Reads the directory */
       fs.readdir(directory, function (error, list) {
         if (error) {
           return finished(error);
@@ -40,6 +41,7 @@ class ExamPaperList {
           /* Append current directory to next file */
           nextFile = directory + '/' + nextFile;
 
+          /* Check if the file or directory actually exists */
           fs.stat(nextFile, function (error, stat) {
             /* If the next object is a directory, walk into it */
             if (stat && stat.isDirectory()) {
@@ -75,11 +77,16 @@ class ExamPaperList {
 
               next();
             }
-
             /* Add new exam paper into array */
             if (paperFound) {
+              /* Change relative path for front-end */
+              npPDF = npPDF.replace('./src', '../../../../app-backend/src');
+              npDOC = npDOC.replace('./src', '../../../../app-backend/src');
+              npMS = npMS.replace('./src', '../../../../app-backend/src');
+              npSOL = npSOL.replace('./src', '../../../../app-backend/src');
+
               examPapers.push({title: npTitle,
-                PDFlink: npPDF,
+                PDFLink: npPDF,
                 docLink: npDOC,
                 MSLink: npMS,
                 solLink: npSOL});

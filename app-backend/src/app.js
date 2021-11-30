@@ -124,7 +124,6 @@ router.get('/get_teachers', async (req, res) => {
 app.use(router);
 
 let port = config.port;
-console.log(process.env);
 
 /* Server listening to port */
 let server = app.listen(port, function () {

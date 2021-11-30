@@ -45,7 +45,9 @@
       <section>
         <!-- Filter section -->
         <div>
+          <input>
         </div>
+        <!-- -->
         <table class="min-w-full leading-normal">
           <thead>
             <tr>
@@ -69,7 +71,7 @@
           <tbody>
 
             <!-- Load it up -->
-            <tr v-for="exam in examPapers" :key="exam.title" class="bg-red-500">
+            <tr v-for="exam in examPapers" :key="exam.title">
               <td class="px-5 py-1 border-b border-gray-200 bg-white text-sm">
                 <div class="flex">
                   <div class="flex-shrink-0 w-10 h-10">
@@ -83,36 +85,32 @@
                 </div>
               </td>
               <td class="px-5 py-5 border-b border-gray-200 bg-white">
-                <a class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-800 transition 0.1s"
-                :href="exam.PDFLink"
-                download> 
+                <button class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-800 transition 0.1s"
+                @click="downloadFile(exam.PDFLink)"> 
                   <i class="fas fa-file-pdf  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> .pdf </span>
-                </a>
+                </button>
 
-                <a class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-800 transition 0.1s"
-                :href="exam.docLink"
-                download> 
+                <button class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-800 transition 0.1s"
+                @click="downloadFile(exam.docLink)"> 
                   <i class="fas fa-file-word  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> .doc </span>
-                </a>
+                </button>
               </td>
               <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <a class="block md:inline-block bg-blue-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-blue-800 transition 0.1s"
-                :href="exam.solLink"
-                download
+                <button class="block md:inline-block bg-blue-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-blue-800 transition 0.1s"
+                @click="downloadFile(exam.solLink)" 
                 v-if="exam.solLink != ''"> 
                   <i class="fas fa-marker  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> solutions </span>
-                </a>
+                </button>
 
-                <a class="block md:inline-block bg-green-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-green-800 transition 0.1s"
-                :href="exam.MSLink"
-                download
+                <button class="block md:inline-block bg-green-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-green-800 transition 0.1s"
+                @click="downloadFile(exam.MSLink)" 
                 v-if="exam.MSLink != ''">
                   <i class="far fa-check-square  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> mark scheme </span>
-                </a>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -153,7 +151,29 @@ export default {
         this.examPapers = response.data.papers;
         console.log(this.examPapers);
       });
-    }
+    },
+    downloadFile(url) {
+
+      var fileURL = window.URL.createObjectURL(new Blob([url]));
+      var fileLink = document.createElement('a');
+
+      let fileNameSplit = url.split('/');
+      let fileName = fileNameSplit[fileNameSplit.length - 1].toLowerCase();
+
+      fileLink.href = fileURL;
+      if (fileName.includes('.pdf')) {
+        fileLink.setAttribute('target', '_blank');
+        fileLink.setAttribute('download', fileName);
+      } else {
+        fileLink.setAttribute('download', fileName);
+      }
+      document.body.appendChild(fileLink);
+   
+      fileLink.click();
+    },
+    filterFiles() {
+      
+    },
   },
 };
 </script>

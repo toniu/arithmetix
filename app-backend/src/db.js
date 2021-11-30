@@ -1,7 +1,4 @@
 const {Pool} = require('pg');
-const fs = require('fs');
-const archiver = require('archiver');
-const format = require('pg-format');
 
 var pool; 
 
