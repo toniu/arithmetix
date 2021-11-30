@@ -245,6 +245,8 @@ export default {
             if (localStorage.getItem('jwt') != null) {
               this.$router.push(['student', 'teacher'].find((e) => r[e]));
             }
+
+            console.log(r);
           })
           .catch((e) => {
             this.errorMsg = 'Incorrect username and/or password';

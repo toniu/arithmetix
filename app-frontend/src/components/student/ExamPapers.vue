@@ -86,13 +86,15 @@
               </td>
               <td class="px-5 py-5 border-b border-gray-200 bg-white">
                 <button class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-800 transition 0.1s"
-                @click="downloadFile(exam.PDFLink)"> 
+                @click="downloadFile(exam.PDFLink)"
+                v-if="exam.PDFLink != ''"> 
                   <i class="fas fa-file-pdf  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> .pdf </span>
                 </button>
 
                 <button class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-800 transition 0.1s"
-                @click="downloadFile(exam.docLink)"> 
+                @click="downloadFile(exam.docLink)"
+                v-if="exam.docLink != ''"> 
                   <i class="fas fa-file-word  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> .doc </span>
                 </button>

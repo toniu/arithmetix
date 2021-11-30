@@ -74,7 +74,7 @@ router.post(
       const token = jwt.sign({id: email}, config.secret, {expiresIn: 86400});
 
       /* Values for client's local storage */
-      res.status(200).send({
+      const entries = {
         auth: true,
         token: token,
         user: email,
@@ -82,7 +82,11 @@ router.post(
         lastName: lastName,
         student: !isTeacher,
         teacher: isTeacher,
-      });
+      };
+
+      res.status(200).send(entries);
+      console.log(entries);
+
     } catch (e) {
       console.error(e);
       res.status(404).send('No user found.');

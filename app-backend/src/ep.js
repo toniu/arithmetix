@@ -80,11 +80,19 @@ class ExamPaperList {
             /* Add new exam paper into array */
             if (paperFound) {
               /* Change relative path for front-end */
-              npPDF = npPDF.replace('./src', '../../../../app-backend/src');
-              npDOC = npDOC.replace('./src', '../../../../app-backend/src');
-              npMS = npMS.replace('./src', '../../../../app-backend/src');
-              npSOL = npSOL.replace('./src', '../../../../app-backend/src');
-
+              if (npPDF != '') {
+                npPDF = npPDF.replace('./src', '../../../../app-backend/src');
+              }
+              if (npDOC != '') {
+                npDOC = npDOC.replace('./src', '../../../../app-backend/src');
+              }
+              if (npMS != '') {
+                npMS = npMS.replace('./src', '../../../../app-backend/src');
+              }
+              if (npSOL != '') {
+                npSOL = npSOL.replace('./src', '../../../../app-backend/src');
+              }
+              
               examPapers.push({title: npTitle,
                 PDFLink: npPDF,
                 docLink: npDOC,
