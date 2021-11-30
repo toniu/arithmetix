@@ -3,12 +3,12 @@ var path = require("path");
 
 class ExamPaperList {
   constructor() {
-    this.papers = this.loadExamPapers();
+    this.papers = [];
   };
 
-  loadExamPapers() {
+  loadExamPapers(EPDirectory) {
     let examPapers = [];
-    var walkPath = './src/exam-papers';
+    var walkPath = EPDirectory;
   
     var walk = function (directory, finished) {
         /* Initial search for the new file's question paper (in docx. and pdf format), its mark scheme and solutions */
@@ -110,13 +110,11 @@ class ExamPaperList {
     walk(walkPath, function (error) {
       if (error) {
         throw error;
-      } else {
-        console.log('--- Exam papers:');
-        console.log(examPapers);
-        console.log('---');
       }
     });
-    return examPapers;
+
+    this.papers = examPapers;
+    return this.examPapers;
   }
 }
 

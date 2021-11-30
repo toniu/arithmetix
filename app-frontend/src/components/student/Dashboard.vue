@@ -209,94 +209,20 @@
               </div>
           </div>
           <div class="p-2 justify-center ">
-              <h1 class="font-semibold my-4 md:text-xl uppercase bg-gray-100 rounded-full px-5 py-2"> Quiz Performances </h1>
-              <div class="bg-gray-100 p-2 shadow-lg border-t-4 space-x-3 border-gray-900 rounded text-black">
-                <!-- Progress 1 -->
-              
-                  <div class="inline-flex items-center justify-center overflow-hidden rounded-full">
-                    <!-- Progress Ring -->
-                    <svg class="w-20 h-20 transform -rotate-90">
-                      <circle
-                          class="text-gray-300"
-                          stroke-width="5"
-                          stroke="currentColor"
-                          fill="transparent"
-                          r="30"
-                          cx="40"
-                          cy="40"
-                        />
-                      <circle
-                          class="text-yellow-600"
-                          stroke-width="5"
-                          :stroke-dasharray="circumference"
-                          :stroke-dashoffset="circumference - 30 / 100 * circumference"
-                          stroke-linecap="round"
-                          stroke="currentColor"
-                          fill="transparent"
-                          r="30"
-                          cx="40"
-                          cy="40"
-                        />
-                    </svg>
-                    <span class="absolute text-xl text-yellow-700"> 30% </span>
-                  </div>
-                  <!-- Progress 1 -->
-                  <div class="inline-flex items-center justify-center overflow-hidden rounded-full">
-                    <!-- Progress Ring -->
-                    
-                    <svg class="w-20 h-20 transform -rotate-90">
-                      <circle
-                          class="text-gray-300"
-                          stroke-width="5"
-                          stroke="currentColor"
-                          fill="transparent"
-                          r="30"
-                          cx="40"
-                          cy="40"
-                        />
-                      <circle
-                          class="text-blue-600"
-                          stroke-width="5"
-                          :stroke-dasharray="circumference"
-                          :stroke-dashoffset="circumference - 30 / 100 * circumference"
-                          stroke-linecap="round"
-                          stroke="currentColor"
-                          fill="transparent"
-                          r="30"
-                          cx="40"
-                          cy="40"
-                        />
-                    </svg>
-                    <span class="absolute text-xl text-blue-700"> 30% </span>
-                  </div>
-                  <!-- Progress 1 -->
-                  <div class="inline-flex items-center justify-center overflow-hidden rounded-full">
-                    <!-- Progress Ring -->
-                    <svg class="w-20 h-20 transform -rotate-90">
-                      <circle
-                          class="text-gray-300"
-                          stroke-width="5"
-                          stroke="currentColor"
-                          fill="transparent"
-                          r="30"
-                          cx="40"
-                          cy="40"
-                        />
-                      <circle
-                          class="text-blue-600"
-                          stroke-width="5"
-                          :stroke-dasharray="circumference"
-                          :stroke-dashoffset="circumference - 30 / 100 * circumference"
-                          stroke-linecap="round"
-                          stroke="currentColor"
-                          fill="transparent"
-                          r="30"
-                          cx="40"
-                          cy="40"
-                        />
-                    </svg>
-                    <span class="absolute text-xl text-blue-700"> 30% </span>
-                  </div>
+              <h1 class="font-semibold my-4 md:text-xl uppercase bg-gray-100 rounded-full px-5 py-2"> Upcoming exams </h1>
+              <div class="bg-gray-100 p-3 shadow-lg border-t-4 space-y-4 border-gray-900 rounded text-white">
+                <div class="p-1 rounded-xl bg-gray-900"> 
+                  <span class="font-bold"> A Level Paper 1: </span> 
+                  Tuesday 7 June 2022 (PM)
+                </div>
+                <div class="p-1 rounded-xl bg-gray-900"> 
+                  <span class="font-bold"> A Level Paper 2: </span> 
+                  Tuesday 14 June 2022 (PM)
+                </div>
+                <div class="p-1 rounded-xl bg-gray-900"> 
+                  <span class="font-bold"> A Level Paper 3: </span> 
+                  Tuesday 21 June 2022 (PM)
+                </div>  
               </div>
           </div>
         </div>

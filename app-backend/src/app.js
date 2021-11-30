@@ -10,14 +10,13 @@ const EP = require('./ep');
 const mail = require('./mail');
 const {body, validationResult} = require('express-validator');
 
-/* Tables of the arithmetix database,
-order based on populate.sql to avoid errors,
-related to primary/foriegn keys */
-
-const tables = ['users'];
-
+/* Create instance of database model */
 const db = new DB();
+
+/* Create instance of exam paper list model and load files */
 const exampapers = new EP();
+exampapers.loadExamPapers('./src/resources/exam-papers');
+
 const app = express();
 const router = express.Router();
 
