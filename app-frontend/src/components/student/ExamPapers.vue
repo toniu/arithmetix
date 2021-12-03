@@ -1,5 +1,5 @@
 <template>
-  <div id="main" class="container block py-12 mx-auto h-full max-w-none text-center">
+  <div id="main" class="container block py-12 w-full mx-auto h-full max-w-none text-center">
       <section class="block p-5 bg-gray-900 w-full justify-center items-center">
         <i
           class="
@@ -44,8 +44,13 @@
       <!-- -->
       <section>
         <!-- Filter section -->
-        <div>
-          <input>
+        <div class="p-3 m-3 h-14 flex align-center">
+          <i class="fas fa-search m-3 text-gray-500"></i>
+          <input class="block p-1 m-1 h-full border-b-2 hover:border-blue-400 focus:border-blue-400
+          w-1/3 outline-none inset-0 text-gray-900 transition 0.2s" 
+          v-model="filter"
+          v-on:change="filterFiles(filter)"
+          placeholder="search..."/>
         </div>
         <!-- -->
         <table class="min-w-full leading-normal">
@@ -69,9 +74,8 @@
             </tr>
           </thead>
           <tbody>
-
             <!-- Load it up -->
-            <tr v-for="exam in examPapers" :key="exam.title">
+            <tr v-for="exam in filteredEP" :key="exam.title">
               <td class="px-5 py-1 border-b border-gray-200 bg-white text-sm">
                 <div class="flex">
                   <div class="flex-shrink-0 w-10 h-10">
@@ -80,7 +84,7 @@
                     <i v-if="exam.title.includes('OCR')" class="fas fa-pencil-alt bg-indigo-900 text-white px-2 py-1 text-base sm:text-lg rounded-full "></i>
                   </div>
                   <div class="ml-3">
-                    <p class="text-gray-900 text-xs sm:text-sm uppercase font-semibold">
+                    <p class="text-gray-900 text-left text-xs md:text-sm uppercase font-semibold">
                       {{ exam.title }}
                     </p>
                   </div>
@@ -119,6 +123,11 @@
             </tr>
           </tbody>
         </table>
+
+        <div v-if="filteredEP.length == 0" class="p-5 text-gray-500 w-full items-center">
+          <i class="block p-5 align-center fas fa-search text-6xl"></i>
+          <span class="p-3 m-5 font-semibold"> No papers matching "{{ filter }}" available...</span>
+        </div>
       </section>
   </div>
 </template>
@@ -133,7 +142,10 @@ export default {
   name: 'ExamPapers',
   data() {
     return {
+      examBoard: '',
+      filter: '',
       examPapers: [],
+      filteredEP: [],
     };
   },
   mounted() {
@@ -159,6 +171,7 @@ export default {
       .then((response) => {
         /* List of exam papers finally set */
         this.examPapers = response.data;
+        this.filteredEP = this.examPapers;
         console.log(this.examPapers);
       });
       } catch(e) {
@@ -193,8 +206,12 @@ export default {
       /* Activates the download */
       fileLink.click();
     },
-    filterFiles() {
-      
+    filterFiles(filter) {
+      /* Filters the files displayed 
+      By year, by exam board, by name
+      */
+     const filteredList = this.examPapers.filter(e => e.title.toLowerCase().includes(filter.toLowerCase()));
+     this.filteredEP = filteredList;   
     },
   },
 };
