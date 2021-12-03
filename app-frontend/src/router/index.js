@@ -78,12 +78,17 @@ const router = new Router({
 });
 
 /* User's route depends on role and whether they have been authenticated */
+/**
+ * Router checking the authentication of the user and the role of the user before
+ * @param to - The route the page is about to go to
+ * @param from - the route the page is going from
+ * @param next - The next path the route should go to
+ */
 router.beforeEach((to, from, next) => {
-  console.log("To: ", to);
-  console.log("Next: ", next);
-  /* Requested URL requires authentication. */
+  /* If the requested URL requires authentication. */
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    /* Checks if there is a JSON Web Token stored. */
+    /* Checks if there is a JSON Web Token stored.
+    A user with no web token to authenticate should be directed back to login/home page  */
     if (localStorage.getItem('jwt') == null) {
       next({
         path: '/login',
@@ -97,7 +102,7 @@ router.beforeEach((to, from, next) => {
           next();
         }
       }
-      /* Requested URL requires the user to be office staff. */
+      /* Requested URL requires the user to be teacher/admin. */
       if (to.matched.some((record) => record.meta.isTeacher)) {
         /* Check if the user is a teacher */
         if (localStorage.getItem('teacher') === 'true') {
@@ -106,6 +111,7 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
+    /* Move to next path */
     next();
   }
 });

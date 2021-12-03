@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 
 const DB = require('./db');
-const EP = require('./ep');
+const EP = require('./eps');
 const mail = require('./mail');
 const {body, validationResult} = require('express-validator');
 
@@ -14,8 +14,8 @@ const {body, validationResult} = require('express-validator');
 const db = new DB();
 
 /* Create instance of exam paper list model and load files */
-const exampapers = new EP();
-exampapers.loadExamPapers('./src/resources/exam-papers');
+const eps = new EP();
+eps.loadPapers('./src/resources/exam-papers')
 
 const app = express();
 const router = express.Router();
@@ -113,7 +113,7 @@ router.get('/get_teachers', async (req, res) => {
  */
  router.get('/get_exam_papers', async (req, res) => {
   try {
-    let list = exampapers;
+    let list = eps.getPapers();
     console.log('List here: ', list);
     res.send({success: true, data: list});
   } catch (e) {
