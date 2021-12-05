@@ -37,6 +37,7 @@ class Db {
             AND password=crypt($2, password)`,
             [email, password],
         );
+        console.log(rows);
         return !!rows.length;
     }
 

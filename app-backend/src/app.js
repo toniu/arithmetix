@@ -54,38 +54,43 @@ router.post(
       }
 
       const email = req.body.email;
+      const password = req.body.password;
+      const user = await db.login(email, password);
 
-      let teachers = await db.getTeachers();
-      /* Convert to array of emails */
-      let teacherEmails = teachers.map((e) => e.email);
-      console.log('Teacher emails: ', teacherEmails);
+      if (user) {
+        let teachers = await db.getTeachers();
+        /* Convert to array of emails */
+        let teacherEmails = teachers.map((e) => e.email);
+        console.log('Teacher emails: ', teacherEmails);
 
-      let isTeacher = false;
-      if (teacherEmails.includes(email)) {
-        isTeacher = true;
+        let isTeacher = false;
+        if (teacherEmails.includes(email)) {
+          isTeacher = true;
+        }
+
+        /* Get name of user */
+        const firstName = await db.getFirstName(email);
+        const lastName = await db.getLastName(email);
+
+        /* Create new JSON web token */
+        const token = jwt.sign({id: email}, config.secret, {expiresIn: 86400});
+
+        /* Values for client's local storage */
+        const entries = {
+          auth: true,
+          token: token,
+          user: email,
+          firstName: firstName,
+          lastName: lastName,
+          student: !isTeacher,
+          teacher: isTeacher,
+        };
+
+        res.status(200).send(entries);
+        console.log(entries);
+      } else {
+        throw 'No user found'
       }
-
-      /* Get name of user */
-      const firstName = await db.getFirstName(email);
-      const lastName = await db.getLastName(email);
-
-      /* Create new JSON web token */
-      const token = jwt.sign({id: email}, config.secret, {expiresIn: 86400});
-
-      /* Values for client's local storage */
-      const entries = {
-        auth: true,
-        token: token,
-        user: email,
-        firstName: firstName,
-        lastName: lastName,
-        student: !isTeacher,
-        teacher: isTeacher,
-      };
-
-      res.status(200).send(entries);
-      console.log(entries);
-
     } catch (e) {
       console.error(e);
       res.status(404).send('No user found.');
@@ -114,7 +119,7 @@ router.get('/get_teachers', async (req, res) => {
  router.get('/get_exam_papers', async (req, res) => {
   try {
     let list = eps.getPapers();
-    console.log('List here: ', list);
+    console.log('List of Exam papers from directory search: ', list);
     res.send({success: true, data: list});
   } catch (e) {
     res.send({success: true, error: 'Could not get exams'});
@@ -125,7 +130,6 @@ router.get('/get_teachers', async (req, res) => {
 
 /* -- End of router requests -- */
 app.use(router);
-
 let port = config.port;
 
 /* Server listening to port */
