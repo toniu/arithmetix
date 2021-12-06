@@ -47,7 +47,7 @@
         <div class="p-3 m-3 h-14 flex align-center">
           <i class="fas fa-search m-3 text-gray-500"></i>
           <input class="block p-1 m-1 h-full border-b-2 hover:border-blue-400 focus:border-blue-400
-          w-1/3 outline-none inset-0 text-gray-900 transition 0.2s" 
+          w-full md:w-1/3 outline-none inset-0 text-gray-900 transition 0.2s" 
           v-model="filter"
           v-on:change="filterFiles(filter)"
           placeholder="search..."/>
@@ -206,11 +206,16 @@ export default {
       /* Activates the download */
       fileLink.click();
     },
-    filterFiles(filter) {
+    /**
+     * Filters the list of exam papers based on keyword input e.g. 
+     * 'AQA' --> only display exam papers including the title 'AQA'
+     * @param keyword - the keyword string to use for filtering
+     */
+    filterFiles(keyword) {
       /* Filters the files displayed 
       By year, by exam board, by name
       */
-     const filteredList = this.examPapers.filter(e => e.title.toLowerCase().includes(filter.toLowerCase()));
+     const filteredList = this.examPapers.filter(e => e.title.toLowerCase().includes(keyword.toLowerCase()));
      this.filteredEP = filteredList;   
     },
   },

@@ -6,7 +6,12 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 
 const DB = require('./db');
+
+/* Required models of resource distrubtion (e.g. exam papers, worksheets) */
 const EP = require('./eps');
+const RN = require('./rn');
+const WS = require('./ws');
+
 const mail = require('./mail');
 const {body, validationResult} = require('express-validator');
 
@@ -16,6 +21,14 @@ const db = new DB();
 /* Create instance of exam paper list model and load files */
 const eps = new EP();
 eps.loadPapers('./src/resources/exam-papers')
+
+/* Create instance of revision notes list model and load files */
+const revisionNotes = new RN();
+revisionNotes.loadNotes('./src/resources/revision-notes')
+
+/* Create instance of practice worksheets list model and load files */
+const practiceWorksheets = new WS();
+practiceWorksheets.loadWorksheets('./src/resources/modules')
 
 const app = express();
 const router = express.Router();
@@ -50,7 +63,7 @@ router.post(
       const errorsFound = validationResult(req);
       if (!errorsFound.isEmpty()) {
         console.log({errorsFound: errorsFound.array()});
-        return res.status(400).json('Invalid username and/or password');;
+        throw 'Invalid username/password';
       }
 
       const email = req.body.email;
@@ -119,7 +132,35 @@ router.get('/get_teachers', async (req, res) => {
  router.get('/get_exam_papers', async (req, res) => {
   try {
     let list = eps.getPapers();
-    console.log('List of Exam papers from directory search: ', list);
+    console.log('--- [EXAM PAPERS] from directory search: ', list);
+    res.send({success: true, data: list});
+  } catch (e) {
+    res.send({success: true, error: 'Could not get exams'});
+    return false;
+  }
+});
+
+/**
+ * Gets revision notes and returns a list of all revision notes
+ */
+ router.get('/get_revision_notes', async (req, res) => {
+  try {
+    let list = revisionNotes.getNotes();
+    console.log('--- [REVISION NOTES]  from directory search: ', list);
+    res.send({success: true, data: list});
+  } catch (e) {
+    res.send({success: true, error: 'Could not get exams'});
+    return false;
+  }
+});
+
+/**
+ * Gets practice worksheets (by topic) and returns a list of all practice worksheets
+ */
+ router.get('/get_practice_worksheets', async (req, res) => {
+  try {
+    let list = practiceWorksheets.getWorksheets();
+    console.log('--- [PRACTICE WORKSHEETS] from directory search: ', list);
     res.send({success: true, data: list});
   } catch (e) {
     res.send({success: true, error: 'Could not get exams'});
