@@ -135,10 +135,10 @@ class EP {
               /* Add new exam paper into array */
               if (paperFound) {
                 /* Change relative path for front-end */
-                npPDF = npPDF.replace('./src', '../../../../app-backend/src');
-                npI = npI.replace('./src', '../../../../app-backend/src');
-                npMS = npMS.replace('./src', '../../../../app-backend/src');
-                npSOL = npSOL.replace('./src', '../../../../app-backend/src');
+                npPDF = npPDF.replace('./src', '../../app-backend/src');
+                npI = npI.replace('./src', '/app-backend/src');
+                npMS = npMS.replace('./src', '/app-backend/src');
+                npSOL = npSOL.replace('./src', '/app-backend/src');
 
                 examPapers.push({
                   title: npTitle,

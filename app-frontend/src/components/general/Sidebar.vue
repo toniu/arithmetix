@@ -35,6 +35,7 @@
         <i class="fas fa-home text-lg mx-3"></i>
         <span class="flex-auto">home</span>
       </router-link>
+      <!--
       <router-link
         to="/student/syllabus"
         class="
@@ -53,6 +54,7 @@
         <span class="flex-auto">syllabus</span>
         <i class="fas fa-chevron-down"></i>
       </router-link>
+      -->
       <router-link
         to="/student/modules"
         class="

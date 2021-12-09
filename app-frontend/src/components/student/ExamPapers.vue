@@ -75,7 +75,7 @@
           </thead>
           <tbody>
             <!-- Load it up -->
-            <tr v-for="exam in filteredEP" :key="exam.title">
+            <tr v-for="(exam, examIndex) in filteredEP" :key="examIndex">
               <td class="px-5 py-1 border-b border-gray-200 bg-white text-sm">
                 <div class="flex">
                   <div class="flex-shrink-0 w-10 h-10">
@@ -92,14 +92,14 @@
               </td>
               <td class="px-5 py-5 border-b border-gray-200 bg-white">
                 <button class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-700 transition 0.1s"
-                @click="downloadFile(exam.PDFLink)"
+                @click="DC(exam.PDFLink)"
                 v-if="exam.PDFLink != ''"> 
                   <i class="fas fa-file-pdf  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> download pdf </span>
                 </button>
 
                 <button class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-700 transition 0.1s"
-                @click="downloadFile(exam.insertLink)"
+                @click="DC(exam.insertLink)"
                 v-if="exam.insertLink != ''"> 
                   <i class="fas fa-question-circle text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> download insert </span>
@@ -123,7 +123,6 @@
             </tr>
           </tbody>
         </table>
-
         <div v-if="filteredEP.length == 0" class="p-5 text-gray-500 w-full items-center">
           <i class="block p-5 align-center fas fa-search text-6xl"></i>
           <span class="p-3 m-5 font-semibold"> No papers matching "{{ filter }}" available...</span>
@@ -183,6 +182,7 @@ export default {
      * @param url - The local directory file URL to download from
      */
     downloadFile(url) {
+      console.log('URL attempt to click: ', url);
       /* Create anchor tag to direct page once clicked */
       var fileURL = window.URL.createObjectURL(new Blob([url], {type: "application/pdf"}));
       var fileLink = document.createElement('a');
@@ -196,9 +196,7 @@ export default {
       fileLink.href = fileURL;
       if (fileName.includes('.pdf')) {
         fileLink.setAttribute('target', '_blank');
-        fileLink.setAttribute('download', fileName);
       } else {
-        fileLink.setAttribute('download', fileName);
       }
 
       document.body.appendChild(fileLink);
@@ -206,17 +204,25 @@ export default {
       /* Activates the download */
       fileLink.click();
     },
+    DC(url) {
+    
+      
+    },
     /**
      * Filters the list of exam papers based on keyword input e.g. 
      * 'AQA' --> only display exam papers including the title 'AQA'
      * @param keyword - the keyword string to use for filtering
      */
     filterFiles(keyword) {
-      /* Filters the files displayed 
-      By year, by exam board, by name
-      */
-     const filteredList = this.examPapers.filter(e => e.title.toLowerCase().includes(keyword.toLowerCase()));
-     this.filteredEP = filteredList;   
+      /* Filters the files displayed by keyword */
+      let KL = keyword.trim();
+      if (KL.length > 0) {
+        const filteredList = this.examPapers.filter(e => e.title.toLowerCase().includes(keyword.toLowerCase()));
+        this.filteredEP = filteredList;   
+      } else {
+        /* Show whole list if keyword is empty */
+        this.filteredEP = this.examPapers;   
+      }
     },
   },
 };

@@ -96,6 +96,32 @@
       </div>
       <div class="w-full md:w-1/2 ">
         <h1 class="p-1 m-1 font-semibold uppercase text-xl bg-gray-100 rounded-xl"> Schedule </h1>
+        <div id="root" class="text-center h-96 flex flex-col ">
+          <h1 class="py-2 font-semibold uppercase">{{ getMonthName(month) }}, {{ year }}</h1>
+          
+          <ol class="grid grid-cols-7 gap-1">
+            <li v-for="dayName in dayNames" :key="dayName" class="truncate p-1 border rounded-2xl bg-gray-900 text-white">
+              {{ dayName }}
+            </li>
+          </ol>
+          
+          <ol class="grid grid-cols-7 flex-grow gap-1 pt-1 font-semibold">
+            <li
+              v-for="dayMonth in lastDayOfTheMonth"
+              :key="dayMonth"
+              class="p-3 flex justify-left border bg-gray-100 shadow"
+              :class="[
+                `${dayMonth === 1 ? `col-start-${firstDayOfTheWeek + 1}` : ''}`,
+              ]">
+              <span class="py-1 px-1 bg-none w-8 h-8 align-center rounded-full"
+              :class="[
+                `${dayMonth === dayOfTheMonth ? 'bg-blue-600 text-white' : ''}`
+              ]">
+                {{ dayMonth }}
+              </span>
+            </li>
+          </ol>
+        </div>
       </div>
     </section>
   </div>
@@ -106,13 +132,70 @@ export default {
   name: 'ExamPapers',
   data() {
     return {
+      monthNames: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ],
+    dayNames: [
+      'S',
+      'M',
+      'T',
+      'W',
+      'T',
+      'F',
+      'S'
+    ]
     };
   },
-  methods: {
-    
+  computed: {
+    today() {
+      return new Date()
+    },
+    year() {
+      return this.today.getFullYear()
+    },
+    month() {
+      return this.today.getMonth()
+    },
+    dayOfTheMonth() {
+      return this.today.getDate()
+    },
+    dayOfTheWeek() {
+      return this.today.getDay()
+    },
+    firstDay() {
+      return new Date(this.year, this.month, 1)
+    },
+    lastDay() {
+      return new Date(this.year, this.month + 1, 0)
+    },
+    firstDayOfTheMonth() {
+      return this.firstDay.getDate()
+    },
+    firstDayOfTheWeek() {
+      return this.firstDay.getDay()
+    },
+    lastDayOfTheMonth() {
+      return this.lastDay.getDate()
+    },
+    lastDayOfTheWeek() {
+      return this.lastDay.getDay()
+    }
   },
-  mounted() {
-    
-  }
+  methods: {
+    getMonthName(index) {
+      return this.monthNames[index]
+    }
+  },
 };
 </script>

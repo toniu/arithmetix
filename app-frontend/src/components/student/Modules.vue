@@ -261,11 +261,15 @@ export default {
      * @param keyword - the keyword string to use for filtering
      */
     filterFiles(keyword) {
-      /* Filters the files displayed 
-      By year, by exam board, by name
-      */
-     const filteredList = this.filteredWS.filter(w => w.title.toLowerCase().includes(keyword.toLowerCase()));
-     this.filteredWS = filteredList;   
+      /* Filters the files displayed by keyword */
+      let KL = keyword.trim();
+      if (KL.length > 0) {
+        const filteredList = this.practiceWorksheets.filter(w => w.title.toLowerCase().includes(keyword.toLowerCase()));
+        this.filteredWS = filteredList;   
+      } else {
+        /* Show whole list if keyword is empty */
+        this.filteredWS = this.practiceWorksheets;   
+      }
     },
   },
 }

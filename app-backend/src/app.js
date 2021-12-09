@@ -33,6 +33,9 @@ practiceWorksheets.loadWorksheets('./src/resources/modules')
 const app = express();
 const router = express.Router();
 
+express.static('./resources')
+app.use('/static', express.static('public'))
+
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
 
