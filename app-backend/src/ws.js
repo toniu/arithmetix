@@ -138,10 +138,6 @@ class WS {
               }
               /* Add new practice paper worksheet (by topic) into array */
               if (paperFound) {
-                /* Change relative path for front-end */
-                wsPDF = wsPDF.replace('./src', '../../../../app-backend/src');
-                wsSOL = wsSOL.replace('./src', '../../../../app-backend/src');
-
                 workSheets.push({
                   title: wsTitle,
                   PDFLink: wsPDF,

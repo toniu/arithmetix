@@ -71,7 +71,7 @@
                <button class="block px-6 py-1 my-3 font-semibold bg-gray-900 text-white
                 rounded-2xl w-full md:w-auto hover:bg-gray-700 transition 0.1s"
                 v-if="rNotes.title.toUpperCase().includes(mod)"
-                @click="downloadFile(rNotes.URL)">
+                @click="openPDF(rNotes.URL)">
                 View {{ mod }} Revision Notes
               </button>
             </div>
@@ -115,14 +115,14 @@
                   </td>
                   <td v-if="ws.module == mod" class="px-5 py-5 border-b border-gray-200 bg-white">
                     <button class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-700 transition 0.1s"
-                    @click="downloadFile(ws.PDFLink)">
+                    @click="openPDF(ws.PDFLink)">
                       <i class="fas fa-file-pdf  text-white p-2 md:text-lg text-2xl"></i>
                       <span class="font-semibold hidden md:inline-block"> download pdf </span>
                     </button>
                   </td>
                   <td v-if="ws.module == mod" class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <button class="block md:inline-block bg-blue-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-blue-700 transition 0.1s"
-                    @click="downloadFile(ws.solLink)">
+                    @click="openPDF(ws.solLink)">
                       <i class="fas fa-marker  text-white p-2 md:text-lg text-2xl"></i>
                       <span class="font-semibold hidden md:inline-block"> solutions </span>
                     </button>
@@ -229,31 +229,28 @@ export default {
     },
     /**
      * Downloads the file clicked
-     * @param url - The local directory file URL to download from
+     * @param fileURL - The local directory file URL to download from
      */
-    downloadFile(url) {
-      /* Create anchor tag to direct page once clicked */
-      var fileURL = window.URL.createObjectURL(new Blob([url], {type: "application/pdf"}));
-      var fileLink = document.createElement('a');
-
-      /* String manipulation to get file title in a specific format 
-      e.g. folder1/folder2/question-paper-topic --> "question-paper-topic" */
-      let fileNameSplit = url.split('/');
-      let fileName = fileNameSplit[fileNameSplit.length - 1].toLowerCase();
-
-      /* Create reference for download URL */
-      fileLink.href = fileURL;
-      if (fileName.includes('.pdf')) {
-        fileLink.setAttribute('target', '_blank');
-        fileLink.setAttribute('download', fileName);
-      } else {
-        fileLink.setAttribute('download', fileName);
+    async openPDF(fileURL) {
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/open_pdf`,
+          {
+            responseType: 'blob',
+            file_path: `${fileURL}`,
+          },
+        )
+        .then((response) => {
+          if (response) {
+              var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/pdf"}));
+              window.open(fileURL);
+            }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
       }
-
-      document.body.appendChild(fileLink);
-
-      /* Activates the download */
-      fileLink.click();
     },
     /**
      * Filters the list of practice worksheets based on keyword input e.g. 

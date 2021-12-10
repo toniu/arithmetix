@@ -92,14 +92,14 @@
               </td>
               <td class="px-5 py-5 border-b border-gray-200 bg-white">
                 <button class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-700 transition 0.1s"
-                @click="DC(exam.PDFLink)"
+                @click="openPDF(exam.PDFLink)"
                 v-if="exam.PDFLink != ''"> 
                   <i class="fas fa-file-pdf  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> download pdf </span>
                 </button>
 
                 <button class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-700 transition 0.1s"
-                @click="DC(exam.insertLink)"
+                @click="openPDF(exam.insertLink)"
                 v-if="exam.insertLink != ''"> 
                   <i class="fas fa-question-circle text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> download insert </span>
@@ -107,14 +107,14 @@
               </td>
               <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <button class="block md:inline-block bg-blue-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-blue-700 transition 0.1s"
-                @click="downloadFile(exam.solLink)" 
+                @click="openPDF(exam.solLink)" 
                 v-if="exam.solLink != ''"> 
                   <i class="fas fa-marker  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> solutions </span>
                 </button>
 
                 <button class="block md:inline-block bg-green-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-green-700 transition 0.1s"
-                @click="downloadFile(exam.MSLink)" 
+                @click="openPDF(exam.MSLink)" 
                 v-if="exam.MSLink != ''">
                   <i class="far fa-check-square  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> mark scheme </span>
@@ -204,9 +204,61 @@ export default {
       /* Activates the download */
       fileLink.click();
     },
-    DC(url) {
-    
-      
+    async openPDF(fileURL) {
+
+      function base64ToArrayBuffer(data) {
+          var binaryString = data;
+          var binaryLen = binaryString.length;
+          var bytes = new Uint8Array(binaryLen);
+          for (var i = 0; i < binaryLen; i++) {
+              var ascii = binaryString.charCodeAt(i);
+              bytes[i] = ascii;
+          }
+          return bytes;
+      };
+
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/open_pdf`,
+          {
+            responseType: 'blob',
+            file_path: `${fileURL}`,
+          },
+        )
+        .then((response) => {
+          if (response) {
+              var responseString = response.data.toString();
+              var arrBuffer = base64ToArrayBuffer(responseString);
+
+              // It is necessary to create a new blob object with mime-type explicitly set
+              // otherwise only Chrome works like it should
+              var newBlob = new Blob([arrBuffer], { type: "application/pdf" });
+
+              // IE doesn't allow using a blob object directly as link href
+              // instead it is necessary to use msSaveOrOpenBlob
+              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                  window.navigator.msSaveOrOpenBlob(newBlob);
+                  return;
+              }
+
+              // For other browsers: 
+              // Create a link pointing to the ObjectURL containing the blob.
+              var data = window.URL.createObjectURL(newBlob);
+
+              var link = document.createElement('a');
+              document.body.appendChild(link); //required in FF, optional for Chrome
+              link.href = data;
+              link.download = "file.pdf";
+              link.click();
+              window.URL.revokeObjectURL(data);
+              link.remove();
+            }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
     },
     /**
      * Filters the list of exam papers based on keyword input e.g. 

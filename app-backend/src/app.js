@@ -4,6 +4,7 @@ const express = require('express');
 const config = require('./config');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
 const DB = require('./db');
 
@@ -138,7 +139,7 @@ router.get('/get_teachers', async (req, res) => {
     console.log('--- [EXAM PAPERS] from directory search: ', list);
     res.send({success: true, data: list});
   } catch (e) {
-    res.send({success: true, error: 'Could not get exams'});
+    res.send({success: false, error: 'Could not get exams'});
     return false;
   }
 });
@@ -152,7 +153,7 @@ router.get('/get_teachers', async (req, res) => {
     console.log('--- [REVISION NOTES]  from directory search: ', list);
     res.send({success: true, data: list});
   } catch (e) {
-    res.send({success: true, error: 'Could not get exams'});
+    res.send({success: false, error: 'Could not get exams'});
     return false;
   }
 });
@@ -166,8 +167,28 @@ router.get('/get_teachers', async (req, res) => {
     console.log('--- [PRACTICE WORKSHEETS] from directory search: ', list);
     res.send({success: true, data: list});
   } catch (e) {
-    res.send({success: true, error: 'Could not get exams'});
+    res.send({success: false, error: 'Could not get exams'});
     return false;
+  }
+});
+
+/**
+ * Opens the PDF with given path URL - also sets the file header
+ */
+router.post('/open_pdf', async (req, res, next) => {
+  try {
+    var filePath = req.body.file_path
+    console.log('Opening PDF... ', filePath);
+
+    var file = fs.createReadStream(filePath);
+    var stat = fs.statSync(filePath);
+    res.setHeader('Content-Length', stat.size);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=resource.pdf');
+    file.pipe(res);
+  } catch (e) {
+    console.log(e);
+    res.send({data: null});
   }
 });
 

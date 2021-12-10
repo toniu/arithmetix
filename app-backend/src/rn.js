@@ -110,9 +110,6 @@ class RN {
               }
               /* Add new revision notes sheet into array */
               if (notesFound) {
-                  /* Change relative path for front-end */
-                rURL = rURL.replace('./src', '../../../../app-backend/src');
-
                 revisionNotes.push({
                     title: npTitle,
                     URL: rURL,
