@@ -25,7 +25,7 @@ describe('Revision Notes', () => {
     it.todo('Invalid directory/file');
 
 
-    test('Worksheets search for all', () => {
+    test('Worksheets search for all', async () => {
         revisionNotes = new RN();
         console.log(revisionNotes);
         revisionNotes.loadNotes(testDirectories[0]);

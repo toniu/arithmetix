@@ -121,17 +121,10 @@ class RN {
         });
       };
 
-      console.log(
-        'Processing revision notes files... Starting from ',
-        RNDirectory,
-      );
-
       search(searchPath, function (error) {
         if (error) {
           console.log(error);
           throw 'Error: invalid directory/file; not found';
-        } else {
-          console.log(revisionNotes);
         }
       });
 

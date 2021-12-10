@@ -25,11 +25,11 @@ describe('Practice Worksheets', () => {
     it.todo('Invalid directory/file');
 
 
-    test('Worksheets search for all', () => {
+    test('Worksheets search for all', async () => {
         worksheet = new WS();
         console.log(worksheet);
         worksheet.loadWorksheets(testDirectories[0]);
-        console.log(worksheet.getWorksheets());
+        console.log('Getting worksheets...', worksheet.getWorksheets());
     });
 
     afterEach(() => {

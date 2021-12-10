@@ -147,14 +147,10 @@ class EP {
         });
       };
 
-      console.log('Processing exam paper files... Starting from ', EPDirectory);
-
       search(searchPath, function (error) {
         if (error) {
           console.log(error);
           throw 'Error: invalid directory/file; not found';
-        } else {
-          console.log(examPapers);
         }
       });
 

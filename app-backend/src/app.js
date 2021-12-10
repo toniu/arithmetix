@@ -180,10 +180,12 @@ router.post('/open_pdf', async (req, res, next) => {
     var filePath = req.body.file_path
     console.log('Opening PDF... ', filePath);
 
+    /* Set header of file and start reading file synchronously */
     var file = fs.createReadStream(filePath);
     var stat = fs.statSync(filePath);
     res.setHeader('Content-Length', stat.size);
     res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Accept','application/pdf');
     res.setHeader('Content-Disposition', 'attachment; filename=resource.pdf');
     file.pipe(res);
   } catch (e) {

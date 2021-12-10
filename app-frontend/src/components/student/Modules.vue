@@ -243,8 +243,17 @@ export default {
         )
         .then((response) => {
           if (response) {
-              var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/pdf"}));
-              window.open(fileURL);
+              /* Uses blob for PDF */
+              const pdfBlob = new Blob([response.data], { type: "application/pdf" })
+
+              /* Anchor tag to direct page to the PDF in new tab */
+              const blobUrl = window.URL.createObjectURL(pdfBlob)
+              const link = document.createElement('a')
+                    link.href = blobUrl
+                    link.setAttribute('target', '_blank')
+                    link.click();
+                    link.remove();
+              URL.revokeObjectURL(blobUrl);
             }
         })
         .catch((error) => console.log(error));

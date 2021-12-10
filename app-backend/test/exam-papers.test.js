@@ -18,12 +18,17 @@ describe('Exam papers', () => {
     it.todo('Exam paper search for Edexcel papers');
     it.todo('Invalid directory/file');
 
-
-    test('Exam paper list empty', () => {
+    /** Checks that the list is empty after
+     * instantiation of singleton */
+    test('Exam paper list empty', async () => {
         eps = new EP();
         console.log(eps);
-        eps.loadPapers(testDirectories[0]);
-        console.log(eps.getPapers());
+        var papers = function() {
+            return eps.getPapers();
+        }
+
+        expect(papers.length).toBe(0);
+        console.log(papers.length);
     });
 
     afterEach(() => {

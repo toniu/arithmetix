@@ -205,18 +205,6 @@ export default {
       fileLink.click();
     },
     async openPDF(fileURL) {
-
-      function base64ToArrayBuffer(data) {
-          var binaryString = data;
-          var binaryLen = binaryString.length;
-          var bytes = new Uint8Array(binaryLen);
-          for (var i = 0; i < binaryLen; i++) {
-              var ascii = binaryString.charCodeAt(i);
-              bytes[i] = ascii;
-          }
-          return bytes;
-      };
-
       try {
         await this.$axios
         .post(
@@ -228,31 +216,17 @@ export default {
         )
         .then((response) => {
           if (response) {
-              var responseString = response.data.toString();
-              var arrBuffer = base64ToArrayBuffer(responseString);
+              /* Uses blob for PDF */
+              const pdfBlob = new Blob([response.data], { type: "application/pdf" })
 
-              // It is necessary to create a new blob object with mime-type explicitly set
-              // otherwise only Chrome works like it should
-              var newBlob = new Blob([arrBuffer], { type: "application/pdf" });
-
-              // IE doesn't allow using a blob object directly as link href
-              // instead it is necessary to use msSaveOrOpenBlob
-              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                  window.navigator.msSaveOrOpenBlob(newBlob);
-                  return;
-              }
-
-              // For other browsers: 
-              // Create a link pointing to the ObjectURL containing the blob.
-              var data = window.URL.createObjectURL(newBlob);
-
-              var link = document.createElement('a');
-              document.body.appendChild(link); //required in FF, optional for Chrome
-              link.href = data;
-              link.download = "file.pdf";
-              link.click();
-              window.URL.revokeObjectURL(data);
-              link.remove();
+              /* Anchor tag to direct page to the PDF in new tab */
+              const blobUrl = window.URL.createObjectURL(pdfBlob)
+              const link = document.createElement('a')
+                    link.href = blobUrl
+                    link.setAttribute('target', '_blank')
+                    link.click();
+                    link.remove();
+              URL.revokeObjectURL(blobUrl);
             }
         })
         .catch((error) => console.log(error));

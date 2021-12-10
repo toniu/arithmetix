@@ -150,14 +150,10 @@ class WS {
         });
       };
 
-      console.log('Processing practice worksheet files... Starting from ', WSDirectory);
-
       search(searchPath, function (error) {
         if (error) {
           console.log(error);
           throw 'Error: invalid directory/file; not found';
-        } else {
-          console.log(workSheets);
         }
       });
 
