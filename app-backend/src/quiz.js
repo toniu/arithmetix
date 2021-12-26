@@ -17,26 +17,60 @@ class Quiz {
     return this.pools;
   }
 
-  async chooseQuestions(URL) {
-    var min = 1;
-    var max = quizData.length();
+  async chooseQuestions(pathURL) {
+    try {
+        /* Convert from CSV format to objects */
+        var pool = [];
 
-    /* Read text file, shuffle lines and select 10 lines (questions) */
-    var questions = [];
-    /* Convert from CSV format to objects */
-    var pool = [];
+        const csvFilePath = pathURL;
 
-    const csvFilePath = 'app-backend/src/resources/quizzes/core/Core-A.csv';
+        /* Convert CSV to JSON array */
+        csv()
+        .fromFile(csvFilePath)
+        .then((pool)=>{
+        
+            /** Randomly shuffle questions **/
+            function shuffleArray(question) {
+                var shuffled = question.sort(function () {
+                    return .5 - Math.random();
+                });
+                return shuffled;
+            }
 
-    /* Convert CSV to JSON array */
-    csv()
-    .fromFile(csvFilePath)
-    .then((pool)=>{
-        console.log(pool);
-    })
-    
-    /* Randomly select 10 questions from pool */
+            function shuffle(a) {
+                for (var i = a.length; i; i--) {
+                    var j = Math.floor(Math.random() * i);
+                    var _ref = [a[j], a[i - 1]];
+                    a[i - 1] = _ref[0];
+                    a[j] = _ref[1];
+                }
+            }
+            
+            var quizData = [];
+            /* Shuffle pool of questions */
+            console.log('BP', pool);
+            pool = shuffleArray(pool);
 
+            /* Select 10 questions from shuffled pool */
+            for (let i = 0; i < 10; i++) {
+                quizData.push(pool[i]);
+            }
+
+            /* Convert answer options into array as well
+            e.g. "[a|b|c|d]" --> ['a','b','c','d'] */
+            for (const i in quizData) {
+                if (quizData[i]) {
+                    quizData[i].options = quizData[i].options.split('|');
+                }
+            }
+
+            console.log(quizData);
+            
+            this.quizData = quizData; 
+        })
+    } catch(e) {
+        console.log('Unable to generate quiz questions.')
+    }
   }
 
   /**
@@ -146,5 +180,6 @@ class Quiz {
 
 const quiz = new Quiz();
 quiz.createPools('/Users/neka/CS3821Repo/app-backend/src/resources/quizzes');
+quiz.chooseQuestions('app-backend/src/resources/quizzes/core/Core-A.csv');
 
 module.exports = Quiz;

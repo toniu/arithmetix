@@ -8,10 +8,11 @@ const fs = require('fs');
 
 const DB = require('./db');
 
-/* Required models of resource distrubtion (e.g. exam papers, worksheets) */
+/* Required models for displaying resources (e.g. exam papers, worksheets, quizzes) */
 const EP = require('./eps');
 const RN = require('./rn');
 const WS = require('./ws');
+const QZ = require('./quiz');
 
 const mail = require('./mail');
 const {body, validationResult} = require('express-validator');
@@ -30,6 +31,10 @@ revisionNotes.loadNotes('./src/resources/revision-notes')
 /* Create instance of practice worksheets list model and load files */
 const practiceWorksheets = new WS();
 practiceWorksheets.loadWorksheets('./src/resources/modules')
+
+/* Create instance of quizzes model and load files */
+const quizzes = new QZ();
+quizzes.createPools('./src/resources/quizzes')
 
 const app = express();
 const router = express.Router();
@@ -167,7 +172,36 @@ router.get('/get_teachers', async (req, res) => {
     console.log('--- [PRACTICE WORKSHEETS] from directory search: ', list);
     res.send({success: true, data: list});
   } catch (e) {
-    res.send({success: false, error: 'Could not get exams'});
+    res.send({success: false, error: 'Could not get worksheets'});
+    return false;
+  }
+});
+
+/**
+ * Gets quizzes and returns a list of all CSV files of questions
+ */
+ router.get('/get_quizzes', async (req, res) => {
+  try {
+    let list = quizzes.getPools();
+    console.log('--- [QUIZ POOLS] from directory search: ', list);
+    res.send({success: true, data: list});
+  } catch (e) {
+    res.send({success: false, error: 'Could not get quizzes'});
+    return false;
+  }
+});
+
+/**
+ * Generate quiz questions with selected CSV file
+ */
+ router.post('/generate_quiz', async (req, res, next) => {
+  try {
+    var poolPath = req.body.file_path;
+    /* Quiz data generated - randomly selected 10 questions from chosen pool */
+    let quizData = await quizzes.chooseQuestions(poolPath);
+    res.send({success: true, data: quizData});
+  } catch (e) {
+    res.send({success: false, error: 'Could not generate quiz'});
     return false;
   }
 });
