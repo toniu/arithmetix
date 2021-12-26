@@ -6,7 +6,7 @@ import Home from '@/components/general/Home';
 import Login from '@/components/general/Login';
 import Student from '@/components/student/Student';
 /* Student links */
-import Syllabus from '@/components/student/Syllabus';
+import Quizzes from '@/components/student/Quizzes';
 import Modules from '@/components/student/Modules';
 import Homework from '@/components/student/Homework';
 import ExamPapers from '@/components/student/ExamPapers';
@@ -36,7 +36,7 @@ const router = new Router({
         isStudent: true,
       },
       children: [
-        {path: '/student/syllabus', name: 'syllabus', component: Syllabus,
+        {path: '/student/quizzes', name: 'quizzes', component: Quizzes,
           meta: {
             requiresAuth: true,
             isStudent: true,
@@ -74,6 +74,10 @@ const router = new Router({
         isTeacher: true,
       },
     },
+    {
+      path: '/*',
+      component: Home,
+    }
   ],
 });
 

@@ -35,9 +35,8 @@
         <i class="fas fa-home text-lg mx-3"></i>
         <span class="flex-auto">home</span>
       </router-link>
-      <!--
       <router-link
-        to="/student/syllabus"
+        to="/student/quizzes"
         class="
           px-4
           py-2
@@ -50,11 +49,10 @@
           0.1s
         "
       >
-        <i class="fas fa-book text-lg mx-3"></i>
-        <span class="flex-auto">syllabus</span>
+        <i class="fas fa-stopwatch text-lg mx-3"></i>
+        <span class="flex-auto">quizzes</span>
         <i class="fas fa-chevron-down"></i>
       </router-link>
-      -->
       <router-link
         to="/student/modules"
         class="

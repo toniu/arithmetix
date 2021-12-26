@@ -27,11 +27,11 @@ export default {
   },
   data: () => ({
     /* Navigation */
-    navigationLabels: ['Dashboard','Syllabus','Modules','Homework','Exam Papers'],
+    navigationLabels: ['Dashboard','Quizzes','Modules','Homework','Exam Papers'],
     selected: '',
     menu: [
       {title: "Home", icon: "", url: "/", submenus: []},
-      {title: "Syllabus", icon: "", url: "/", submenus: []},
+      {title: "Quizzes", icon: "", url: "/", submenus: []},
       {
         title: "Modules",
         icon: "",
