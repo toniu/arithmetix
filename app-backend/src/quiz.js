@@ -4,9 +4,32 @@ const csv = require('csvtojson');
  * Class for quizzes
  */
 class Quiz {
-  constructor() {
+  /**
+   * Singleton instance:
+   * Instance of quizzes list
+   * Only one list of quizzes is required for
+   * the whole application to access
+   */
+   constructor() {
+    if (Quiz.instance) {
+      return Quiz.instance;
+    }
+
     this.pools = [];
     this.quizData = [];
+    Quiz.instance = this;
+    return Quiz.instance;
+  }
+
+  /**
+   * Get instance of quizzes list
+   * @return - the instance of the quizzes
+   */
+  static getInstance() {
+    if (!Quiz.instance) {
+      Quiz.instance = new Quiz();
+    }
+    return Quiz.instance;
   }
 
   /**
@@ -15,6 +38,14 @@ class Quiz {
    */
   getPools() {
     return this.pools;
+  }
+
+  /**
+   * Returns the generated list of questions from pool
+   * @returns data of questions to send
+   */
+   getQuizData() {
+    return this.quizData;
   }
 
   async chooseQuestions(pathURL) {
@@ -67,9 +98,12 @@ class Quiz {
             console.log(quizData);
             
             this.quizData = quizData; 
+
+            return quizData;
         })
     } catch(e) {
         console.log('Unable to generate quiz questions.')
+        return;
     }
   }
 
@@ -78,7 +112,7 @@ class Quiz {
    * for quiz data which has the pool of questions
    * @param {String} chosenDirectory - the directory URL to begin the file search from
    */
-  createPools(chosenDirectory) {
+  loadPools(chosenDirectory) {
     try {
       let quizPools = [];
       var searchPath = chosenDirectory;
@@ -94,11 +128,6 @@ class Quiz {
         /* Initial search for the new text-file's questions pool and getting its title */
 
         let quizModule = '';
-        let quizURL = '';
-
-        /* Indicates if a textfile of questions has been is found 
-                (CONDITION: .txt file is found) */
-        let poolFound = false;
 
         /* Reads the directory */
         fs.readdir(directory, function (error, list) {
@@ -124,9 +153,10 @@ class Quiz {
             let quizTitle = nextFile.substring(0, nextFile.length - 4);
             quizTitle = quizTitle.replaceAll('-', ' ');
 
-            if (quizTitle.toLowerCase().includes('core')) { quizModule = 'Core'; }
-            if (quizTitle.toLowerCase().includes('mechanics')) { quizModule = 'Mechanics'; }
-            if (quizTitle.toLowerCase().includes('statistics')) { quizModule = 'Statistics'; }
+            if (quizTitle.toLowerCase().includes('core')) { quizModule = 'core'; }
+            if (quizTitle.toLowerCase().includes('mechanics')) { quizModule = 'mechanics'; }
+            if (quizTitle.toLowerCase().includes('statistics')) { quizModule = 'statistics'; }
+
 
             /* Append current directory to next file */
             nextFile = directory + '/' + nextFile;
@@ -140,22 +170,17 @@ class Quiz {
                   next();
                 });
               } else if (nextFile) {
-                /* Otherwise, access the next file in the current directory */
-                console.log(nextFile);
-                if (nextFile.includes('.txt')) {
-                  quizURL = nextFile;
-                  poolFound = true;
+                /* Otherwise, access the next file in the current directory 
+                Add new pool of quiz questions into array */
+                if (nextFile.includes('.csv')) {
+                  quizPools.push({
+                    title: quizTitle,
+                    module: quizModule,
+                    poolURL: nextFile,
+                  });
                 }
 
                 next();
-              }
-              /* Add new pool of quiz questions into array */
-              if (poolFound) {
-                quizPools.push({
-                  title: quizTitle,
-                  module: quizModule,
-                  poolURL: quizURL,
-                });
               }
             });
           })();
@@ -167,8 +192,6 @@ class Quiz {
           console.log(error);
           throw 'Error: invalid directory/file; not found';
         }
-
-        console.log(quizPools);
       });
 
       this.pools = quizPools;
@@ -177,9 +200,5 @@ class Quiz {
     }
   }
 }
-
-const quiz = new Quiz();
-quiz.createPools('/Users/neka/CS3821Repo/app-backend/src/resources/quizzes');
-quiz.chooseQuestions('app-backend/src/resources/quizzes/core/Core-A.csv');
 
 module.exports = Quiz;

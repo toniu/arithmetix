@@ -55,9 +55,9 @@
           <div class="m-1 p-1 bg-gray-900 text-white"> A mixture of topics from modules: <span class="block font-semibold"> C1, C2, C3 and C4 </span> </div>
           <ul class="p-1 m-1 bg-gray-100">
             <li class="px-3 my-1 flex justify-between bg-white shadow-lg border-l-4 border-gray-800"
-            v-for="(cQuiz, cIndex) in quizTables.coreQuizzes.quizzes"
+            v-for="(cQuiz, cIndex) in quizTables.coreQuizzes"
             v-bind:key="cIndex">
-              <span class="m-1 truncate"> {{ cQuiz }} </span>
+              <span class="m-1 truncate"> {{ cQuiz.title }} </span>
               <div class="inline">
                 <button>
                 <i class="px-3 py-2 m-1 fas fa-info rounded text-white bg-gray-800 hover:bg-gray-700 transition 0.1s"/>
@@ -77,9 +77,9 @@
           <div class="m-1 p-1 bg-gray-900 text-white"> A mixture of topics from modules: <span class="block font-semibold"> M1 </span> </div>
           <ul class="p-1 m-1 bg-gray-100">
            <li class="px-3 my-1 flex justify-between bg-white shadow-lg border-l-4 border-gray-800"
-            v-for="(mQuiz, mIndex) in quizTables.mechQuizzes.quizzes"
+            v-for="(mQuiz, mIndex) in quizTables.mechQuizzes"
             v-bind:key="mIndex">
-              <span class="m-1 truncate"> {{ mQuiz }} </span>
+              <span class="m-1 truncate"> {{ mQuiz.title }} </span>
               <div class="inline">
                 <button>
                 <i class="px-3 py-2 m-1 fas fa-info rounded text-white bg-gray-800 hover:bg-gray-700 transition 0.1s"/>
@@ -99,9 +99,9 @@
           <div class="m-1 p-1 bg-gray-900 text-white"> A mixture of topics from modules: <span class="block font-semibold"> S1 </span> </div>
           <ul class="p-1 m-1 bg-gray-100">
             <li class="px-3 my-1 flex justify-between bg-white shadow-lg border-l-4 border-gray-800"
-            v-for="(sQuiz, sIndex) in quizTables.statQuizzes.quizzes"
+            v-for="(sQuiz, sIndex) in quizTables.statQuizzes"
             v-bind:key="sIndex">
-              <span class="m-1 truncate"> {{ sQuiz }} </span>
+              <span class="m-1 truncate"> {{ sQuiz.title }} </span>
               <div class="inline">
                 <button>
                 <i class="px-3 py-2 m-1 fas fa-info rounded text-white bg-gray-800 hover:bg-gray-700 transition 0.1s"/>
@@ -125,24 +125,53 @@ export default {
   data() {
       return {
         quizTables: {
-          coreQuizzes: {
-            quizzes: ['Core A','Core B','Core C','Core D'],
-          },
-          mechQuizzes: {
-            quizzes: ['Mechanics A', 'Mechanics B','Mechanics C','Mechanics D'],
-          },
-          statQuizzes: {
-            quizzes: ['Statistics A', 'Statistics B', 'Statistics C', 'Statistics D'],
-          },
+          coreQuizzes: [],
+          mechQuizzes: [],
+          statQuizzes: [],
         },
       };
     },
     mounted() {
-
+      this.getQuizzes();
     },
     methods: {
       async getQuizzes() {
+        /* Fetch request to search for all pools of quiz questions stored in local directory */
+        try {
+          fetch(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/get_quizzes`,
+          {
+            method: 'GET',
+            headers: {},
+          },
+        )
+        .then((response) => {
+          return response.json();
+        })
+        .then((response) => {
+          /* List of revision notes finally set */
+          let quizPools = response.data;
 
+          /* Push the quizzes into their respective modules */
+          for (const i in quizPools) {
+            if (quizPools[i]) {
+              /* Core quiz pools */
+              if (quizPools[i].module == 'core') {
+                this.quizTables.coreQuizzes.push(quizPools[i]);
+              /* Mechanics quiz pools */
+              } else if (quizPools[i].module == 'mechanics') {
+                this.quizTables.mechQuizzes.push(quizPools[i]);
+              } else {
+              /* Statistics quiz pools */
+                this.quizTables.statQuizzes.push(quizPools[i]);
+              } 
+            }
+          }
+          console.log('QUIZZES: ', this.quizTables);
+        });
+        } catch(e) {
+          console.log(e);
+        }
       },
     },
 };

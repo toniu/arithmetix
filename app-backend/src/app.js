@@ -34,7 +34,7 @@ practiceWorksheets.loadWorksheets('./src/resources/modules')
 
 /* Create instance of quizzes model and load files */
 const quizzes = new QZ();
-quizzes.createPools('./src/resources/quizzes')
+quizzes.loadPools('./src/resources/quizzes')
 
 const app = express();
 const router = express.Router();

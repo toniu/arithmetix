@@ -24,7 +24,7 @@ class RN {
    * @return - the instance of the revision notes
    */
   static getInstance() {
-    if (!EP.instance) {
+    if (!RN.instance) {
         RN.instance = new RN();
     }
     return RN.instance;
