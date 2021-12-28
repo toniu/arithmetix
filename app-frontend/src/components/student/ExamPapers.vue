@@ -218,6 +218,7 @@ export default {
           if (response) {
               /* Uses blob for PDF */
               const pdfBlob = new Blob([response.data], { type: "application/pdf" })
+              console.log('Response data:', response.data);
 
               /* Anchor tag to direct page to the PDF in new tab */
               const blobUrl = window.URL.createObjectURL(pdfBlob)

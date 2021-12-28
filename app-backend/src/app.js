@@ -214,13 +214,17 @@ router.post('/open_pdf', async (req, res, next) => {
     var filePath = req.body.file_path
     console.log('Opening PDF... ', filePath);
 
+    var sp = filePath.split('/');
+    var fileName = sp[sp.length - 1].toLowerCase();
+    console.log('Opening PDF... ', filePath, ' with file name... ', fileName);
+
     /* Set header of file and start reading file synchronously */
     var file = fs.createReadStream(filePath);
     var stat = fs.statSync(filePath);
     res.setHeader('Content-Length', stat.size);
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Accept','application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename=resource.pdf');
+    res.setHeader( "Content-Disposition", "filename=\"" + fileName + "\"" );
     file.pipe(res);
   } catch (e) {
     console.log(e);

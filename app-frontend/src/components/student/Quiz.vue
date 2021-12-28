@@ -1,7 +1,6 @@
 <template>
-  <div class="m-auto w-10/12 p-10 relative text-center">
-    <div class="w-10/12 m-auto p-10">
-      <h1 class="mc_quiz">Quiz</h1>
+  <div class="quizArea m-auto relative text-center">
+    <div class="multipleChoiceQues m-auto p-2">
       <div class="my-progress">
         <progress
           class="my-progress-bar"
@@ -19,30 +18,85 @@
           0% complete
         </p>
       </div>
-      <div class="quizBox">
-        <div class="question"></div>
-        <div class="answerOptions"></div>
-        <div class="buttonArea">
-          <button id="next" class="hidden">Next</button>
-          <button id="submit" class="hidden">Submit</button>
+      <div class="quizBox m-auto">
+        <div class="question text-center text-sm text-gray-900"></div>
+        <div
+          class="answerOptions p-3 m-2 w-96 text-white rounded-xl bg-opacity-95"
+        ></div>
+        <div class="buttonArea inline">
+          <button
+            id="prev"
+            class="
+              float-left
+              px-5
+              py-2
+              m-1
+              rounded-3xl
+              text-white
+              bg-gray-900
+              hover:bg-gray-800
+              hidden
+            "
+          >
+            previous question
+          </button>
+          <button
+            id="next"
+            class="
+              float-right
+              px-5
+              py-2
+              m-1
+              rounded-3xl
+              text-white
+              bg-gray-900
+              hover:bg-gray-800
+            "
+          >
+            next question
+          </button>
+          <button
+            id="submit"
+            class="
+              float-right
+              px-5
+              py-2
+              m-1
+              rounded-3xl
+              text-white
+              bg-gray-900
+              hover:bg-gray-800
+              hidden
+            "
+          >
+            submit answers
+          </button>
         </div>
       </div>
     </div>
-    <div class="resultArea">
-      <div class="resultPage1">
-        <div class="resultBox">
-          <h1>Result Summary</h1>
+    <div class="resultArea hidden md:m-auto p-2 w-full md:w-4/6">
+      <div class="resultPage1 text-center">
+        <div
+          class="
+            resultBox
+            p-5
+            rounded-t-2xl
+            bg-gray-900 bg-opacity-95
+            text-white
+          "
+        >
+          <h1 class="text-gray-900 font-semibold">result summary</h1>
         </div>
-        <div class="briefchart">
-          <svg height="300" width="300" id="_cir_progress">
-            <g>
-              <rect x="0" y="1" width="30" height="15" fill="#ab4e6b" />
+        <div class="briefchart p-5 m-5 text-center align-center">
+          <svg height="300" width="300" id="_cir_progress" class="block m-auto">
+            <g class="p-3 m-3">
+              <rect x="0" y="1" width="30" height="15" fill="#212121" />
               <text x="32" y="14" font-size="14" class="_text_incor">
                 Incorrect : 10
               </text>
             </g>
-            <g>
-              <rect x="160" y="1" width="30" height="15" fill="#968089" />
+            <g class="p-3 m-3">
+              <rect x="160" y="1" width="30" height="15" fill="#2196f3" />
               <text x="192" y="14" font-size="14" class="_text_cor">
                 Correct : 10
               </text>
@@ -52,11 +106,11 @@
               cx="150"
               cy="150"
               r="120"
-              stroke="#ab4e6b"
+              stroke="#212121"
               stroke-width="20"
               fill="none"
-              onmouseover="evt.target.setAttribute('stroke', 'rgba(171, 78, 107,0.7)');"
-              onmouseout="evt.target.setAttribute('stroke','#ab4e6b');"
+              onmouseover="evt.target.setAttribute('stroke', '#424242');"
+              onmouseout="evt.target.setAttribute('stroke','#212121');"
             ></circle>
 
             <circle
@@ -64,12 +118,12 @@
               cx="150"
               cy="150"
               r="120"
-              stroke="#968089"
+              stroke="#2196f3"
               stroke-width="20"
               stroke-dasharray="0,1000"
               fill="none"
-              onmouseover="evt.target.setAttribute('stroke', 'rgba(150, 128, 137,0.7)');"
-              onmouseout="evt.target.setAttribute('stroke','#968089');"
+              onmouseover="evt.target.setAttribute('stroke', '#42a5f5');"
+              onmouseout="evt.target.setAttribute('stroke','#2196f3');"
             ></circle>
             <text
               x="50%"
@@ -85,41 +139,758 @@
           </svg>
         </div>
 
-        <div class="resultBtns">
-          <button class="viewanswer">View Answers</button>
-          <button class="viewchart">View Chart</button>
-          <button class="replay">
-            <i class="fa fa-repeat" style="font-size: 1em"></i> <br />Replay
+        <div
+          class="
+            resultBtns
+            text-center
+            block
+            md:grid md:grid-cols-3
+            space-y-3 space-x-0
+            md:space-y-0 md:space-x-3
+            p-5
+            rounded-b-2xl
+            bg-gray-900 bg-opacity-95
+            text-white
+          "
+        >
+          <button
+            class="
+              viewanswer
+              w-full
+              md:w-auto
+              p-2
+              m-1
+              rounded-2xl
+              text-black
+              bg-gray-100
+              hover:bg-gray-200
+              transition
+              0.1s
+            "
+          >
+            <i class="far fa-check-circle mx-3 block text-lg"></i>
+            <span class="md:block"> view answers </span>
+          </button>
+          <button
+            class="
+              viewchart
+              w-full
+              md:w-auto
+              p-2
+              m-1
+              rounded-2xl
+              text-black
+              bg-gray-100
+              hover:bg-gray-200
+              transition
+              0.1s
+            "
+          >
+            <i class="fas fa-chart-pie mx-3 block text-lg"></i>
+            <span class="md:block"> view chart </span>
+          </button>
+          <button
+            class="
+              replay
+              w-full
+              md:w-auto
+              p-2
+              m-1
+              rounded-2xl
+              text-black
+              bg-gray-100
+              hover:bg-gray-200
+              transition
+              0.1s
+            "
+          >
+            <i class="fas fa-redo mx-3 block text-lg"></i>
+            <span class="md:block"> replay quiz </span>
           </button>
         </div>
       </div>
 
-      <div class="resultPage2">
-        <h1>Your Result</h1>
-        <div class="chartBox">
+      <div class="resultPage2 hidden text-center">
+        <div
+          class="
+            resultBox
+            p-5
+            rounded-t-2xl
+            bg-gray-900 bg-opacity-95
+            text-white
+          "
+        >
+          <h1 class="text-gray-900 font-semibold">your results by category</h1>
+        </div>
+        <div class="chartBox w-3/5 m-auto">
           <canvas id="myChart" width="400" height="400"></canvas>
         </div>
-        <button class="backBtn">Back</button>
+        <button
+          class="
+            backBtn
+            px-5
+            py-2
+            mx-1
+            my-5
+            rounded-3xl
+            text-white
+            bg-gray-900
+            hover:bg-gray-700
+          "
+        >
+          back
+        </button>
       </div>
 
-      <div class="resultPage3">
-        <h1>Your Answers</h1>
-        <div class="allAnswerBox"></div>
-        <button class="backBtn">Back</button>
+      <div
+        class="
+          resultPage3
+          hidden
+          text-center
+          p-5
+          rounded-2xl
+          bg-gray-900 bg-opacity-95
+          text-white
+        "
+      >
+        <div class="resultBox p-5 rounded-t-2xl text-white">
+          <h1 class="font-semibold">your answers</h1>
+        </div>
+        <div
+          class="
+            allAnswerBox
+            h-96
+            overflow-y-auto
+            w-full
+            m-0
+            relative
+            block
+            md:grid md:grid-cols-2
+            space-y-2 space-x-0
+            md:space-y-0 md:space-x-2
+          "
+        ></div>
+        <button
+          class="
+            backBtn
+            px-5
+            py-2
+            mx-1
+            my-5
+            rounded-3xl
+            text-xl text-white
+            bg-gray-900
+            hover:bg-gray-700
+          "
+        >
+          back
+        </button>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/css/quiz.css';
+</style>
 
 <script>
 export default {
   name: 'Quiz',
+  props: ['poolURL'],
   data() {
-    return {};
+    return {
+      $progressValue: 0,
+      resultList: [],
+      quizData: [],
+    };
   },
-  mounted() {},
-  methods: {},
+  mounted() {
+    /** Get quiz data */
+    await getQuizData(poolURL);
+
+    /* Initialise and generate quiz questions */
+    var presentIndex = 0;
+    var clicked = 0;
+
+    var questions = generateQuestions();
+    renderQuiz(questions, presentIndex);
+    getProgressindicator(questions.length);
+
+    $('.answerOptions ').on('click', '.myoptions>input', function (e) {
+      clicked = $(this).val();
+
+      if (questions.length == presentIndex + 1) {
+        $('#submit').removeClass('hidden');
+        $('#next').addClass('hidden');
+      } else {
+        $('#next').removeClass('hidden');
+      }
+    });
+
+    /* 'Previous Question' button clicked */
+    $('#prev').on('click', function (e) {
+      e.preventDefault();
+      removePrevAnswer();
+
+      $('#submit').addClass('hidden');
+      $('#next').addClass('hidden');
+
+      if (presentIndex == 1) {
+        $(this).addClass('hidden');
+      }
+
+      presentIndex--;
+      renderQuiz(questions, presentIndex);
+      changeProgressValue('back');
+    });
+
+    /* 'Next Question' button clicked */
+    $('#next').on('click', function (e) {
+      e.preventDefault();
+      addClickedAnswerToResult(questions, presentIndex, clicked);
+
+      $(this).addClass('hidden');
+      $('#prev').removeClass('hidden');
+
+      presentIndex++;
+      renderQuiz(questions, presentIndex);
+      changeProgressValue('next');
+    });
+
+    /* 'Submit Question' button clicked */
+    $('#submit').on('click', function (e) {
+      addClickedAnswerToResult(questions, presentIndex, clicked);
+      $('.multipleChoiceQues').hide();
+      $('.resultArea').show();
+      renderResult(this.resultList);
+    });
+
+    /* 'View Chart' button clicked */
+    $('.resultArea').on('click', '.viewchart', function () {
+      $('.resultPage2').show();
+      $('.resultPage1').hide();
+      $('.resultPage3').hide();
+      renderChartResult();
+    });
+
+    /* 'Back Button' (to direct back to results area) clicked */
+    $('.resultArea').on('click', '.backBtn', function () {
+      $('.resultPage1').show();
+      $('.resultPage2').hide();
+      $('.resultPage3').hide();
+      renderResult(this.resultList);
+    });
+
+    /* 'View Answers' button clicked */
+    $('.resultArea').on('click', '.viewanswer', function () {
+      $('.resultPage3').show();
+      $('.resultPage2').hide();
+      $('.resultPage1').hide();
+      getAllAnswer(this.resultList);
+    });
+
+    /* 'Replay Quiz' button clicked */
+    $('.resultArea').on('click', '.replay', function () {
+      window.location.reload(true);
+    });
+  },
+  methods: {
+    async getQuizData(URL) {
+      /* Fetch request to search for quiz data of given URL path stored in local directory */
+      try {
+        fetch(
+        `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/generate_quiz`,
+        {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+            },
+            body: `{"file_path":"${URL}"`,
+        },
+      )
+      .then((response) => {
+        return response.json();
+      })
+      .then((response) => {
+        /* Quiz data of randomly selected 10 questions from pool*/
+        this.quizData = response.data;
+        console.log('Questions: ', this.quizData);
+      });
+      } catch(e) {
+        console.log(e);
+      }
+    },
+    /** Shuffle order of questions and its answer options in its arrays
+     * @param question - the question to shuffle
+     */
+    shuffleArray(question) {
+      var shuffled = question.sort(function () {
+        return 0.5 - Math.random();
+      });
+      return shuffled;
+    },
+
+    /** Custom function to shuffle individual element in an array
+     * @param a - the element to shuffle
+     */
+    shuffle(a) {
+      for (var i = a.length; i; i--) {
+        var j = Math.floor(Math.random() * i);
+        var _ref = [a[j], a[i - 1]];
+        a[i - 1] = _ref[0];
+        a[j] = _ref[1];
+      }
+    },
+
+    /** Returns shuffled questions
+     * @return The questions in shuffled order.
+     */
+    generateQuestions() {
+      var questions = shuffleArray(quizData);
+      /** Shuffle order of answer options **/
+      for (const i in questions) {
+        if (questions[i]) {
+          questions[i].options = shuffleArray(questions[i].options);
+        }
+      }
+      return questions;
+    },
+
+    /** Returns HTML of the list of answer options
+     * @param opts - content of answer options
+     * @param i - index of answer option
+     * @return The HTML of answer option
+     */
+    returnOptionList(opts, i) {
+      var optionHtml =
+        '<li class="myoptions p-1 m-5 transition 0.1s ' +
+        'h-12 w-full">' +
+        '<input value="' +
+        opts +
+        '" name="optRdBtn" type="radio" id="rd_' +
+        i +
+        '">' +
+        '<label class="optLabel px-5 h-auto w-96 text-left rounded-3xl border border-white" for="rd_' +
+        i +
+        '">' +
+        opts +
+        '</label>' +
+        '</div>' +
+        '</li>';
+
+      return optionHtml;
+    },
+
+    /**
+     * Render answer options for particular question
+     * @param - the list of answer options of the question
+     */
+    renderOptions(optionList) {
+      var ulContainer = $('<ul>').attr('id', 'optionList');
+      for (var i = 0, len = optionList.length; i < len; i++) {
+        var optionContainer = returnOptionList(optionList[i], i);
+        ulContainer.append(optionContainer);
+      }
+      $('.answerOptions').html('').append(ulContainer);
+    },
+
+    /** Renders the particular question
+     * @param question - the next question to render
+     */
+    renderQuestion(question) {
+      $('.question').html(
+        '<h1 class="p-2 my-5 bg-gray-900 text-white rounded-2xl">' +
+          question +
+          '</h1>',
+      );
+    },
+
+    /**
+     * Renders the whole quiz
+     * @param questions the list of questions to render
+     * @param index - the index of the current question to render
+     */
+    renderQuiz(questions, index) {
+      var currentQuest = questions[index];
+      renderQuestion(currentQuest.question);
+      renderOptions(currentQuest.options);
+      console.log('Question');
+      console.log(questions[index]);
+    },
+
+    /**
+     * Returns the correct answer of a questions
+     * @param questions - the question to check
+     * @param index - the index of the question
+     * @return the question's correct answer
+     */
+    getCorrectAnswer(questions, index) {
+      return questions[index].answer;
+    },
+
+    /**
+     * Pushes the correct answers into an array
+     * @param resultbyCat - the results by category
+     * @return - array of answers organised in categories for chart
+     */
+    correctAnswerArray(resultByCat) {
+      var arrayForChart = [];
+      for (var i = 0; i < resultByCat.length; i++) {
+        arrayForChart.push(resultByCat[i].correctanswer);
+      }
+
+      return arrayForChart;
+    },
+
+    /**
+     * Generates array for percentage calculation
+     * @param results - the results
+     * @param wrong - the incorrect answers
+     * @return The array for percentage chart
+     */
+    genResultArray(results, wrong) {
+      var resultByCat = resultByCategory(results);
+      var arrayForChart = correctAnswerArray(resultByCat);
+      arrayForChart.push(wrong);
+      return arrayForChart;
+    },
+
+    /**
+     * Percentage calculation using array of answers
+     * @param array - the array to map
+     * @param total - the total amount
+     * @return The calculated percent
+     */
+    percentCalculation(array, total) {
+      var percent = array.map(function (d, i) {
+        return ((100 * d) / total).toFixed(2);
+      });
+      return percent;
+    },
+
+    /* ... */
+
+    /**
+     * Counts the correct and incorrect answers
+     * @param results - array of results
+     * @return Total for correct and incorrect answers
+     */
+    countAnswers(results) {
+      var countCorrect = 0,
+        countWrong = 0;
+
+      for (var i = 0; i < results.length; i++) {
+        if (results[i].iscorrect == true) countCorrect++;
+        else countWrong++;
+      }
+      return [countCorrect, countWrong];
+    },
+
+    /**
+     * Categorises the results
+     * @param results - array of results
+     * @return Count for the question categories
+     */
+    resultByCategory(results) {
+      var categoryCount = [];
+      var ctArray = results.reduce(function (res, value) {
+        if (!res[value.category]) {
+          res[value.category] = {
+            category: value.category,
+            correctanswer: 0,
+          };
+          categoryCount.push(res[value.category]);
+        }
+        var val = value.iscorrect == true ? 1 : 0;
+        res[value.category].correctanswer += val;
+        return res;
+      }, {});
+
+      categoryCount.sort(function (a, b) {
+        return a.category - b.category;
+      });
+
+      return categoryCount;
+    },
+
+    /**
+     * Display of the total pie chart of final quiz results,
+     * including animation of circle
+     * @param _upto Progress up to
+     * @param _cir_progress_id The progress HTML element
+     * @param _correct the correct answers
+     * @param _incorrect the incorrect answers
+     */
+    totalPieChart(_upto, _cir_progress_id, _correct, _incorrect) {
+      $('#' + _cir_progress_id)
+        .find('._text_incor')
+        .html('Incorrect : ' + _incorrect);
+      $('#' + _cir_progress_id)
+        .find('._text_cor')
+        .html('Correct : ' + _correct);
+
+      var unchnagedPer = _upto;
+
+      _upto = _upto > 100 ? 100 : _upto < 0 ? 0 : _upto;
+
+      var _progress = 0;
+
+      var _cir_progress = $('#' + _cir_progress_id).find('._cir_P_y');
+      var _text_percentage = $('#' + _cir_progress_id).find('._cir_Per');
+
+      var _input_percentage;
+      var _percentage;
+
+      var _sleep = setInterval(_animateCircle, 25);
+
+      /**
+       * Transition animation of ring circle
+       */
+      function _animateCircle() {
+        //2*pi*r == 753.6 +xxx=764
+        _input_percentage = (_upto / 100) * 764;
+        _percentage = (_progress / 100) * 764;
+
+        _text_percentage.html(_progress + '%');
+
+        if (_percentage >= _input_percentage) {
+          _text_percentage.html(
+            '<tspan x="50%" dy="0em">' +
+              unchnagedPer +
+              '% </tspan><tspan  x="50%" dy="1.9em">Final Score</tspan>',
+          );
+          clearInterval(_sleep);
+        } else {
+          _progress++;
+
+          _cir_progress.attr('stroke-dasharray', _percentage + ',764');
+        }
+      }
+    },
+
+    /**
+     * Renders the brief chart of final quiz results
+     * @param correct - the correct answers
+     * @param total - the total answers
+     * @param incorrect - the incorrect answers
+     */
+    renderBriefChart(correct, total, incorrect) {
+      var percent = (100 * correct) / total;
+      if (Math.round(percent) !== percent) {
+        percent = percent.toFixed(2);
+      }
+
+      totalPieChart(percent, '_cir_progress', correct, incorrect);
+    },
+
+    /** Render chart of correct and incorrect answers
+     * sorted by category
+     * @param data - Dataset used to render chart
+     */
+    renderChart(data) {
+      var ctx = document.getElementById('myChart');
+      var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: [
+            'Verbal communication',
+            'Non-verbal communication',
+            'Written communication',
+            'Incorrect',
+          ],
+          datasets: [
+            {
+              data: data,
+              backgroundColor: ['#e6ded4', '#968089', '#e3c3d4', '#ab4e6b'],
+              borderColor: [
+                'rgba(239, 239, 81, 1)',
+                '#8e3407',
+                'rgba((239, 239, 81, 1)',
+                '#000000',
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          maintainAspectRatio: true,
+          pieceLabel: {
+            render: 'percentage',
+            fontColor: 'black',
+            precision: 2,
+          },
+        },
+      });
+    },
+
+    /**
+     * Gets all of the answers that are correct and incorrect
+     * and renders it into HTML
+     * @param results - the results from the quiz
+     *
+     */
+    getAllAnswer(results) {
+      var innerhtml = '';
+      for (var i = 0; i < results.length; i++) {
+        var _class = results[i].iscorrect ? 'item-correct' : 'item-incorrect';
+        var _classH = results[i].iscorrect ? 'h-correct' : 'h-incorrect';
+        var _headerTWCSS = ' p-2 ';
+
+        var _border = '';
+        if (_class == 'item-correct') {
+          _border =
+            '<div class="bg-gray-900 p-2 border-l-8 border-green-800"> ' +
+            '<span class="font-semibold mx-5"> question ' +
+            (i + 1) +
+            '</span>' +
+            '</div>';
+        } else {
+          _border =
+            '<div class="bg-gray-900 p-2 border-l-8 border-red-800"> ' +
+            '<span class="font-semibold mx-5"> question ' +
+            (i + 1) +
+            '</span>' +
+            '</div>';
+        }
+
+        var _cor_icon =
+          '<i class="far fa-check-circle p-2 mx-2 bg-green-800 text-2xl rounded-full text-white"/>';
+        var _incor_icon =
+          '<i class="far fa-times-circle p-2 mx-2 bg-red-800 text-2xl rounded-full text-white"/>';
+        var _icon_to_show = results[i].iscorrect ? _cor_icon : _incor_icon;
+
+        var _html =
+          '<div class="_resultboard ' +
+          _class +
+          _headerTWCSS +
+          '">' +
+          _border +
+          '<div class="_header p-2 font-light m-2">' +
+          results[i].question +
+          '</div>' +
+          '<div class="_yourans text-left rounded-3xl m-2 p-2 text-black bg-gray-100 ' +
+          _classH +
+          '">' +
+          _icon_to_show +
+          results[i].clicked +
+          '</div>';
+
+        var html = '';
+        if (!results[i].iscorrect)
+          html =
+            '<div class="_correct text-left rounded-3xl m-2 p-2 text-black bg-gray-100">' +
+            _cor_icon +
+            results[i].answer +
+            '</div>';
+        _html = _html + html + '</div>';
+        innerhtml += _html;
+      }
+
+      $('.allAnswerBox').html('').append(innerhtml);
+    },
+
+    /**
+     * Renders the brief result summary -
+     * count of correct and incorrect answers
+     * @param resultList - The list of results
+     */
+    renderResult(resultList) {
+      var results = resultList;
+      console.log(results);
+      var countCorrect = countAnswers(results)[0],
+        countWrong = countAnswers(results)[1];
+
+      renderBriefChart(countCorrect, this.resultList.length, countWrong);
+    },
+
+    /**
+     * Renders the results of the chart
+     */
+    renderChartResult() {
+      var results = this.resultList;
+      var countCorrect = countAnswers(results)[0],
+        countWrong = countAnswers(results)[1];
+      var dataForChart = genResultArray(this.resultList, countWrong);
+      renderChart(dataForChart);
+    },
+
+    /**
+     * Inserts  the progress bar into HTML
+     * @param length - the current length of progress bar
+     */
+    getProgressindicator(length) {
+      var progressbarhtml = ' ';
+      for (var i = 0; i < length; i++) {
+        progressbarhtml +=
+          '<div class="my-progress-indicator progress_' +
+          (i + 1) +
+          ' ' +
+          (i == 0 ? 'active' : '') +
+          '"></div>';
+      }
+      $(progressbarhtml).insertAfter('.my-progress-bar');
+    },
+
+    /**
+     * Updates the progress bar when user clicks for
+     * next question or previous question
+     * @param go - Whether the progress is going forwards or backwards.
+     */
+    changeProgressValue(go) {
+      if (go == 'next') {
+        this.$progressValue += 11.1;
+      } else {
+        this.$progressValue -= 11.1;
+      }
+
+      if (this.$progressValue < 100) {
+        if (this.$progressValue == 99) this.$progressValue = 100;
+        if (go == 'next') {
+          $('.my-progress')
+            .find('.my-progress-indicator.active')
+            .next('.my-progress-indicator')
+            .addClass('active');
+        } else {
+          $('.my-progress')
+            .find('.my-progress-indicator.active')
+            .last()
+            .removeClass('active');
+        }
+        $('progress').val(this.$progressValue);
+      }
+      $('.js-my-progress-completion').html($('progress').val() + '% complete');
+    },
+
+    /**
+     * Adds the selected answer to the results list
+     * @param questions - the list of questions
+     * @param presentIndex - the current index of the answer
+     * @param clicked - the value that is clicked.
+     */
+    addClickedAnswerToResult(questions, presentIndex, clicked) {
+      var correct = getCorrectAnswer(questions, presentIndex);
+      var result = {
+        index: presentIndex,
+        question: questions[presentIndex].question,
+        clicked: clicked,
+        iscorrect: clicked == correct ? true : false,
+        answer: correct,
+        category: questions[presentIndex].category,
+      };
+      this.resultList.push(result);
+
+      console.log('result');
+      console.log(result);
+    },
+
+    /**
+     * Removes the last saved answer when the user
+     * clicks 'Previous Question'
+     */
+    removePrevAnswer() {
+      this.resultList.pop();
+    },
+  },
 };
 </script>
