@@ -31,6 +31,7 @@ new Vue({
   /* Watch for current route and its children */
   watch: {
     $route: function(currentRoute) {
+      console.log('GO TO ', currentRoute);
       const route = this.$router.options.routes.find(route => route.path === currentRoute.path)
       if (route && Array.isArray(route.children)) {
         this.children = route.children

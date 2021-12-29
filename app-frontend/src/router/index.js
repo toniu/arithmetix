@@ -7,6 +7,7 @@ import Login from '@/components/general/Login';
 import Student from '@/components/student/Student';
 /* Student links */
 import Quizzes from '@/components/student/Quizzes';
+import Quiz from '@/components/student/Quiz';
 import Modules from '@/components/student/Modules';
 import Homework from '@/components/student/Homework';
 import ExamPapers from '@/components/student/ExamPapers';
@@ -37,6 +38,13 @@ const router = new Router({
       },
       children: [
         {path: '/student/quizzes', name: 'quizzes', component: Quizzes,
+          meta: {
+            requiresAuth: true,
+            isStudent: true,
+          },
+        },
+        {path: '/student/quizzes/quiz', name: 'quiz', component: Quiz,
+          props: true,
           meta: {
             requiresAuth: true,
             isStudent: true,

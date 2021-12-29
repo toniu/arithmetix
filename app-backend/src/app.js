@@ -194,14 +194,29 @@ router.get('/get_teachers', async (req, res) => {
 /**
  * Generate quiz questions with selected CSV file
  */
- router.post('/generate_quiz', async (req, res, next) => {
+ router.post('/generate_quiz', async (req, res) => {
   try {
+    console.log('Generating quiz with... ', req.body.file_path);
     var poolPath = req.body.file_path;
     /* Quiz data generated - randomly selected 10 questions from chosen pool */
     let quizData = await quizzes.chooseQuestions(poolPath);
     res.send({success: true, data: quizData});
   } catch (e) {
     res.send({success: false, error: 'Could not generate quiz'});
+    return false;
+  }
+});
+
+/**
+ * Gets quiz data and returns randomised list of questions
+ */
+ router.get('/get_quiz_data', async (req, res) => {
+  try {
+    let list = quizzes.getQuizData();
+    console.log('--- [QUIZ DATA] from CSV: ', list);
+    res.send({success: true, data: list});
+  } catch (e) {
+    res.send({success: false, error: 'Could not get quiz data'});
     return false;
   }
 });

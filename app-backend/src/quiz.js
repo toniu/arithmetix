@@ -79,7 +79,6 @@ class Quiz {
             
             var quizData = [];
             /* Shuffle pool of questions */
-            console.log('BP', pool);
             pool = shuffleArray(pool);
 
             /* Select 10 questions from shuffled pool */
@@ -95,7 +94,7 @@ class Quiz {
                 }
             }
 
-            console.log(quizData);
+            console.log('Generated Quiz Data from CSV file: ', pathURL, quizData);
             
             this.quizData = quizData; 
 
@@ -179,7 +178,6 @@ class Quiz {
                     poolURL: nextFile,
                   });
                 }
-
                 next();
               }
             });

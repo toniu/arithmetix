@@ -1,5 +1,36 @@
 <template>
-  <div class="quizArea m-auto relative text-center">
+  <div class="quizArea mx-auto py-14 relative text-center">
+    <section
+        class="block p-3 bg-gray-900 justify-center items-center"
+      >
+      <h1
+        class="
+          block
+          py-2
+          mx-5
+          text-4xl
+          font-extrabold
+          text-gray-100
+          md:text-center
+          leading-none
+        "
+      >
+      <i
+        class="
+          fas fa-stopwatch
+          p-5
+          m-2
+          flex
+          text-4xl text-white
+          opacity-90
+          justify-center
+          text-center
+          align-center
+        "
+      ></i>
+      <span class="block text-3xl font-semibold"> {{ quizTitle }} </span>
+      </h1>
+    </section>
     <div class="multipleChoiceQues m-auto p-2">
       <div class="my-progress">
         <progress
@@ -291,36 +322,44 @@
 </template>
 
 <style scoped>
-@import '@/css/quiz.css';
+@import '@/css/quiz';
 </style>
 
 <script>
 export default {
   name: 'Quiz',
-  props: ['poolURL'],
   data() {
     return {
-      $progressValue: 0,
+      quizTitle: '',
+      progressValue: 0,
       resultList: [],
       quizData: [],
+      presentIndex: 0,
+      clicked: 0,
+      questions: [],
     };
   },
+  
   mounted() {
-    /** Get quiz data */
-    await getQuizData(poolURL);
+    /* Initialise and get quiz data */
+    let self = this;
 
-    /* Initialise and generate quiz questions */
-    var presentIndex = 0;
-    var clicked = 0;
+    self.progressValue = 0;
+    self.presentIndex = 0;
+    self.questions = [];
+    self.clicked = 0;
 
-    var questions = generateQuestions();
-    renderQuiz(questions, presentIndex);
-    getProgressindicator(questions.length);
+    this.getQuizData();
 
+    console.log('6');
+
+    /* Clicking one of the answer options */
     $('.answerOptions ').on('click', '.myoptions>input', function (e) {
-      clicked = $(this).val();
+      console.log('hello');
+      self.clicked = $(this).val();
 
-      if (questions.length == presentIndex + 1) {
+      /* Show submit if it is the last question */
+      if (self.questions.length == self.presentIndex + 1) {
         $('#submit').removeClass('hidden');
         $('#next').addClass('hidden');
       } else {
@@ -331,39 +370,39 @@ export default {
     /* 'Previous Question' button clicked */
     $('#prev').on('click', function (e) {
       e.preventDefault();
-      removePrevAnswer();
+      self.removePrevAnswer();
 
       $('#submit').addClass('hidden');
       $('#next').addClass('hidden');
 
-      if (presentIndex == 1) {
+      if (self.presentIndex == 1) {
         $(this).addClass('hidden');
       }
 
-      presentIndex--;
-      renderQuiz(questions, presentIndex);
-      changeProgressValue('back');
+      self.presentIndex--;
+      self.renderQuiz(self.questions, self.presentIndex);
+      self.changeProgressValue('back');
     });
 
     /* 'Next Question' button clicked */
     $('#next').on('click', function (e) {
       e.preventDefault();
-      addClickedAnswerToResult(questions, presentIndex, clicked);
+      self.addClickedAnswerToResult(self.questions, self.presentIndex, self.clicked);
 
       $(this).addClass('hidden');
       $('#prev').removeClass('hidden');
 
-      presentIndex++;
-      renderQuiz(questions, presentIndex);
-      changeProgressValue('next');
+      self.presentIndex++;
+      self.renderQuiz(self.questions, self.presentIndex);
+      self.changeProgressValue('next');
     });
 
     /* 'Submit Question' button clicked */
     $('#submit').on('click', function (e) {
-      addClickedAnswerToResult(questions, presentIndex, clicked);
+      self.addClickedAnswerToResult(self.questions, self.presentIndex, self.clicked);
       $('.multipleChoiceQues').hide();
       $('.resultArea').show();
-      renderResult(this.resultList);
+      self.renderResult(self.resultList);
     });
 
     /* 'View Chart' button clicked */
@@ -371,7 +410,7 @@ export default {
       $('.resultPage2').show();
       $('.resultPage1').hide();
       $('.resultPage3').hide();
-      renderChartResult();
+      self.renderChartResult();
     });
 
     /* 'Back Button' (to direct back to results area) clicked */
@@ -379,7 +418,7 @@ export default {
       $('.resultPage1').show();
       $('.resultPage2').hide();
       $('.resultPage3').hide();
-      renderResult(this.resultList);
+      self.renderResult(self.resultList);
     });
 
     /* 'View Answers' button clicked */
@@ -387,7 +426,7 @@ export default {
       $('.resultPage3').show();
       $('.resultPage2').hide();
       $('.resultPage1').hide();
-      getAllAnswer(this.resultList);
+      self.getAllAnswer(self.resultList);
     });
 
     /* 'Replay Quiz' button clicked */
@@ -396,64 +435,75 @@ export default {
     });
   },
   methods: {
-    async getQuizData(URL) {
-      /* Fetch request to search for quiz data of given URL path stored in local directory */
+    /**
+     * Gets all of the questions and its data from generated quiz
+     */
+    async getQuizData() {
+      /* Fetch request to get generated quiz questions */
       try {
         fetch(
-        `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/generate_quiz`,
+        `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/get_quiz_data`,
         {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-            },
-            body: `{"file_path":"${URL}"`,
+          method: 'GET',
+          headers: {},
         },
       )
       .then((response) => {
         return response.json();
       })
       .then((response) => {
-        /* Quiz data of randomly selected 10 questions from pool*/
-        this.quizData = response.data;
-        console.log('Questions: ', this.quizData);
+        /* List of revision notes finally set */
+        let quizFound = response.data;
+        this.quizData = quizFound;
+
+        console.log('Generated Quiz Data (client side): ', this.quizData);
+
+        this.questions = this.generateQuestions();
+        this.renderQuiz(this.questions, this.presentIndex);
+        this.getProgressindicator(this.questions.length);
+
       });
       } catch(e) {
         console.log(e);
       }
     },
+
     /** Shuffle order of questions and its answer options in its arrays
      * @param question - the question to shuffle
      */
-    shuffleArray(question) {
-      var shuffled = question.sort(function () {
-        return 0.5 - Math.random();
-      });
-      return shuffled;
-    },
+    shuffleArray(array) {
+      let currentIndex = array.length,  randomIndex;
 
-    /** Custom function to shuffle individual element in an array
-     * @param a - the element to shuffle
-     */
-    shuffle(a) {
-      for (var i = a.length; i; i--) {
-        var j = Math.floor(Math.random() * i);
-        var _ref = [a[j], a[i - 1]];
-        a[i - 1] = _ref[0];
-        a[j] = _ref[1];
+      /* While there remain elements to shuffle... */
+      while (currentIndex != 0) {
+
+        /* Pick a remaining element */
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        /* ...And swap it with the current element */
+        [array[currentIndex], array[randomIndex]] = [
+          array[randomIndex], array[currentIndex]];
       }
+      console.log('3', array);
+      return array;
     },
 
     /** Returns shuffled questions
      * @return The questions in shuffled order.
      */
     generateQuestions() {
-      var questions = shuffleArray(quizData);
+      console.log('1', this.quizData);
+      var questions = this.shuffleArray(this.quizData);
+      console.log('2', questions);
       /** Shuffle order of answer options **/
       for (const i in questions) {
         if (questions[i]) {
-          questions[i].options = shuffleArray(questions[i].options);
+          console.log('4', questions[i]);
+          questions[i].options = this.shuffleArray(questions[i].options);
         }
       }
+      console.log('5');
       return questions;
     },
 
@@ -489,7 +539,7 @@ export default {
     renderOptions(optionList) {
       var ulContainer = $('<ul>').attr('id', 'optionList');
       for (var i = 0, len = optionList.length; i < len; i++) {
-        var optionContainer = returnOptionList(optionList[i], i);
+        var optionContainer = this.returnOptionList(optionList[i], i);
         ulContainer.append(optionContainer);
       }
       $('.answerOptions').html('').append(ulContainer);
@@ -498,11 +548,11 @@ export default {
     /** Renders the particular question
      * @param question - the next question to render
      */
-    renderQuestion(question) {
-      $('.question').html(
-        '<h1 class="p-2 my-5 bg-gray-900 text-white rounded-2xl">' +
-          question +
-          '</h1>',
+    renderQuestion(question, index) {
+      $(".question").html('<h1 class="p-2 mt-5 bg-gray-900 font-bold text-white text-lg rounded-t-2xl">' +
+        'Question ' + (index + 1) + ' </h1>' +
+        '<h2 class="p-3 bg-gray-100 text-black rounded-b-2xl">' +
+        question + '</h2>'
       );
     },
 
@@ -513,8 +563,8 @@ export default {
      */
     renderQuiz(questions, index) {
       var currentQuest = questions[index];
-      renderQuestion(currentQuest.question);
-      renderOptions(currentQuest.options);
+      this.renderQuestion(currentQuest.question, index);
+      this.renderOptions(currentQuest.options);
       console.log('Question');
       console.log(questions[index]);
     },
@@ -550,8 +600,8 @@ export default {
      * @return The array for percentage chart
      */
     genResultArray(results, wrong) {
-      var resultByCat = resultByCategory(results);
-      var arrayForChart = correctAnswerArray(resultByCat);
+      var resultByCat = this.resultByCategory(results);
+      var arrayForChart = this.correctAnswerArray(resultByCat);
       arrayForChart.push(wrong);
       return arrayForChart;
     },
@@ -681,7 +731,7 @@ export default {
         percent = percent.toFixed(2);
       }
 
-      totalPieChart(percent, '_cir_progress', correct, incorrect);
+      this.totalPieChart(percent, '_cir_progress', correct, incorrect);
     },
 
     /** Render chart of correct and incorrect answers
@@ -798,10 +848,10 @@ export default {
     renderResult(resultList) {
       var results = resultList;
       console.log(results);
-      var countCorrect = countAnswers(results)[0],
-        countWrong = countAnswers(results)[1];
+      var countCorrect = this.countAnswers(results)[0],
+        countWrong = this.countAnswers(results)[1];
 
-      renderBriefChart(countCorrect, this.resultList.length, countWrong);
+      this.renderBriefChart(countCorrect, this.resultList.length, countWrong);
     },
 
     /**
@@ -809,10 +859,10 @@ export default {
      */
     renderChartResult() {
       var results = this.resultList;
-      var countCorrect = countAnswers(results)[0],
-        countWrong = countAnswers(results)[1];
-      var dataForChart = genResultArray(this.resultList, countWrong);
-      renderChart(dataForChart);
+      var countCorrect = this.countAnswers(results)[0],
+        countWrong = this.countAnswers(results)[1];
+      var dataForChart = this.genResultArray(this.resultList, countWrong);
+      this.renderChart(dataForChart);
     },
 
     /**
@@ -839,13 +889,14 @@ export default {
      */
     changeProgressValue(go) {
       if (go == 'next') {
-        this.$progressValue += 11.1;
+        this.progressValue += 11.1;
       } else {
-        this.$progressValue -= 11.1;
+        this.progressValue -= 11.1;
       }
+      console.log('PV', this.progressValue);
 
-      if (this.$progressValue < 100) {
-        if (this.$progressValue == 99) this.$progressValue = 100;
+      if (this.progressValue < 100) {
+        if (this.progressValue == 99) this.progressValue = 100;
         if (go == 'next') {
           $('.my-progress')
             .find('.my-progress-indicator.active')
@@ -857,7 +908,7 @@ export default {
             .last()
             .removeClass('active');
         }
-        $('progress').val(this.$progressValue);
+        $('progress').val(this.progressValue);
       }
       $('.js-my-progress-completion').html($('progress').val() + '% complete');
     },
@@ -869,7 +920,7 @@ export default {
      * @param clicked - the value that is clicked.
      */
     addClickedAnswerToResult(questions, presentIndex, clicked) {
-      var correct = getCorrectAnswer(questions, presentIndex);
+      var correct = this.getCorrectAnswer(questions, presentIndex);
       var result = {
         index: presentIndex,
         question: questions[presentIndex].question,
