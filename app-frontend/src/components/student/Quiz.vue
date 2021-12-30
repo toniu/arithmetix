@@ -337,6 +337,11 @@ export default {
       presentIndex: 0,
       clicked: 0,
       questions: [],
+      chartLabels: {
+        names: [],
+        colors: []
+      },
+      labelsSet: false, 
     };
   },
   
@@ -348,6 +353,8 @@ export default {
     self.presentIndex = 0;
     self.questions = [];
     self.clicked = 0;
+    self.chartLabels = {};
+    self.labelsSet = false;
 
     this.getQuizData();
 
@@ -594,6 +601,43 @@ export default {
     },
 
     /**
+     * Randomises colour for the labels of category chart
+     * @return The colour
+     */
+    randomiseLabelColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    },
+
+    /** Set labels for chart broken down in categories  
+     * @param resultbyCat results by category
+     * @return The label names and colours of the categories
+    */
+    setLabels(resultByCat) {
+
+      var labelsForChart = [];
+      var colorsForChart = [];
+
+      /* Push all found categories from questions */
+      for (var i = 0; i < resultByCat.length; i++) {
+        labelsForChart.push(resultByCat[i].category);
+        var newLabelColor = this.randomiseLabelColor();
+        colorsForChart.push(newLabelColor);
+      }
+
+      /* Push Incorrect label */
+      labelsForChart.push('Incorrect');
+      colorsForChart.push('#ab0000');
+
+      var labels = {names: labelsForChart, colors: colorsForChart};
+      return labels;
+    },
+
+    /**
      * Generates array for percentage calculation
      * @param results - the results
      * @param wrong - the incorrect answers
@@ -602,7 +646,15 @@ export default {
     genResultArray(results, wrong) {
       var resultByCat = this.resultByCategory(results);
       var arrayForChart = this.correctAnswerArray(resultByCat);
-      arrayForChart.push(wrong);
+      
+      /* Only set the label names and colours once */
+      if (!this.labelsSet) {
+        var labels = this.setLabels(resultByCat);
+        /* Labels for category chart */
+        this.chartLabels = labels;
+        this.labelsSet = true;
+      }
+
       return arrayForChart;
     },
 
@@ -661,6 +713,7 @@ export default {
         return a.category - b.category;
       });
 
+      console.log('Category count: ', categoryCount);
       return categoryCount;
     },
 
@@ -743,22 +796,11 @@ export default {
       var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: [
-            'Verbal communication',
-            'Non-verbal communication',
-            'Written communication',
-            'Incorrect',
-          ],
+          labels: this.chartLabels.names,
           datasets: [
             {
               data: data,
-              backgroundColor: ['#e6ded4', '#968089', '#e3c3d4', '#ab4e6b'],
-              borderColor: [
-                'rgba(239, 239, 81, 1)',
-                '#8e3407',
-                'rgba((239, 239, 81, 1)',
-                '#000000',
-              ],
+              backgroundColor: this.chartLabels.colors,
               borderWidth: 1,
             },
           ],

@@ -1,8 +1,8 @@
-﻿question,imageURL,options,method,answer,category
+question,imageURL,options,method,answer,category
 Evaluate √(49),,7|8|6|3,,7,Algebra
 Evaluate √(121),,11|12|13|9,,11,Algebra
-Evaluate √(1/9),,1/3|1/6|1/4|1/2,, 1/3,Algebra
-Evaluate √(4/25),,4/5|3/5|2/5|3/4,, 2/5,Algebra
+Evaluate √(1/9),,1/3|1/6|1/4|1/2,,1/3,Algebra
+Evaluate √(4/25),,4/5|3/5|2/5|3/4,,2/5,Algebra
 Evaluate √(0.01),,0.1|0.2|0.01|0.125,,0.1,Algebra
 Evaluate √(0.09),,0.3|0.4|0.25|0.33,,0.3,Algebra
 Evaluate <sup>3</sup>√(8),,2|3|1.5|3.25,,2,Algebra
@@ -15,3 +15,27 @@ Simplify √(24),,2√(3)|3√(6)|2√(6)|2√(2),√(4) × √(6),2√(6),Algeb
 Simplify √(128),,8√(2)|8√(3)|8√(5)|4√(2),√(64) × √(2),8√(2),Algebra
 Simplify √(45),,3√(2)|3√(5)|5√(2)|2√(3),√(9) × √(5),3√(5),Algebra
 Simplify √(40),,2√(10)|2√(5)|5√(2)|2√(2),√(4) × √(10),2√(10),Algebra
+"Find the gradient of the line segment joining the pair of points: (3,1) and (5,5)",,2|3|4|5,,2,Coordinate Geometry
+"Find the gradient of the line segment joining the pair of points: (4, 7) and (10, 9)",,1/3|2/3|1/4|1/5,,1/3,Coordinate Geometry
+"Find the gradient of the line segment joining the pair of points: (6,1) and (2,5)",,-1|1|2|1/2,,-1,Coordinate Geometry
+"Find the gradient of the line segment joining the pair of points: (-2,2) and (2,8)",,3/2|1/4|1/3|1/2,,3/2,Coordinate Geometry
+"Find the gradient of the line segment joining the pair of points: (1,3) and (7, -1)",,-2/3|1/3|-1/2|-2,,-2/3,Coordinate Geometry
+"Find the gradient of the line segment joining the pair of points: (4, 5) and (-5, -7)",,4/3|2/3|3/2|1/2,,4/3,Coordinate Geometry
+"Find the gradient of the line segment joining the pair of points: (-2, 0) and (0, -8)",,-4|-3|-2|-1,,-4,Coordinate Geometry
+"Find the gradient of the line segment joining the pair of points: (8, 6) and (-7, -2)",,8/15|3/5|2/3|7/8,,8/15,Coordinate Geometry
+Write down the gradient and y-intercept of the line: y = 4x - 1,,Grad = 4; y-int = -1|Grad = 3; y-int = -2|Grad = 3; y-int = 0|Grad = 4; y-int = 1,,Grad = 4; y-int = -1,Coordinate Geometry
+Write down the gradient and y-intercept of the line: y = (1/3)x + 3,,Grad = 1/3; y-int = 3|Grad = -1/3; y-int = 3|Grad = 1/3; y-int = -3|Grad = 1/2; y-int = 2,,Grad = 1/3; y-int = 3,Coordinate Geometry
+Write down the gradient and y-intercept of the line: y = 6 - x,,Grad = -1; y-int = 6|Grad = -1; y-int = 5|Grad = 1; y-int = -6|Grad = -1; y-int = -6,,Grad = -1; y-int = 6,Coordinate Geometry
+Write down the gradient and y-intercept of the line: y = -2x - (3/5),,Grad = -2; y-int = -3/5|Grad = -3; y-int = -2/5|Grad = -1/2; y-int = -2/5|Grad = -2; y-int = -3/4,,Grad = -2; y-int = -3/5,Coordinate Geometry
+Write down the coordinates of any points where the following graphs intersect: y = x<sup>2</sup> and y = x<sup>3</sup>,,"(1,1)|(1,2)|(2,1)|(0,1)",,"(1,1)",Graphs
+Write down the coordinates of any points where the following graphs intersect: y = x<sup>2</sup> and y = x<sup>4</sup>,,"(-1,1) and (1,1)|(1,1) and (1,1)|(-1,-1) and (1,1)|(-1,0) and (0,1)",,"(-1,1) and (1,1)",Graphs
+Write down the coordinates of any points where the following graphs intersect: y = 1/x and y = 1/x<sup>2</sup>,,"(1,1)|(1,2)|(2,1)|(-1,1)",,"(1,1)",Graphs
+Write down the coordinates of any points where the following graphs intersect: y = x and y = √(x),,"(1,1)|(-1,-1)|(-1,1)|(1,-1)",,"(1,1)",Graphs
+Write down the coordinates of any points where the following graphs intersect: y = x<sup>2</sup> and y = 3x<sup>2</sup>,,"None|(1,1)|(0,1)|(1,0)",,None,Graphs
+Write down the coordinates of any points where the following graphs intersect: y = 1/x and y = 2/x,,"None|(0,-1)|(0,1)|(1,0)",,None,Graphs
+Write down the coordinates of any points where the following graph intersects with the coordinate axes: y = (x + 1)(x − 1)(x − 3),,"(-1, 0), (0, 3), (1, 0) and (3, 0)|(-1, 1), (0, 3), (1, 0) and (3, 0)|(-1, 0), (0, 3), (1, 2) and (3, 3)|(1, 0), (0, 3), (-1, 0) and (-3, 0)",,"(-1, 0), (0, 3), (1, 0) and (3, 0)",Graphs
+Write down the coordinates of any points where the following graph intersects with the coordinate axes: y = 2x(x − 1)(x − 5),,"(0,0), (1,0) and (5,0)|(0,0), (1,1) and (5,0)|(0,0), (-1,0) and (5,0)|(0,1), (-1,0) and (-5,0)",,"(0,0), (1,0) and (5,0)",Graphs
+Write down the coordinates of any points where the following graph intersects with the coordinate axes: y = −(x + 2)(x + 1)(x − 2),,"(-2, 0), (-1, 0), (0, 4) and (2, 0)|(2, 0), (-1, 0), (0, 4) and (2, 0)|(2, 0), (1, 0), (0, 4) and (2, 0)|(3, 0), (-1, 0), (0, 3) and (1, 0)",,"(-2, 0), (-1, 0), (0, 4) and (2, 0)",Graphs
+Write down the coordinates of any points where the following graph intersects with the coordinate axes: y = x<sup>2</sup>(x − 4) ,,"(0,0) and (4,0)|(0,0) and (-2,0)|(0,0) and (2,0)|(0,0) and (3,0)",,"(0,0) and (4,0)",Graphs
+Write down the coordinates of any points where the following graph intersects with the coordinate axes: y = 3x(2 + x)(1 − x),,"(-2, 0), (0,0) and (1,0)|(2, 0), (0,0) and (3,0)|(-2, 2), (0,0) and (1,0)|(2, 0), (0,0) and (1,0)",,"(-2, 0), (0,0) and (1,0)",Graphs
+Write down the coordinates of any points where the following graph intersects with the coordinate axes: y = (x + 2)(x − 1)<sup>2</sup>,,"(-2, 0), (0, 2) and (1, 0)|(2, 0), (0, 2) and (1, 0)|(-2, 2), (0, 2) and (2, 0)|(2, 2), (0, 3) and (-1, 0)",,"(-2, 0), (0, 2) and (1, 0)",Graphs

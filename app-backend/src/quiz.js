@@ -17,6 +17,7 @@ class Quiz {
 
     this.pools = [];
     this.quizData = [];
+    this.CSVFile = '';
     Quiz.instance = this;
     return Quiz.instance;
   }
@@ -48,12 +49,21 @@ class Quiz {
     return this.quizData;
   }
 
+  /**
+   * Returns the current CSV file with pool of questions
+   * @returns CSV File
+   */
+   getCSVFile() {
+    return this.CSVFile;
+  }
+
   async chooseQuestions(pathURL) {
     try {
         /* Convert from CSV format to objects */
         var pool = [];
 
         const csvFilePath = pathURL;
+        this.CSVFile = pathURL;
 
         /* Convert CSV to JSON array */
         csv()
@@ -102,6 +112,7 @@ class Quiz {
         })
     } catch(e) {
         console.log('Unable to generate quiz questions.')
+        this.CSVFile = '';
         return;
     }
   }

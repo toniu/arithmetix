@@ -247,6 +247,25 @@ router.post('/open_pdf', async (req, res, next) => {
   }
 });
 
+router.post('/get_pdf', async (req, res, next) => {
+  try {
+    var filePath = req.body.file_path
+    console.log('Opening PDF... ', filePath);
+
+    var sp = filePath.split('/');
+    var fileName = sp[sp.length - 1].toLowerCase();
+
+    res.setHeader('Content-disposition', 'attachment; filename=' + fileName);
+    res.setHeader('Content-type', 'application/pdf');
+
+    var filestream = fs.createReadStream(filePath);
+    filestream.pipe(res);
+  } catch (e) {
+    console.log(e);
+    res.send({data: null});
+  }
+});
+
 
 /* -- End of router requests -- */
 app.use(router);

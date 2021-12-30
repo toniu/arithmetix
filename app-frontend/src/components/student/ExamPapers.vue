@@ -177,33 +177,7 @@ export default {
         console.log(e);
       }
     },
-    /**
-     * Downloads the file clicked
-     * @param url - The local directory file URL to download from
-     */
-    downloadFile(url) {
-      console.log('URL attempt to click: ', url);
-      /* Create anchor tag to direct page once clicked */
-      var fileURL = window.URL.createObjectURL(new Blob([url], {type: "application/pdf"}));
-      var fileLink = document.createElement('a');
-
-      /* String manipulation to get file title in a specific format 
-      e.g. folder1/folder2/exam-paper-2018 --> "exam-paper-2018" */
-      let fileNameSplit = url.split('/');
-      let fileName = fileNameSplit[fileNameSplit.length - 1].toLowerCase();
-
-      /* Create reference for download URL */
-      fileLink.href = fileURL;
-      if (fileName.includes('.pdf')) {
-        fileLink.setAttribute('target', '_blank');
-      } else {
-      }
-
-      document.body.appendChild(fileLink);
-
-      /* Activates the download */
-      fileLink.click();
-    },
+    
     async openPDF(fileURL) {
       try {
         await this.$axios

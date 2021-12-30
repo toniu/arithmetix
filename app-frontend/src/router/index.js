@@ -19,6 +19,7 @@ Vue.use(Router);
 /* Router has history mode */
 const router = new Router({
   mode: 'history',
+  base: __dirname,
   routes: [
     {
       path: '/',

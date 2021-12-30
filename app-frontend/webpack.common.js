@@ -61,9 +61,7 @@ module.exports = {
   ],
   devServer: {
     open: true,
-    historyApiFallback:{
-      index:'dist/index.html'
-    },
+    historyApiFallback: true,
     devMiddleware: {
       writeToDisk: true,
     },
