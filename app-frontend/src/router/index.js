@@ -11,7 +11,12 @@ import Quiz from '@/components/student/Quiz';
 import Modules from '@/components/student/Modules';
 import Homework from '@/components/student/Homework';
 import ExamPapers from '@/components/student/ExamPapers';
+/* Teacher links */
 import Teacher from '@/components/teacher/Teacher';
+import Assignments from '@/components/teacher/Assignments';
+import Classes from '@/components/teacher/Classes';
+import Feedback from '@/components/teacher/Feedback';
+import Resources from '@/components/teacher/Resources';
 
 /* Vue uses router */
 Vue.use(Router);
@@ -29,6 +34,7 @@ const router = new Router({
         guest: true,
       },
     },
+    /* Student routes */
     {
       path: '/student',
       name: 'student',
@@ -74,6 +80,7 @@ const router = new Router({
         },
       ],
     },
+    /* Teacher routes */
     {
       path: '/teacher',
       name: 'teacher',
@@ -82,6 +89,32 @@ const router = new Router({
         requiresAuth: true,
         isTeacher: true,
       },
+      children: [
+        {path: '/teacher/classes', name: 'classes', component: Classes,
+          meta: {
+            requiresAuth: true,
+            isTeacher: true,
+          },
+        },
+        {path: '/teacher/feedback', name: 'feedback', component: Feedback,
+          meta: {
+            requiresAuth: true,
+            isTeacher: true,
+          },
+        },
+        {path: '/teacher/resources', name: 'resources', component: Resources,
+          meta: {
+            requiresAuth: true,
+            isTeacher: true,
+          },
+        },
+        {path: '/teacher/assignments', name: 'assignments', component: Assignments,
+          meta: {
+            requiresAuth: true,
+            isTeacher: true,
+          },
+        },
+      ],
     },
     {
       path: '/*',
@@ -111,14 +144,14 @@ router.beforeEach((to, from, next) => {
       /* Requested URL requires the user to be a student. */
       if (to.matched.some((record) => record.meta.isStudent)) {
         /* Check if the user is a student */
-        if (localStorage.getItem('student') === 'true') {
+        if (localStorage.getItem('role') === 'student') {
           next();
         }
       }
       /* Requested URL requires the user to be teacher/admin. */
       if (to.matched.some((record) => record.meta.isTeacher)) {
         /* Check if the user is a teacher */
-        if (localStorage.getItem('teacher') === 'true') {
+        if (localStorage.getItem('role') === 'teacher') {
           next();
         }
       }

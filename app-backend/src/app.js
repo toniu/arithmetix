@@ -94,6 +94,9 @@ router.post(
         const firstName = await db.getFirstName(email);
         const lastName = await db.getLastName(email);
 
+        /* Get role of user */
+        const role = await db.getRole(email);
+
         /* Create new JSON web token */
         const token = jwt.sign({id: email}, config.secret, {expiresIn: 86400});
 
@@ -104,8 +107,7 @@ router.post(
           user: email,
           firstName: firstName,
           lastName: lastName,
-          student: !isTeacher,
-          teacher: isTeacher,
+          role: role,
         };
 
         res.status(200).send(entries);

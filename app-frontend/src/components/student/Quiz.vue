@@ -356,7 +356,7 @@ export default {
     self.chartLabels = {};
     self.labelsSet = false;
 
-    this.getQuizData();
+    self.regenerateQuizData();
 
     /* Clicking one of the answer options */
     $('.answerOptions ').on('click', '.myoptions>input', function (e) {
@@ -435,7 +435,6 @@ export default {
 
     /* 'Replay Quiz' button clicked */
     $('.resultArea').on('click', '.replay', function () {
-      self.regenerateQuizData();
       window.location.reload(true);
     });
   },
@@ -459,6 +458,8 @@ export default {
                 /* Quiz data of randomly selected 10 questions from pool */
                 var qData = response.data;
                 console.log('Questions re-generated client-side: ', qData);
+                
+                this.getQuizData();
               }
           })
           .catch((error) => console.log(error));

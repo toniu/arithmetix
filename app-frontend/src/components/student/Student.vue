@@ -52,8 +52,7 @@ export default {
     email: localStorage.getItem('user'),
     firstName: localStorage.getItem('firstName'),
     lastName: localStorage.getItem('lastName'),
-    isStudent: localStorage.getItem('student'),
-    isTeacher: localStorage.getItem('teacher'),
+    role: localStorage.getItem('role'),
     /* Notifications -- will be coded later */
   }),
   mounted() {},

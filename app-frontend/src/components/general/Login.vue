@@ -238,12 +238,11 @@ export default {
             localStorage.setItem('firstName', r.firstName);
             localStorage.setItem('lastName', r.lastName);
             localStorage.setItem('jwt', r.token);
-            localStorage.setItem('student', r.student);
-            localStorage.setItem('teacher', r.teacher);
-
+            localStorage.setItem('role', r.role);
+            
             /* If user has a webtoken, send them to the correct page. */
             if (localStorage.getItem('jwt') != null) {
-              this.$router.push(['student', 'teacher'].find((e) => r[e]));
+              this.$router.push('/' + r.role);
             }
 
             console.log(r);

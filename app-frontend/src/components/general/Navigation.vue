@@ -123,7 +123,7 @@
     </header>
   </div>
   <!-- Sidebar -->
-  <Sidebar :isOpen="sidebarOpen"/>
+  <Sidebar :isOpen="sidebarOpen" :role="userRole"/>
   <!-- Notifications Bar -->
   <Notifications :isOpen="notifOpen"/>
   <!-- Profile Bar -->
@@ -146,6 +146,7 @@ export default {
     Profile,
   },
   data: () => ({
+    userRole: localStorage.getItem('role'),
     sidebarOpen: false,
     profileOpen: false,
     notifOpen: false,
@@ -160,16 +161,25 @@ export default {
     this.lastName = localStorage.getItem('lastName')
   },
   methods: {
+    /**
+     * Toggles sidebar to be open
+     */
     toggleSidebar() {
       this.sidebarOpen = !(this.sidebarOpen);
       this.profileOpen = false;
       this.notifOpen = false;
     },
+    /**
+     * Toggles notifications to be open
+     */
     toggleNotifications() {
       this.notifOpen = !(this.notifOpen);
       this.profileOpen = false;
       this.sidebarOpen = false;
     },
+    /**
+     * Toggles profile to be open
+     */
     toggleProfile() {
       this.profileOpen = !(this.profileOpen);
       this.sidebarOpen = false;

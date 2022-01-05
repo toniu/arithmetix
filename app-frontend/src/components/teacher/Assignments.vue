@@ -4,7 +4,7 @@
 
 <script>
 export default {
-    name: 'Teacher',
+    name: 'Assignments',
     components: {},
     data: () => ({
 
