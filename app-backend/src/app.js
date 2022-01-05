@@ -196,10 +196,20 @@ router.get('/get_teachers', async (req, res) => {
  */
  router.post('/generate_quiz', async (req, res) => {
   try {
-    console.log('Generating quiz with... ', req.body.file_path);
-    var poolPath = req.body.file_path;
-    /* Quiz data generated - randomly selected 10 questions from chosen pool */
-    let quizData = await quizzes.chooseQuestions(poolPath);
+    var replay = req.body.replay;
+    let quizData = [];
+    if (replay) {
+      var csvFile = quizzes.getCSVFile();
+      console.log('Re-generating quiz with... ', csvFile);
+      var poolPath = req.body.file_path;
+      /* Quiz data generated - randomly selected 10 questions from chosen pool */
+      quizData = await quizzes.chooseQuestions(poolPath);
+    } else {
+      console.log('Generating quiz with... ', req.body.file_path);
+      var poolPath = req.body.file_path;
+      /* Quiz data generated - randomly selected 10 questions from chosen pool */
+      quizData = await quizzes.chooseQuestions(poolPath);
+    }
     res.send({success: true, data: quizData});
   } catch (e) {
     res.send({success: false, error: 'Could not generate quiz'});
@@ -233,33 +243,23 @@ router.post('/open_pdf', async (req, res, next) => {
     var fileName = sp[sp.length - 1].toLowerCase();
     console.log('Opening PDF... ', filePath, ' with file name... ', fileName);
 
-    /* Set header of file and start reading file synchronously */
+    fs.readFile(filePath, function (err, data){
+        res.contentType("application/pdf");
+        res.send(data);
+        console.log(data);
+    });
+    /*
+     Set header of file and start reading file synchronously 
     var file = fs.createReadStream(filePath);
     var stat = fs.statSync(filePath);
+
     res.setHeader('Content-Length', stat.size);
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Accept','application/pdf');
     res.setHeader( "Content-Disposition", "filename=\"" + fileName + "\"" );
     file.pipe(res);
-  } catch (e) {
-    console.log(e);
-    res.send({data: null});
-  }
-});
 
-router.post('/get_pdf', async (req, res, next) => {
-  try {
-    var filePath = req.body.file_path
-    console.log('Opening PDF... ', filePath);
-
-    var sp = filePath.split('/');
-    var fileName = sp[sp.length - 1].toLowerCase();
-
-    res.setHeader('Content-disposition', 'attachment; filename=' + fileName);
-    res.setHeader('Content-type', 'application/pdf');
-
-    var filestream = fs.createReadStream(filePath);
-    filestream.pipe(res);
+    */
   } catch (e) {
     console.log(e);
     res.send({data: null});

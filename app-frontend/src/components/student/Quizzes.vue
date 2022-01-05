@@ -122,7 +122,7 @@
       </section>
     </div>
     <!-- Display and  Play Quiz -->
-    <Quiz v-else />
+    <Quiz :quizTitle="QT" v-else />
   </div>
 </template>
 
@@ -163,6 +163,7 @@ export default {
             { 
               responseType: 'json',
               file_path: `${fileURL}`,
+              replay: false,
             },
           )
           .then((response) => {
@@ -224,8 +225,10 @@ export default {
        * @param URL - the file URL of the selected quiz's CSV file
        */
       goToQuiz(quiz) {
-        var title = quiz.title;
         var URL = quiz.poolURL;
+
+        /* Set title of quiz */
+        this.QT = quiz.title;
 
         this.generateQuizData(URL);
         console.log('Clicked URL: ', URL);

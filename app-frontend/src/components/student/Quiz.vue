@@ -328,9 +328,9 @@
 <script>
 export default {
   name: 'Quiz',
+  props: ["quizTitle"],
   data() {
     return {
-      quizTitle: '',
       progressValue: 0,
       resultList: [],
       quizData: [],
@@ -358,11 +358,8 @@ export default {
 
     this.getQuizData();
 
-    console.log('6');
-
     /* Clicking one of the answer options */
     $('.answerOptions ').on('click', '.myoptions>input', function (e) {
-      console.log('hello');
       self.clicked = $(this).val();
 
       /* Show submit if it is the last question */
@@ -438,10 +435,37 @@ export default {
 
     /* 'Replay Quiz' button clicked */
     $('.resultArea').on('click', '.replay', function () {
+      self.regenerateQuizData();
       window.location.reload(true);
     });
   },
   methods: {
+    /** 
+      * Re-generates the quiz data of the given CSV file
+      */
+      async regenerateQuizData() {
+        try {
+          await this.$axios
+          .post(
+            `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/generate_quiz`,
+            { 
+              responseType: 'json',
+              file_path: ``,
+              replay: true,
+            },
+          )
+          .then((response) => {
+            if (response) {
+                /* Quiz data of randomly selected 10 questions from pool */
+                var qData = response.data;
+                console.log('Questions re-generated client-side: ', qData);
+              }
+          })
+          .catch((error) => console.log(error));
+        } catch (e) {
+          console.log(e);
+        }
+      },
     /**
      * Gets all of the questions and its data from generated quiz
      */
@@ -459,7 +483,7 @@ export default {
         return response.json();
       })
       .then((response) => {
-        /* List of revision notes finally set */
+        /* Quiz data found */
         let quizFound = response.data;
         this.quizData = quizFound;
 
@@ -492,7 +516,6 @@ export default {
         [array[currentIndex], array[randomIndex]] = [
           array[randomIndex], array[currentIndex]];
       }
-      console.log('3', array);
       return array;
     },
 
@@ -847,9 +870,9 @@ export default {
         }
 
         var _cor_icon =
-          '<i class="far fa-check-circle p-2 mx-2 bg-green-800 text-2xl rounded-full text-white"/>';
+          '<i class="far fa-check-circle px-2 py-1 mx-2 bg-green-800 text-2xl rounded-full text-white"/>';
         var _incor_icon =
-          '<i class="far fa-times-circle p-2 mx-2 bg-red-800 text-2xl rounded-full text-white"/>';
+          '<i class="far fa-times-circle px-2 py-1 mx-2 bg-red-800 text-2xl rounded-full text-white"/>';
         var _icon_to_show = results[i].iscorrect ? _cor_icon : _incor_icon;
 
         var _html =

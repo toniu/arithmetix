@@ -59,6 +59,9 @@ module.exports = {
     })
     
   ],
+  output: {
+    publicPath: "/",
+  },
   devServer: {
     open: true,
     historyApiFallback: true,
