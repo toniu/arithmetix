@@ -6,7 +6,7 @@
           <div class="flex font-bold justify-center">
 
           </div>
-          <h2 class="text-3xl text-center font-light text-gray-700 mb-4">
+          <h2 class="text-3xl text-center font-light text-gray-900 mb-4">
             <i class="fas fa-calculator text-blue-400 mx-2"></i>
             <span class="font-bold">arith</span>metix.
           </h2>

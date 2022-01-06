@@ -118,8 +118,13 @@ const router = new Router({
       ],
     },
     {
-      path: '/*',
-      component: ErrorPage,
+      path: '/404',
+      name: 'NotFound',
+      component: ErrorPage
+    },
+    {
+      path: '*',
+      redirect: '/404'
     }
   ],
 });
@@ -147,6 +152,10 @@ router.beforeEach((to, from, next) => {
         /* Check if the user is a student */
         if (localStorage.getItem('role') === 'student') {
           next();
+        } else {
+          /* Error page if user accessing student page is not student */
+          router.push('/404');
+          router.back();
         }
       }
       /* Requested URL requires the user to be teacher/admin. */
@@ -154,6 +163,10 @@ router.beforeEach((to, from, next) => {
         /* Check if the user is a teacher */
         if (localStorage.getItem('role') === 'teacher') {
           next();
+        } else {
+          /* Error page if user accessing teacher page is not teacher */
+          router.push('/404');
+          router.back();
         }
       }
     }

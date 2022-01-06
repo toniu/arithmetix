@@ -1,5 +1,7 @@
 <template>
-  <div class="container block py-12 w-full mx-auto h-full max-w-none text-center">
+  <div
+    class="container block py-12 w-full mx-auto h-full max-w-none text-center"
+  >
     <div>
       <!-- 404 -->
       <section class="p-2 text-black items-center">
@@ -15,8 +17,7 @@
             px-10
             py-6
             mt-7
-            text-7xl
-            text-gray-400
+            text-7xl text-gray-400
             rounded-full
           "
         ></i>
@@ -43,7 +44,7 @@
           "
           @click="goBack"
         >
-          Go back
+          go back
         </button>
       </section>
     </div>
@@ -52,6 +53,7 @@
 
 <script>
 export default {
+  name: 'ErrorPage',
   data: () => ({}),
   mounted() {},
   methods: {
