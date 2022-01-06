@@ -654,7 +654,7 @@ export default {
       }
 
       /* Push Incorrect label */
-      labelsForChart.push('Incorrect');
+      labelsForChart.push("Incorrect");
       colorsForChart.push('#ab0000');
 
       var labels = {names: labelsForChart, colors: colorsForChart};

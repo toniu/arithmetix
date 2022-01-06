@@ -18,7 +18,7 @@
     }"
   >  
     <div class="mt-4">
-      <!-- Rendering of menu icons-->
+      <!-- Rendering of menu buttons and icons-->
       <router-link v-for="(menuItem, index) in menu" v-bind:key="index"
         v-bind:to="menuItem.to"
         class="
@@ -54,7 +54,11 @@ export default {
     this.getRoutes(this.role);
   },
   methods: {
+    /** Sets menu depending on user's role 
+     * @param role The role of user
+    */
     getRoutes(role) {
+      /* Student Menu */
       var studentRoutes = [{
         name: 'home',
         to: '/student',
@@ -81,6 +85,7 @@ export default {
         icon: 'fas fa-book-reader text-lg mx-3'
       }];
 
+      /* Teacher Menu */
       var teacherRoutes = [{
         name: 'home',
         to: '/teacher',
@@ -97,7 +102,7 @@ export default {
         icon: 'fas fa-comments text-lg mx-3'
       },
       {
-        name: 'resources',
+        name: 'teaching resources',
         to: '/teacher/resources',
         icon: 'fas fa-print text-lg mx-3'
       },
@@ -107,6 +112,7 @@ export default {
         icon: 'fas fa-clipboard-list text-lg mx-3'
       }];
 
+      /* Admin Menu */
       var adminRoutes = [{
         name: 'home',
         to: '/admin',
@@ -135,4 +141,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+  .router-link-exact-active {
+    background: #111827;
+    border-left-width: 4px;
+    border-color: #93c5fd;
+  }
+</style>

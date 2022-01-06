@@ -52,165 +52,124 @@
           text-base
         "
       >
-        <div class="px-3 m-4 text-left">
-          <h1 class="font-semibold my-4 md:text-xl uppercase bg-gray-100 rounded-full px-5 py-2"> Timeline </h1>
-          <div class="bg-gray-100 p-2 shadow-lg  border-t-4 border-gray-900 rounded">
-                <ul class="p-2 space-y-2 text-black">
-                  <li class="md:text-lg"> <i class="fas fa-sticky-note bg-gray-900 text-white p-3 mr-2 rounded-full "></i> 
-                  Quiz - Week 5  <span class="float-right font-semibold"> 10:00 </span>
-                  </li>
-                  <li class="md:text-lg"> <i class="fas fa-sticky-note bg-gray-900 text-white p-3 mr-2 rounded-full "></i> 
-                  Assignment 2  <span class="float-right font-semibold"> 16:00 </span>
-                  </li>
-                  <li class="md:text-lg"> <i class="fas fa-sticky-note bg-gray-900 text-white p-3 mr-2 rounded-full "></i> 
-                  Quiz - Week 6 <span class="float-right font-semibold"> 12:00 </span>
-                  </li>
-                </ul>
+
+        <div class="block px-3 my-5 text-left w-full">
+          <div class="shadow-lg text-sm md:text-base">
+            <button @click="goTo('/student/homework')" class="p-2 w-full bg-gray-800 text-white font-semibold rounded-t-lg hover:bg-gray-700 transition 0.1s">
+              <span class="p-1 float-left"> Timeline </span>
+              <i class="fas fa-arrow-right float-right mx-3 my-1 text-base md:text-xl"/>
+            </button>
+            <div class="p-4 bg-gray-100">
+              <i class="fas fa-clock text-gray-800 text-2xl md:text-3xl float-left"/>
+              <span class="mx-10 p-1 flex"> 
+                View upcoming deadlines
+              </span>
             </div>
+            <div class="block">
+              <h2 class="p-2 font-semibold text-sm md:text-base"> Tuesday, 21 December </h2>
+              <ul class="float-left inline-block w-full">
+                <li class="p-2 m-1 bg-gray-100 box-border w-full border-l-4 border-gray-900 shadow-lg">
+                  <i class="fas fa-sticky-note mx-2 px-2 py-1 text-white text-sm md:text-base bg-gray-900 rounded-full" /> 
+                   <span class="text-sm md:text-base"> Quiz A </span>
+                   <span class="text-sm md:text-base float-right mx-3 font-bold"> 9:00 </span>
+                </li>
+                <li class="p-2 m-1 bg-gray-100 box-border w-full border-l-4 border-gray-900 shadow-lg">
+                  <i class="fas fa-sticky-note mx-2 px-2 py-1 text-white text-sm md:text-base bg-gray-900 rounded-full" /> 
+                   <span class="text-sm md:text-base"> Quiz B </span>
+                   <span class="text-sm md:text-base float-right mx-3 font-bold"> 10:00 </span>
+                </li>
+                <li class="p-2 m-1 bg-gray-100 box-border w-full border-l-4 border-gray-900 shadow-lg">
+                  <i class="fas fa-sticky-note mx-2 px-2 py-1 text-white text-sm md:text-base bg-gray-900 rounded-full" /> 
+                   <span class="text-sm md:text-base"> Quiz D </span>
+                   <span class="text-sm md:text-base float-right mx-3 font-bold"> 16:00 </span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+
         <div class="block
           md:grid md:grid-cols-2
-          space-y-4
-          md:space-y-0 md:space-x-5
+          space-y-5
+          md:space-y-2 md:space-x-3
           px-3
           py-1">
-          <div class="p-2 text-left ">
-              <h1 class="font-semibold my-4 md:text-xl uppercase bg-gray-100 rounded-full px-5 py-2"> Learning progress </h1>
-              <div class="bg-gray-100 p-2 shadow-lg h-auto border-t-4 border-gray-900 rounded text-black">
-                  <div class="relative pt-1">
-                    <div class="flex mb-2 items-center justify-between">
-                      <div>
-                        <span
-                          class="
-                            text-xs
-                            font-semibold
-                            inline-block
-                            py-1
-                            px-2
-                            uppercase
-                            rounded-full
-                            text-yellow-600
-                            bg-yellow-200
-                          "
-                        >
-                       <i class="fas fa-list-ul mx-2"></i>
-                          Core
-                        </span>
-                      </div>
-                      <div class="text-right">
-                        <span class="text-xs font-semibold inline-block text-yellow-600">
-                          30%
-                        </span>
-                      </div>
-                  </div>
-                  <div class="overflow-hidden h-2 mb-4 text-xs shadow-md flex rounded bg-yellow-100">
-                    <div
-                      style="width: 30%"
-                      class="
-                        shadow-none
-                        flex flex-col
-                        text-center
-                        whitespace-nowrap
-                        text-white
-                        justify-center
-                        bg-yellow-500
-                      "
-                    >
-                    </div>
-                  </div>
+          <div class="p-2 text-left space-y-3 text-sm md:text-base">
+              <div class="shadow-lg">
+                <button @click="goTo('/student/quizzes')" class="p-2 w-full bg-yellow-800 text-white font-semibold rounded-t-lg hover:bg-yellow-700 transition 0.1s">
+                  <span class="p-1 float-left"> Quizzes </span>
+                  <i class="fas fa-arrow-right float-right mx-3 my-1 text-base md:text-xl"/>
+                </button>
+                <div class="p-4 bg-gray-100">
+                  <i class="fas fa-stopwatch text-yellow-800 text-3xl float-left"/>
+                  <span class="mx-10 p-1 flex"> 
+                    Quick test your knowledge on module-based questions, including: core, mechanics and statistics based questions.
+                  </span>
                 </div>
-                  <!-- -->
-                  <div class="relative pt-1">
-                    <div class="flex mb-2 items-center justify-between">
-                      <div>
-                        <span
-                          class="
-                            text-xs
-                            font-semibold
-                            inline-block
-                            py-1
-                            px-2
-                            uppercase
-                            rounded-full
-                            text-blue-600
-                            bg-blue-200
-                          "
-                        >
-                        <i class="fas fa-chart-bar mx-2"></i>
-                          Statistics
-                        </span>
-                      </div>
-                      <div class="text-right">
-                        <span class="text-xs font-semibold inline-block text-blue-600">
-                          68%
-                        </span>
-                      </div>
-                  </div>
-                  <div class="overflow-hidden h-2 mb-4 text-xs shadow-md flex rounded bg-blue-100">
-                    <div
-                      style="width: 68%"
-                      class="
-                        shadow-none
-                        flex flex-col
-                        text-center
-                        whitespace-nowrap
-                        text-white
-                        justify-center
-                        bg-blue-500
-                      "
-                    >
-                    </div>
-                  </div>
+              </div>
+              <div class="shadow-lg">
+                <button @click="goTo('/student/modules')" class="p-2 w-full bg-blue-900 text-white font-semibold rounded-t-lg hover:bg-blue-800 transition 0.1s">
+                  <span class="p-1 float-left"> Modules </span>
+                  <i class="fas fa-arrow-right float-right mx-3 my-1 text-base md:text-xl"/>
+                </button>
+                <div class="p-4 bg-gray-100">
+                  <i class="fas fa-book-open text-blue-900 text-3xl float-left"/>
+                  <span class="mx-10 p-1 flex"> 
+                    Gain knowledge on topics through module notes and practice on topics with provided solutions
+                  </span>
                 </div>
-                  <!-- -->
-                  <div class="relative pt-1">
-                    <div class="flex mb-2 items-center justify-between">
-                      <div>
-                        <span
-                          class="
-                            text-xs
-                            font-semibold
-                            inline-block
-                            py-1
-                            px-2
-                            uppercase
-                            rounded-full
-                            text-green-600
-                            bg-green-200
-                          "
-                        >
-                        <i class="fas fa-wrench mx-2"></i>
-                          Mechanics
-                        </span>
-                      </div>
-                      <div class="text-right">
-                        <span class="text-xs font-semibold inline-block text-green-600">
-                          70%
-                        </span>
-                      </div>
-                  </div>
-                  <div class="overflow-hidden h-2 mb-4 text-xs shadow-md flex rounded bg-green-100">
-                    <div
-                      style="width: 70%"
-                      class="
-                        shadow-none
-                        flex flex-col
-                        text-center
-                        whitespace-nowrap
-                        text-white
-                        justify-center
-                        bg-green-500
-                      "
-                    >
-                    </div>
-                  </div>
+              </div>
+              <div class="shadow-lg">
+                <button @click="goTo('/student/exam-papers')" class="p-2 w-full bg-pink-900 text-white font-semibold rounded-t-lg hover:bg-pink-800 transition 0.1s">
+                  <span class="p-1 float-left"> Exam Practice </span>
+                  <i class="fas fa-arrow-right float-right mx-3 my-1 text-base md:text-xl"/>
+                </button>
+                <div class="p-4 bg-gray-100">
+                  <i class="fas fa-book-reader text-pink-900 text-3xl float-left"/>
+                  <span class="mx-10 p-1 flex"> 
+                    Put your knowledge into practice with provided exam papers from familiar exam boards
+                  </span>
                 </div>
-                  <!-- -->
               </div>
           </div>
-          <div class="p-2 justify-center ">
-              <h1 class="font-semibold my-4 md:text-xl uppercase bg-gray-100 rounded-full px-5 py-2"> Upcoming exams </h1>
-              <div class="bg-gray-100 p-3 shadow-lg border-t-4 space-y-4 border-gray-900 rounded text-white">
+          
+          <div class="h-auto">
+            <h1 class="p-3 bg-gray-900 text-white rounded-t-lg text-left font-semibold"> Upcoming Exams </h1>
+            <div class="bg-gray-100">  
+              <ul class="float-left inline-block w-full">
+                <li class="p-2 m-1 bg-gray-100 box-border w-full border-l-4 border-gray-900 shadow-lg">
+                   <span class="text-sm md:text-base"> A-Level Paper 1 </span>
+                   <span class="text-sm md:text-base float-right mx-3 font-bold lg:inline">
+                     <span class="md:hidden"> Tuesday, </span>
+                     7 June 2022 (PM) </span>
+                </li>
+                <li class="p-2 m-1 bg-gray-100 box-border w-full border-l-4 border-gray-900 shadow-lg">
+                   <span class="text-sm md:text-base"> A-Level Paper 2 </span>
+                   <span class="text-sm md:text-base float-right mx-3 font-bold">
+                    <span class="md:hidden"> Tuesday, </span>
+                    14 June 2022 (PM) </span>
+                </li>
+                <li class="p-2 m-1 bg-gray-100 box-border w-full border-l-4 border-gray-900 shadow-lg">
+                   <span class="text-sm md:text-base"> A-Level Paper 3 </span>
+                   <span class="text-sm md:text-base float-right mx-3 font-bold">
+                     <span class="md:hidden"> Tuesday, </span>
+                    21 June 2022 (PM) </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+              <!--
+              <h1 class="p-2 w-full bg-gray-800 text-xltext-white font-semibold rounded-t-lg hover:bg-gray-700 transition 0.1s">
+                <span class="p-1 float-left"> Timeline </span>
+                <i class="fas fa-arrow-right float-right mx-3 my-1 text-xl"/>
+              </h1>
+              <div>
+                <div class="p-1 rounded-xl bg-gray-900"> 
+                  <span class="font-bold"> A Level Paper 1: </span> 
+                  Tuesday 7 June 2022 (PM)
+                </div>
+              </div>
+              <div class="block bg-gray-100 p-3 shadow-lg border-t-4 space-y-4 border-gray-900 rounded text-white">
                 <div class="p-1 rounded-xl bg-gray-900"> 
                   <span class="font-bold"> A Level Paper 1: </span> 
                   Tuesday 7 June 2022 (PM)
@@ -224,7 +183,7 @@
                   Tuesday 21 June 2022 (PM)
                 </div>  
               </div>
-          </div>
+              -->
         </div>
       </section>
     </div>
@@ -241,6 +200,11 @@ export default {
       /* Progress bar */
     circumference: 30 * 2 * Math.PI,
     };
+  },
+  methods: {
+    goTo(link) {
+      this.$router.push(link);
+    }
   },
 };
 </script>
