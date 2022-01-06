@@ -4,8 +4,9 @@ import Router from 'vue-router';
 /* Router components */
 import Home from '@/components/general/Home';
 import Login from '@/components/general/Login';
-import Student from '@/components/student/Student';
+import ErrorPage from '@/components/general/ErrorPage';
 /* Student links */
+import Student from '@/components/student/Student';
 import Quizzes from '@/components/student/Quizzes';
 import Quiz from '@/components/student/Quiz';
 import Modules from '@/components/student/Modules';
@@ -118,7 +119,7 @@ const router = new Router({
     },
     {
       path: '/*',
-      component: Home,
+      component: ErrorPage,
     }
   ],
 });

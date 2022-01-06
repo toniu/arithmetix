@@ -15,10 +15,6 @@ VALUES ('testteacher2@gmail.com','Nancy','Daphne', crypt('teacher', gen_salt('bf
 
 -- Hard-coded classes
 
--- Hardcoded students - assign users to student role
-
--- Hardcoded teachers - assign users to teacher role
-
 -- Hardcoded tests
 
 -- Hardcoded assignments

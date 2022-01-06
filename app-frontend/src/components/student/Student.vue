@@ -26,28 +26,6 @@ export default {
     Footer,
   },
   data: () => ({
-    /* Navigation */
-    navigationLabels: ['Dashboard','Quizzes','Modules','Homework','Exam Papers'],
-    selected: '',
-    menu: [
-      {title: "Home", icon: "", url: "/", submenus: []},
-      {title: "Quizzes", icon: "", url: "/", submenus: []},
-      {
-        title: "Modules",
-        icon: "",
-        url: "/",
-        submenus: [
-          {title: "Revision Notes", icon: "", url: "/"},
-          {title: "Practice Worksheets", icon: "", url: "/"}
-        ],
-      },
-      {title: "Homework", icon: "", url: "/", submenus: []},
-      {title: "Exam Papers", icon: "", url: "/", submenus: []},
-    ],
-
-    /* Progress bar */
-    circumference: 30 * 2 * Math.PI,
-
     /* Student information */
     email: localStorage.getItem('user'),
     firstName: localStorage.getItem('firstName'),

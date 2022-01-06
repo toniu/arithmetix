@@ -87,9 +87,24 @@ export default {
         icon: 'fas fa-home text-lg mx-3'
       },
       {
-        name: '...',
-        to: '/teacher/...',
-        icon: 'fas fa-book-reader text-lg mx-3'
+        name: 'classes',
+        to: '/teacher/classes',
+        icon: 'fas fa-chalkboard text-lg mx-3'
+      },
+      {
+        name: 'feedback',
+        to: '/teacher/feedback',
+        icon: 'fas fa-comments text-lg mx-3'
+      },
+      {
+        name: 'resources',
+        to: '/teacher/resources',
+        icon: 'fas fa-print text-lg mx-3'
+      },
+      {
+        name: 'assignments',
+        to: '/teacher/assignments',
+        icon: 'fas fa-clipboard-list text-lg mx-3'
       }];
 
       var adminRoutes = [{
