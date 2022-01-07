@@ -91,13 +91,13 @@
         <div class="block
           md:grid md:grid-cols-2
           space-y-5
-          md:space-y-2 md:space-x-3
+          md:space-y-3 md:space-x-3
           px-3
           py-1">
           <div class="p-2 text-left space-y-3 text-sm md:text-base">
               <div class="shadow-lg">
                 <button @click="goTo('/student/quizzes')" class="p-2 w-full bg-yellow-800 text-white font-semibold rounded-t-lg hover:bg-yellow-700 transition 0.1s">
-                  <span class="p-1 float-left"> Quizzes </span>
+                  <span class="p-1 float-left"> Quick Quizzes </span>
                   <i class="fas fa-arrow-right float-right mx-3 my-1 text-base md:text-xl"/>
                 </button>
                 <div class="p-4 bg-gray-100">
@@ -109,7 +109,7 @@
               </div>
               <div class="shadow-lg">
                 <button @click="goTo('/student/modules')" class="p-2 w-full bg-blue-900 text-white font-semibold rounded-t-lg hover:bg-blue-800 transition 0.1s">
-                  <span class="p-1 float-left"> Modules </span>
+                  <span class="p-1 float-left"> Modules & Worksheets </span>
                   <i class="fas fa-arrow-right float-right mx-3 my-1 text-base md:text-xl"/>
                 </button>
                 <div class="p-4 bg-gray-100">
@@ -133,31 +133,47 @@
               </div>
           </div>
           
-          <div class="h-auto">
-            <h1 class="p-3 bg-gray-900 text-white rounded-t-lg text-left font-semibold"> Upcoming Exams </h1>
-            <div class="bg-gray-100">  
-              <ul class="float-left inline-block w-full">
-                <li class="p-2 m-1 bg-gray-100 box-border w-full border-l-4 border-gray-900 shadow-lg">
-                   <span class="text-sm md:text-base"> A-Level Paper 1 </span>
-                   <span class="text-sm md:text-base float-right mx-3 font-bold lg:inline">
-                     <span class="md:hidden"> Tuesday, </span>
-                     7 June 2022 (PM) </span>
-                </li>
-                <li class="p-2 m-1 bg-gray-100 box-border w-full border-l-4 border-gray-900 shadow-lg">
-                   <span class="text-sm md:text-base"> A-Level Paper 2 </span>
-                   <span class="text-sm md:text-base float-right mx-3 font-bold">
-                    <span class="md:hidden"> Tuesday, </span>
-                    14 June 2022 (PM) </span>
-                </li>
-                <li class="p-2 m-1 bg-gray-100 box-border w-full border-l-4 border-gray-900 shadow-lg">
-                   <span class="text-sm md:text-base"> A-Level Paper 3 </span>
-                   <span class="text-sm md:text-base float-right mx-3 font-bold">
-                     <span class="md:hidden"> Tuesday, </span>
-                    21 June 2022 (PM) </span>
-                </li>
-              </ul>
+          <div class="h-auto space-y-5">
+            <div class="block shadow-lg text-left text-sm md:text-base">
+              <button class="p-2 w-full bg-purple-900 text-white font-semibold rounded-t-lg hover:bg-purple-800 transition 0.1s">
+                <span class="p-1 float-left"> Feedback </span>
+                <i class="fas fa-arrow-right float-right mx-3 my-1 text-base md:text-xl"/>
+              </button>
+              <div class="p-4 bg-gray-100">
+                <i class="fas fa-comments text-purple-900 text-3xl float-left"/>
+                <span class="mx-10 p-1 flex"> 
+                  Head to the forum to ask questions or receive advice from peers and teachers.
+                </span>
+              </div>
             </div>
+            <div class="block">
+              <h1 class="p-3 bg-gray-900 text-white rounded-t-lg text-left font-semibold"> Upcoming Exams </h1>
+              <div class="bg-gray-100">  
+                <ul class="float-left inline-block w-full">
+                  <li class="p-2 m-1 bg-gray-100 box-border w-full border-l-4 border-gray-900 shadow-lg">
+                    <span class="text-sm md:text-base"> A-Level Paper 1 </span>
+                    <span class="text-sm md:text-base float-right mx-3 font-bold lg:inline">
+                      <span class="md:hidden"> Tuesday, </span>
+                      7 June 2022 (PM) </span>
+                  </li>
+                  <li class="p-2 m-1 bg-gray-100 box-border w-full border-l-4 border-gray-900 shadow-lg">
+                    <span class="text-sm md:text-base"> A-Level Paper 2 </span>
+                    <span class="text-sm md:text-base float-right mx-3 font-bold">
+                      <span class="md:hidden"> Tuesday, </span>
+                      14 June 2022 (PM) </span>
+                  </li>
+                  <li class="p-2 m-1 bg-gray-100 box-border w-full border-l-4 border-gray-900 shadow-lg">
+                    <span class="text-sm md:text-base"> A-Level Paper 3 </span>
+                    <span class="text-sm md:text-base float-right mx-3 font-bold">
+                      <span class="md:hidden"> Tuesday, </span>
+                      21 June 2022 (PM) </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
           </div>
+          
               <!--
               <h1 class="p-2 w-full bg-gray-800 text-xltext-white font-semibold rounded-t-lg hover:bg-gray-700 transition 0.1s">
                 <span class="p-1 float-left"> Timeline </span>

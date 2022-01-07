@@ -47,12 +47,12 @@
     </section>
     <section class="w-full grid-rows-2 md:flex">
       <!-- -->
-      <div class="w-full md:w-1/2">
+      <div class="w-full md:w-1/2 p-3 mx-3">
         <h1 class="p-1 m-1 font-semibold uppercase text-xl bg-gray-100 rounded-xl"> Upcoming deadlines </h1>
-        <ul class="p-1 m-3 bg-gray-100 rounded-lg">
+        <ul class="p-1 m-3 inline-block w-full bg-gray-100 rounded-lg">
           <div class="p-2">
             <h2 class="text-left mx-2 p-2 font-semibold"> Wednesday 14 December </h2>
-            <li class="p-1 m-2 text-left bg-white shadow-xl">
+            <li class="p-1 m-2 box-border w-full text-left bg-white shadow-xl">
               <span class="block">
                 <i class="block-inline fas fa-question-circle text-black p-2 md:text-lg text-2xl"></i>
                 <span class="block-inline font-normal"> Quiz, Week 10</span>
@@ -64,7 +64,7 @@
               <hr class="my-2 mx-2 border-gray-800"/>
               <span class="block px-5 py-2 font-semibold md:inline-block uppercase "> 18:00 </span>
             </li>
-            <li class="p-1 m-2 text-left bg-white shadow-xl">
+            <li class="p-1 m-2 box-border w-full text-left bg-white shadow-xl">
               <span class="block">
                 <i class="block-inline fas fa-question-circle text-black p-2 md:text-lg text-2xl"></i>
                 <span class="block-inline font-normal"> Test - End of Term</span>
@@ -79,7 +79,7 @@
           </div>
           <div class="p-2">
             <h2 class="text-left mx-2 p-2 font-semibold"> Friday 16 November </h2>
-            <li class="p-1 m-2 text-left bg-white shadow-xl">
+            <li class="p-1 m-2 box-border w-full text-left bg-white shadow-xl">
               <span class="block">
                 <i class="block-inline fas fa-question-circle text-black p-2 md:text-lg text-2xl"></i>
                 <span class="block-inline font-normal"> Quiz B, Week 10</span>

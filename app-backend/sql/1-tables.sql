@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 CREATE TABLE IF NOT EXISTS schools (
   school_code INT PRIMARY KEY,
+  school_name TEXT,
   street TEXT,
   city TEXT,
   county TEXT,
@@ -17,23 +18,31 @@ CREATE TABLE IF NOT EXISTS schools (
 );
 CREATE TABLE IF NOT EXISTS classes (
   class_code INT PRIMARY KEY,
+  class_name TEXT,
   year INT,
   school_code INT,
   FOREIGN KEY (school_code) REFERENCES schools(school_code) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS students (
+  student_no SERIAL PRIMARY KEY,
   student_email TEXT,
+  school_code INT,
   class_code INT,
   year INT,
   FOREIGN KEY (student_email) REFERENCES users(email) ON DELETE CASCADE,
+  FOREIGN KEY (school_code) REFERENCES schools(school_code) ON DELETE CASCADE,
   FOREIGN KEY (class_code) REFERENCES classes(class_code) ON DELETE CASCADE
 );
+
 CREATE TABLE IF NOT EXISTS teachers (
-  teacher_email TEXT,
   class_code INT,
-  FOREIGN KEY (teacher_email) REFERENCES users(email) ON DELETE CASCADE,
-  FOREIGN KEY (class_code) REFERENCES classes(class_code) ON DELETE CASCADE
+  school_code INT,
+  teacher_email TEXT,
+  FOREIGN KEY (class_code) REFERENCES classes(class_code) ON DELETE CASCADE,
+  FOREIGN KEY (school_code) REFERENCES schools(school_code) ON DELETE CASCADE,
+  FOREIGN KEY (teacher_email) REFERENCES users(email) ON DELETE CASCADE
 );
+
 CREATE TABLE IF NOT EXISTS tests (
   test_code INT,
   test_link TEXT,

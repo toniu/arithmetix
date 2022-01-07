@@ -344,7 +344,6 @@ export default {
       labelsSet: false, 
     };
   },
-  
   mounted() {
     /* Initialise and get quiz data */
     let self = this;

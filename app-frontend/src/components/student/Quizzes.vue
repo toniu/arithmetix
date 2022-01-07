@@ -56,8 +56,8 @@
             Core 
             </h2>
             <div class="m-1 p-1 bg-gray-900 text-white"> A mixture of topics from modules: <span class="block font-semibold"> C1, C2, C3 and C4 </span> </div>
-            <ul class="p-1 m-1 bg-gray-100">
-              <li class="px-3 my-1 flex justify-between bg-white shadow-lg border-l-4 border-gray-800 w-full"
+            <ul class="p-1 m-1 bg-gray-100 inline-block w-full">
+              <li class="px-3 my-1 box-border w-full flex justify-between bg-white shadow-lg border-l-4 border-gray-800 w-full"
               v-for="(cQuiz, cIndex) in quizTables.coreQuizzes"
               v-bind:key="cIndex">
                 <span class="m-1 truncate"> {{ cQuiz.title }} </span>
@@ -79,8 +79,8 @@
             Mechanics 
             </h2>
             <div class="m-1 p-1 bg-gray-900 text-white"> A mixture of topics from modules: <span class="block font-semibold"> M1 </span> </div>
-            <ul class="p-1 m-1 bg-gray-100">
-            <li class="px-3 my-1 flex justify-between bg-white shadow-lg border-l-4 border-gray-800"
+            <ul class="p-1 m-1 inline-block w-full bg-gray-100">
+            <li class="px-3 my-1 box-border w-full flex justify-between bg-white shadow-lg border-l-4 border-gray-800"
               v-for="(mQuiz, mIndex) in quizTables.mechQuizzes"
               v-bind:key="mIndex">
                 <span class="m-1 truncate"> {{ mQuiz.title }} </span>
@@ -102,8 +102,8 @@
             Statistics 
             </h2>
             <div class="m-1 p-1 bg-gray-900 text-white"> A mixture of topics from modules: <span class="block font-semibold"> S1 </span> </div>
-            <ul class="p-1 m-1 bg-gray-100">
-              <li class="px-3 my-1 flex justify-between bg-white shadow-lg border-l-4 border-gray-800"
+            <ul class="p-1 m-1 inline-block w-full bg-gray-100">
+              <li class="px-3 my-1 box-border w-full flex justify-between bg-white shadow-lg border-l-4 border-gray-800"
               v-for="(sQuiz, sIndex) in quizTables.statQuizzes"
               v-bind:key="sIndex">
                 <span class="m-1 truncate"> {{ sQuiz.title }} </span>
