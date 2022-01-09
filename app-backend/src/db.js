@@ -93,6 +93,59 @@ class Db {
   }
 
   /**
+   * Retrieve the information about a particular school e.g.
+   * name of school and its location
+   * @param {*} schoolCode - the school code
+   * @returns the information about the given school
+   */
+  async getSchoolInfo(schoolCode) {
+    const {rows} = await pool.query(
+      `
+      SELECT 
+        school_name, street, city, county, post_code
+      FROM schools
+      WHERE school_code = $1`,
+      [schoolCode],
+    );
+    return rows[0];
+  }
+
+
+  /**
+   * Retrieve the ID of the student's school
+   * @param {String} email - used to uniquely identify the user.
+   * @returns {String} School ID of the user's school
+   */
+  async getSchoolCodeByStudentEmail(email) {
+    const {rows} = await pool.query(
+      `
+      SELECT 
+        school_code
+      FROM students
+      WHERE student_email = $1`,
+      [email],
+    );
+    return rows[0].school_code;
+  }
+
+  /**
+   * Retrieve the ID of the teacher's school
+   * @param {String} email - used to uniquely identify the user.
+   * @returns {String} School ID of the user's school
+   */
+   async getSchoolCodeByTeacherEmail(email) {
+    const {rows} = await pool.query(
+      `
+      SELECT 
+        school_code
+      FROM teachers
+      WHERE teacher_email = $1`,
+      [email],
+    );
+    return rows[0].school_code;
+  }
+
+  /**
    * Gets all of the existing teachers in the system
    * @returns {rows} - The teachers
    */
@@ -103,6 +156,56 @@ class Db {
         `);
     return rows;
   }
+
+  /**
+   * Gets all classes that the logged in teacher teaches
+   * @param teacherEmail - The email of the logged in teacher
+   * @returns {rows} - The classes 
+   */
+   async getClassesTeachedBy(teacherEmail) {
+    const {rows} = await pool.query(
+      `SELECT
+      class_code, school_code 
+      FROM teachers 
+      WHERE teacher_email = $1`,
+    [teacherEmail]);
+    return rows;
+  }
+
+  /**
+   * Gets all existing classes of a school
+   * @param schoolCode - The code of the school
+   * @returns {rows} - The classes 
+   */
+   async getClassesOfSchool(schoolCode) {
+    const {rows} = await pool.query(
+      `SELECT
+      class_code, class_name, year 
+      FROM classes 
+      WHERE school_code = $1`,
+    [schoolCode]);
+    return rows;
+  }
+
+  /**
+   * Gets all of the existing students of a particular class
+   * in a particular school
+   * @param schoolCode - The code of the school
+   * @param classCode - The code of the class
+   * @returns {rows} - The students
+   */
+   async getStudentsOfClass(schoolCode, classCode) {
+    const {rows} = await pool.query(
+      `SELECT
+      student_no, student_email, year 
+      FROM students 
+      WHERE school_code = $1
+      AND class_code = $2`,
+    [schoolCode, classCode]);
+    return rows;
+  }
+
+
 }
 
 module.exports = Db;

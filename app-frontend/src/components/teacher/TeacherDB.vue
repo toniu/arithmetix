@@ -78,7 +78,7 @@
           py-1">
               <!-- Assign -->
               <div class="shadow-lg">
-                <button class="p-2 w-full bg-green-800 text-white font-semibold rounded-t-lg hover:bg-green-700 transition 0.1s">
+                <button @click="goTo('/teacher/assignments')" class="p-2 w-full bg-green-800 text-white font-semibold rounded-t-lg hover:bg-green-700 transition 0.1s">
                   <span class="p-1 float-left"> Quick Assign </span>
                   <i class="fas fa-arrow-right float-right mx-3 my-1 text-xl"/>
                 </button>
@@ -91,7 +91,7 @@
               </div>
               <!-- Feedback -->
               <div class="shadow-lg">
-                <button class="p-2 w-full bg-purple-900 text-white font-semibold rounded-t-lg hover:bg-purple-800 transition 0.1s">
+                <button @click="goTo('/teacher/feedback')" class="p-2 w-full bg-purple-900 text-white font-semibold rounded-t-lg hover:bg-purple-800 transition 0.1s">
                   <span class="p-1 float-left"> Quick Feedback </span>
                   <i class="fas fa-arrow-right float-right mx-3 my-1 text-xl"/>
                 </button>
@@ -113,7 +113,7 @@
           py-1">
               <!-- Assign -->
               <div class="shadow-lg">
-                <button class="p-2 w-full bg-blue-600 text-white font-semibold rounded-t-lg hover:bg-blue-500 transition 0.1s">
+                <button @click="goTo('/teacher/classes')" class="p-2 w-full bg-blue-600 text-white font-semibold rounded-t-lg hover:bg-blue-500 transition 0.1s">
                   <span class="p-1 float-left"> Manage Classes </span>
                   <i class="fas fa-arrow-right float-right mx-3 my-1 text-xl"/>
                 </button>
@@ -126,7 +126,7 @@
               </div>
               <!-- Feedback -->
               <div class="shadow-lg">
-                <button class="p-2 w-full bg-blue-900 text-white font-semibold rounded-t-lg hover:bg-blue-800 transition 0.1s">
+                <button @click="goTo('/teacher/classes')" class="p-2 w-full bg-blue-900 text-white font-semibold rounded-t-lg hover:bg-blue-800 transition 0.1s">
                   <span class="p-1 float-left"> Manage Students </span>
                   <i class="fas fa-arrow-right float-right mx-3 my-1 text-xl"/>
                 </button>
@@ -150,6 +150,11 @@ export default {
       firstName: localStorage.getItem('firstName'),
       lastName: localStorage.getItem('lastName'),
     };
+  },
+  methods: {
+    goTo(link) {
+      this.$router.push(link);
+    }
   },
 };
 </script>

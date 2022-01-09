@@ -57,7 +57,7 @@
             </h2>
             <div class="m-1 p-1 bg-gray-900 text-white"> A mixture of topics from modules: <span class="block font-semibold"> C1, C2, C3 and C4 </span> </div>
             <ul class="p-1 m-1 bg-gray-100 inline-block w-full">
-              <li class="px-3 my-1 box-border w-full flex justify-between bg-white shadow-lg border-l-4 border-gray-800 w-full"
+              <li class="px-3 my-1 box-border w-full flex justify-between bg-white shadow-lg border-l-4 border-gray-800"
               v-for="(cQuiz, cIndex) in quizTables.coreQuizzes"
               v-bind:key="cIndex">
                 <span class="m-1 truncate"> {{ cQuiz.title }} </span>

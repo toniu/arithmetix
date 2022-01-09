@@ -178,6 +178,10 @@ export default {
       }
     },
     
+    async getFile(fileURL) {
+      //window.open("/Users/neka/CS3821Repo/app-backend/" + fileURL);
+    }, 
+    
     async openPDF(fileURL) {
       try {
         await this.$axios

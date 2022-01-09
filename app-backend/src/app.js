@@ -78,6 +78,7 @@ router.post(
       const email = req.body.email;
       const password = req.body.password;
       const user = await db.login(email, password);
+      const schoolID = '',
 
       if (user) {
         let teachers = await db.getTeachers();
@@ -96,6 +97,13 @@ router.post(
 
         /* Get role of user */
         const role = await db.getRole(email);
+        
+        /* Get school ID of user's school */
+        if (role == 'student') {
+          schoolID = await db.getSchoolCodeByStudentEmail(email);
+        } else if (role == 'teacher') {
+          schoolID = await db.getSchoolCodeByTeacherEmail(email);
+        }
 
         /* Create new JSON web token */
         const token = jwt.sign({id: email}, config.secret, {expiresIn: 86400});
@@ -260,13 +268,77 @@ router.post('/open_pdf', async (req, res, next) => {
     res.setHeader('Accept','application/pdf');
     res.setHeader( "Content-Disposition", "filename=\"" + fileName + "\"" );
     file.pipe(res);
-
     */
   } catch (e) {
     console.log(e);
     res.send({data: null});
   }
 });
+
+/**
+ * Gets information about a particular school
+ */
+ router.post('/get_school_info', async (req, res) => {
+  try {
+    const schoolInfo = await db.getSchoolInfo(req.body.school_code);
+    res.send({success: true, data: schoolInfo});
+  } catch (e) {
+    res.send({success: false, error: 'Could not get info about school'});
+    return false;
+  }
+});
+
+/**
+ * Gets all the classes the teacher teaches in
+ */
+router.post('/get_classes_teached_by', async (req, res) => {
+  try {
+    const classesTeacherHas = await db.getClasses(req.body.email);
+    res.send({success: true, data: classesTeacherHas});
+  } catch (e) {
+    res.send({success: false, error: 'Could not get classes teacher has'});
+    return false;
+  }
+});
+
+/**
+ * Gets all the classes the teacher teaches in
+ */
+ router.post('/get_all_school_classes', async (req, res) => {
+  try {
+    const schoolClasses = await db.getClassesOfSchool(req.body.school_code);
+    res.send({success: true, data: schoolClasses});
+  } catch (e) {
+    res.send({success: false, error: 'Could not get classes of school'});
+    return false;
+  }
+});
+
+/**
+ * Gets all the students in a given class
+ */
+ router.post('/get_students_of_class', async (req, res) => {
+  try {
+    var studentsOfClass = await db.getStudentsOfClass(req.body.school_code,
+      req.body.class_code);
+    
+    for (const i in studentsOfClass) {
+      /* Add names of students */
+      if (studentsOfClass[i]) {
+        studentsOfClass[i].first_name = await db.getFirstName(studentsOfClass[i].student_email);
+        studentsOfClass[i].last_name = await db.getLastName(studentsOfClass[i].student_email);
+      }
+    }
+    res.send({success: true, data: studentsOfClass});
+  } catch (e) {
+    res.send({success: false, error: 'Could not get students of given class'});
+    return false;
+  }
+});
+
+router.post('/create_notification', async (req, res) => {});
+router.post('/send_notification', async (req, res) => {});
+router.post('/read_notification', async (req, res) => {});
 
 
 /* -- End of router requests -- */

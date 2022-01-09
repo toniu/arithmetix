@@ -127,6 +127,8 @@ export default {
   name: 'Classes',
   components: {},
   data: () => ({
+    email: localStorage.getItem('user'),
+    schoolID: '',
     classData: {
       classes: [{id: '1', name: 'C128', students: ['John','Abel']},
       {id: '2', name: 'C129', students: []},
@@ -135,7 +137,86 @@ export default {
     selectedClass: classData.classes[0],
   }),
   mounted() {},
-  methods: {},
+  methods: {
+    /**
+     * Gets all the classes the teacher teaches in
+     */
+     async getClassesTeachedBy() {
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/get_classes_teached_by`,
+          { 
+            responseType: 'json',
+            email: `${this.email}`,
+          },
+        )
+        .then((response) => {
+          if (response) {
+              /* Classes */
+              var classes = response.data;
+              console.log('Classes teached by user: ', classes);
+            }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    /**
+     * Gets all the classes of particular school
+     */
+    async getClassesInSchool() {
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/get_all_school_classes`,
+          { 
+            responseType: 'json',
+            school_code: `${this.schoolID}`,
+          },
+        )
+        .then((response) => {
+          if (response) {
+              /* Classes */
+              var classes = response.data;
+              console.log('Classes: ', classes);
+            }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    /**
+     * Gets all students in a given class
+     */
+    async getStudentsInClass(classID) {
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/get_students_of_class`,
+          { 
+            responseType: 'json',
+            school_code: `${this.schoolID}`,
+            class_code: `${classID}`
+          },
+        )
+        .then((response) => {
+          if (response) {
+              /* Students in class */
+              var students = response.data;
+              console.log('Students in class ' + classID + ': ', students);
+            }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
 };
 </script>
 

@@ -31,8 +31,24 @@
           w-16
           h-16
         "
-      >
-      </i>
+        v-if="role == 'student'"
+      />
+      <i
+        class="
+          fas
+          fa-chalkboard-teacher
+          text-white text-center
+          align-center
+          py-3
+          text-3xl
+          m-5
+          bg-gray-900
+          rounded-full
+          w-16
+          h-16
+        "
+        v-else
+      />
       <div class="my-7">
         <span id="profile-name" class="block text-black font-medium">
           {{ firstName }} {{ lastName }}</span
@@ -109,6 +125,7 @@ export default {
   props: ['isOpen'],
   mounted() {
     /* Student information */
+    this.role = localStorage.getItem('role'),
     this.email = localStorage.getItem('user'),
     this.firstName = localStorage.getItem('firstName'),
     this.lastName = localStorage.getItem('lastName')
