@@ -78,7 +78,7 @@ router.post(
       const email = req.body.email;
       const password = req.body.password;
       const user = await db.login(email, password);
-      const schoolID = '',
+      var schoolID = '';
 
       if (user) {
         let teachers = await db.getTeachers();
@@ -116,6 +116,7 @@ router.post(
           firstName: firstName,
           lastName: lastName,
           role: role,
+          schoolCode: schoolID,
         };
 
         res.status(200).send(entries);
@@ -293,7 +294,7 @@ router.post('/open_pdf', async (req, res, next) => {
  */
 router.post('/get_classes_teached_by', async (req, res) => {
   try {
-    const classesTeacherHas = await db.getClasses(req.body.email);
+    const classesTeacherHas = await db.getClassesTeachedBy(req.body.email);
     res.send({success: true, data: classesTeacherHas});
   } catch (e) {
     res.send({success: false, error: 'Could not get classes teacher has'});

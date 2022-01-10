@@ -58,65 +58,80 @@
             text-left
           "
         >
-          <i class="fas fa-list-ul mx-3 rounded-full p-3 bg-blue-500"> </i>
-          Core
+          <i class="fas fa-chalkboard-teacher mx-3 rounded-full p-3 bg-blue-500"> </i>
+          My classes
         </h2>
-        <div class="m-1 p-1 bg-gray-900 text-white">
-          Students of class        
+        <div v-for="(teacherClass, tcIndex) in classData" :key="tcIndex">
+          
+          <div v-if="teacherClass.teaches" class="m-1 px-5 py-2 bg-gray-900 text-white text-lg text-left">
+          Class
+          <span class="font-bold"> {{ teacherClass.class_name }} </span>   
+          </div>
+          <button v-if="teacherClass.teaches" class="px-5 py-2 m-1 rounded w-full md:w-auto text-white bg-green-800 hover:bg-green-700 transition 0.1s">
+            Add new student
+            <i
+              class="
+                m-1
+                fas
+                fa-pencil-alt
+              "
+            />
+          </button>
+          <ul v-if="teacherClass.teaches" class="p-1 m-1 bg-gray-100 inline-block w-full">
+            <li
+              class="
+                px-3
+                my-1
+                flex
+                justify-between
+                bg-white
+                shadow-lg
+                border-l-4 border-gray-800
+                box-border
+                w-full
+              "
+
+              v-for="(student, studentIndex) in teacherClass.students" :key="studentIndex"
+            >
+              <span class="m-1 font-bold truncate"> {{ student.last_name }},<span class="font-normal"> {{ student.first_name }} </span> </span>
+              <div class="inline">
+                <button>
+                  <i
+                    class="
+                      px-2
+                      py-2
+                      m-1
+                      fas
+                      fa-pencil-alt
+                      rounded
+                      text-white
+                      bg-gray-800
+                      hover:bg-gray-700
+                      transition
+                      0.1s
+                    "
+                  />
+                </button>
+                <button>
+                  <i
+                    class="
+                      p-2
+                      m-1
+                      fas
+                      fa-trash
+                      rounded
+                      text-white
+                      bg-red-600
+                      hover:bg-red-500
+                      transition
+                      0.1s
+                    "
+                  />
+                </button>
+              </div>
+            </li>
+          </ul>
         </div>
-        <ul class="p-1 m-1 bg-gray-100">
-          <li
-            class="
-              px-3
-              my-1
-              flex
-              justify-between
-              bg-white
-              shadow-lg
-              border-l-4 border-gray-800
-              w-full
-            "
-            v-for="(s, index) in selectedClass"
-            v-bind:key="index"
-          >
-            <span class="m-1 truncate"> {{ s.name }} </span>
-            <div class="inline">
-              <button>
-                <i
-                  class="
-                    px-3
-                    py-2
-                    m-1
-                    fas
-                    fa-info
-                    rounded
-                    text-white
-                    bg-gray-800
-                    hover:bg-gray-700
-                    transition
-                    0.1s
-                  "
-                />
-              </button>
-              <button>
-                <i
-                  class="
-                    p-2
-                    m-1
-                    fas
-                    fa-play
-                    rounded
-                    text-white
-                    bg-green-600
-                    hover:bg-green-500
-                    transition
-                    0.1s
-                  "
-                />
-              </button>
-            </div>
-          </li>
-        </ul>
       </div>
     </section>
   </div>
@@ -128,20 +143,50 @@ export default {
   components: {},
   data: () => ({
     email: localStorage.getItem('user'),
-    schoolID: '',
-    classData: {
-      classes: [{id: '1', name: 'C128', students: ['John','Abel']},
-      {id: '2', name: 'C129', students: []},
-      {id: '3', name: 'C123', students: []}],
-    },
-    selectedClass: classData.classes[0],
+    schoolID: localStorage.getItem('schoolCode'),
+    classData: {},
   }),
-  mounted() {},
+  mounted() {
+    this.getClassData();
+  },
   methods: {
+    async getClassData() {
+      /* All existing classes of school */
+      var classData = await this.getClassesInSchool();
+      /* Classes that teacher teaches in */
+      var teachedClasses = await this.getClassesTeachedBy();
+
+      /* Only create class data if the data actually exists */
+      if (classData) {
+        for (const i in classData) {
+          if (classData[i]) {
+            classData[i].teaches = false;
+            for (const tc in teachedClasses) {
+              console.log(tc);
+              if (teachedClasses[tc]) {
+                /* Checks for classes that teacher teaches in */
+                if (classData[i].class_code == teachedClasses[tc].class_code) {
+                  classData[i].teaches = true;
+                }
+              }
+            }
+
+            /* Get students of class */
+            var studentsInClass = await this.getStudentsInClass(classData[i].class_code);
+            classData[i].students = studentsInClass.data;
+          }
+        }
+
+        this.classData = classData;
+
+        console.log('hello there: ', this.classData);
+      }
+    },
     /**
      * Gets all the classes the teacher teaches in
      */
      async getClassesTeachedBy() {
+      var classes = null;
       try {
         await this.$axios
         .post(
@@ -154,7 +199,7 @@ export default {
         .then((response) => {
           if (response) {
               /* Classes */
-              var classes = response.data;
+              classes = response.data.data;
               console.log('Classes teached by user: ', classes);
             }
         })
@@ -162,12 +207,16 @@ export default {
       } catch (e) {
         console.log(e);
       }
+
+      return classes;
     },
 
     /**
      * Gets all the classes of particular school
      */
     async getClassesInSchool() {
+      var classes = null;
+
       try {
         await this.$axios
         .post(
@@ -180,7 +229,7 @@ export default {
         .then((response) => {
           if (response) {
               /* Classes */
-              var classes = response.data;
+              classes = response.data.data;
               console.log('Classes: ', classes);
             }
         })
@@ -188,12 +237,16 @@ export default {
       } catch (e) {
         console.log(e);
       }
+      
+      return classes;
     },
 
     /**
      * Gets all students in a given class
      */
     async getStudentsInClass(classID) {
+      var students = null;
+
       try {
         await this.$axios
         .post(
@@ -207,7 +260,7 @@ export default {
         .then((response) => {
           if (response) {
               /* Students in class */
-              var students = response.data;
+              students = response.data;
               console.log('Students in class ' + classID + ': ', students);
             }
         })
@@ -215,6 +268,8 @@ export default {
       } catch (e) {
         console.log(e);
       }
+
+      return students;
     },
   },
 };

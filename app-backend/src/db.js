@@ -169,6 +169,7 @@ class Db {
       FROM teachers 
       WHERE teacher_email = $1`,
     [teacherEmail]);
+    console.log(rows);
     return rows;
   }
 
@@ -182,8 +183,10 @@ class Db {
       `SELECT
       class_code, class_name, year 
       FROM classes 
-      WHERE school_code = $1`,
+      WHERE school_code = $1
+      ORDER BY year`,
     [schoolCode]);
+    console.log(rows);
     return rows;
   }
 
@@ -202,6 +205,7 @@ class Db {
       WHERE school_code = $1
       AND class_code = $2`,
     [schoolCode, classCode]);
+    console.log(rows);
     return rows;
   }
 

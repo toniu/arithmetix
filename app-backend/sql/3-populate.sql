@@ -78,37 +78,37 @@ VALUES(2, 'C3802', '2019', 1);
 
 ------ Hard-coded students 
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser1@gmail.com', 1, 1, '2019');
+VALUES ('testuser1@gmail.com', 1, 1, '12');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser2@gmail.com', 1, 1, '2019');
+VALUES ('testuser2@gmail.com', 1, 1, '12');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser3@gmail.com', 1, 1, '2019');
+VALUES ('testuser3@gmail.com', 1, 1, '12');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser4@gmail.com', 1, 1, '2019');
+VALUES ('testuser4@gmail.com', 1, 1, '12');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser5@gmail.com', 1, 1, '2019');
+VALUES ('testuser5@gmail.com', 1, 1, '12');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser6@gmail.com', 1, 1, '2019');
+VALUES ('testuser6@gmail.com', 1, 1, '12');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser7@gmail.com', 1, 1, '2019');
+VALUES ('testuser7@gmail.com', 1, 1, '12');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser8@gmail.com', 1, 1, '2019');
+VALUES ('testuser8@gmail.com', 1, 1, '12');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser9@gmail.com', 1, 2, '2019');
+VALUES ('testuser9@gmail.com', 1, 2, '13');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser10@gmail.com', 1, 2, '2019');
+VALUES ('testuser10@gmail.com', 1, 2, '13');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser11@gmail.com', 1, 2, '2019');
+VALUES ('testuser11@gmail.com', 1, 2, '13');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser12@gmail.com', 1, 2, '2019');
+VALUES ('testuser12@gmail.com', 1, 2, '13');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser13@gmail.com', 1, 2, '2019');
+VALUES ('testuser13@gmail.com', 1, 2, '13');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser14@gmail.com', 1, 2, '2019');
+VALUES ('testuser14@gmail.com', 1, 2, '13');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser15@gmail.com', 1, 2, '2019');
+VALUES ('testuser15@gmail.com', 1, 2, '13');
 INSERT INTO students (student_email, school_code, class_code, year)
-VALUES ('testuser16@gmail.com', 1, 2, '2019');
+VALUES ('testuser16@gmail.com', 1, 2, '13');
 
 
 ------ Hardcoded teachers

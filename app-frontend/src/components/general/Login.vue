@@ -239,6 +239,7 @@ export default {
             localStorage.setItem('lastName', r.lastName);
             localStorage.setItem('jwt', r.token);
             localStorage.setItem('role', r.role);
+            localStorage.setItem('schoolCode', r.schoolCode);
             
             /* If user has a webtoken, send them to the correct page. */
             if (localStorage.getItem('jwt') != null) {
