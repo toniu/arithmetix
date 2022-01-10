@@ -337,6 +337,15 @@ router.post('/get_classes_teached_by', async (req, res) => {
   }
 });
 
+router.post('/add_class', async (req, res) => {});
+router.post('/edit_class', async (req, res) => {});
+router.post('/add_student', async (req, res) => {});
+router.post('/delete_student', async (req, res) => {});
+
+router.post('/add_assignment', async (req, res) => {});
+router.post('/edit_assignment', async (req, res) => {});
+router.post('/remove_assignment', async (req, res) => {});
+
 router.post('/create_notification', async (req, res) => {});
 router.post('/send_notification', async (req, res) => {});
 router.post('/read_notification', async (req, res) => {});

@@ -45,7 +45,7 @@
         </span>
       </h1>
     </section>
-    <section>
+    <section class="block md:grid md:grid-cols-2">
       <div>
         <h2
           class="
@@ -61,41 +61,30 @@
           <i class="fas fa-chalkboard-teacher mx-3 rounded-full p-3 bg-blue-500"> </i>
           My classes
         </h2>
-        <div v-for="(teacherClass, tcIndex) in classData" :key="tcIndex">
-          
-          <div v-if="teacherClass.teaches" class="m-1 px-5 py-2 bg-gray-900 text-white text-lg text-left">
-          Class
-          <span class="font-bold"> {{ teacherClass.class_name }} </span>   
-          </div>
-          <button v-if="teacherClass.teaches" class="px-5 py-2 m-1 rounded w-full md:w-auto text-white bg-green-800 hover:bg-green-700 transition 0.1s">
-            Add new student
+        <button class="px-5 py-2 md:rounded-3xl font-bold w-full md:w-11/12 text-white bg-green-800 hover:bg-green-700 transition 0.1s">
+            Add new class
             <i
               class="
                 m-1
                 fas
-                fa-pencil-alt
+                fa-plus
               "
             />
           </button>
-          <ul v-if="teacherClass.teaches" class="p-1 m-1 bg-gray-100 inline-block w-full">
-            <li
-              class="
-                px-3
-                my-1
-                flex
-                justify-between
-                bg-white
-                shadow-lg
-                border-l-4 border-gray-800
-                box-border
-                w-full
-              "
-
-              v-for="(student, studentIndex) in teacherClass.students" :key="studentIndex"
-            >
-              <span class="m-1 font-bold truncate"> {{ student.last_name }},<span class="font-normal"> {{ student.first_name }} </span> </span>
-              <div class="inline">
-                <button>
+        <div v-for="(teacherClass, tcIndex) in classData" :key="tcIndex">
+          
+          <div v-if="teacherClass.teaches" class="m-1 px-5 py-2 bg-gray-900 text-white text-lg text-left">
+            <input type="text" class="p-1 bg-none bg-gray rounded-t border-b-2 border-blue-400
+            text-black"
+            v-bind:placeholder="teacherClass.class_name"
+            v-show="teacherClass.edit">
+            <span v-show="!teacherClass.edit">
+              Class
+              <span class="font-bold"> {{ teacherClass.class_name }} </span> 
+            </span>
+            <div class="inline">
+                <button class="mx-2" v-show="!teacherClass.edit"
+                @click="teacherClass.edit = true">
                   <i
                     class="
                       px-2
@@ -112,13 +101,88 @@
                     "
                   />
                 </button>
-                <button>
+                <button class="mx-2" v-show="teacherClass.edit"
+                @click="confirmEditClassName(teacherClass, true)">
+                  <i
+                    class="
+                      px-2
+                      py-2
+                      m-1
+                      fas
+                      fa-check
+                      rounded
+                      text-white
+                      bg-green-800
+                      hover:bg-green-700
+                      transition
+                      0.1s
+                    "
+                  />
+                </button>
+                <button class="mx-2" v-show="teacherClass.edit"
+                @click="confirmEditClassName(teacherClass, false)">
+                  <i
+                    class="
+                      px-2
+                      py-2
+                      m-1
+                      fas
+                      fa-times
+                      rounded
+                      text-white
+                      bg-red-800
+                      hover:bg-red-700
+                      transition
+                      0.1s
+                    "
+                  />
+                </button>
+                <button class="float-right">
                   <i
                     class="
                       p-2
                       m-1
                       fas
-                      fa-trash
+                      fa-user-plus
+                      rounded
+                      text-white
+                      bg-green-600
+                      hover:bg-green-500
+                      transition
+                      0.1s
+                    "
+                  />
+                </button>
+              </div>
+          </div>
+          <ul v-if="teacherClass.teaches" class="p-1 m-1 bg-gray-100 inline-block w-full">
+            <li
+              class="
+                px-3
+                my-1
+                flex
+                justify-between
+                bg-white
+                shadow-lg
+                border-l-4 border-gray-800
+                box-border
+                w-full
+              "
+
+              v-for="(student, studentIndex) in teacherClass.students" :key="studentIndex"
+            >
+              <span class="m-1 font-bold truncate">
+                <i class="fas fa-user p-1 m-1 text-lg text-left"></i>
+                {{ student.last_name }},<span class="font-normal"> {{ student.first_name }} </span> </span>
+              <div class="inline">
+                <button>
+                  <i
+                    class="
+                      p-2
+                      my-1
+                      mx-2
+                      fas
+                      fa-user-minus
                       rounded
                       text-white
                       bg-red-600
@@ -133,23 +197,110 @@
           </ul>
         </div>
       </div>
+
+      <!-- Rest of classes -->
+
+      <div>
+        <h2
+          class="
+            p-5
+            m-1
+            rounded-t-lg
+            bg-gray-900
+            text-white text-xl
+            font-semibold
+            text-left
+          "
+        >
+          <i class="fas fa-chalkboard-teacher mx-3 rounded-full p-3 bg-blue-700"> </i>
+          Rest of classes
+        </h2>
+        <div v-for="(teacherClass, tcIndex) in classData" :key="tcIndex">
+          
+          <div v-if="!teacherClass.teaches" class="m-1 px-5 py-2 bg-gray-900 text-white text-lg text-left">
+          Class
+          <span class="font-bold"> {{ teacherClass.class_name }} </span>   
+          </div>
+          <ul v-if="!teacherClass.teaches" class="p-1 m-1 bg-gray-100 inline-block w-full">
+            <li
+              class="
+                px-3
+                my-1
+                flex
+                justify-between
+                bg-white
+                shadow-lg
+                border-l-4 border-gray-800
+                box-border
+                w-full
+              "
+
+              v-for="(student, studentIndex) in teacherClass.students" :key="studentIndex"
+            >
+              <span class="m-1 font-bold truncate">
+                <i class="fas fa-user p-1 m-1 text-lg text-left"></i>
+                {{ student.last_name }},<span class="font-normal"> {{ student.first_name }} </span> </span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </section>
+
+    <alert
+      :show="showAlert"
+      :close="closeAlert"
+      :success="alertSuccess"
+      v-bind:title="alertMessage"
+      v-bind:description="alertDescription"
+    />
   </div>
 </template>
 
 <script>
+import Alert from '../general/Alert';
+
 export default {
   name: 'Classes',
-  components: {},
+  components: {
+    Alert
+  },
   data: () => ({
     email: localStorage.getItem('user'),
     schoolID: localStorage.getItem('schoolCode'),
     classData: {},
+    
+    /* Alert information */
+    showAlert: true,
+    alertMessage: '',
+    alertDescription: '',
+    alertSuccess: false,
   }),
   mounted() {
     this.getClassData();
   },
   methods: {
+    /* Alert methods */
+    /**
+     * Alerts the user with a dialog box
+     * @param {String} message - the message to alert
+     * @param {String} description - the description of the message
+     * @param {Boolean} success - is the alert about a success or failure?
+     */
+    alertUser(message, description, success) {
+      this.alertMessage = message;
+      this.alertDescription = description;
+      this.alertSuccess = success;
+      this.showAlert = true;
+    },
+
+    /**
+     * Closes the alert dialog box.
+     */
+    closeAlert() {
+      this.showAlert = false;
+      (this.alertMessage = ''), (this.alertDescription = '');
+    },
+
     async getClassData() {
       /* All existing classes of school */
       var classData = await this.getClassesInSchool();
@@ -161,6 +312,7 @@ export default {
         for (const i in classData) {
           if (classData[i]) {
             classData[i].teaches = false;
+            classData[i].edit = false;
             for (const tc in teachedClasses) {
               console.log(tc);
               if (teachedClasses[tc]) {
@@ -184,6 +336,7 @@ export default {
     },
     /**
      * Gets all the classes the teacher teaches in
+     * @return The classes found
      */
      async getClassesTeachedBy() {
       var classes = null;
@@ -213,6 +366,7 @@ export default {
 
     /**
      * Gets all the classes of particular school
+     * @return The classes found
      */
     async getClassesInSchool() {
       var classes = null;
@@ -243,6 +397,8 @@ export default {
 
     /**
      * Gets all students in a given class
+     * @param classID the class code
+     * @return The students found with the class code
      */
     async getStudentsInClass(classID) {
       var students = null;
@@ -270,6 +426,47 @@ export default {
       }
 
       return students;
+    },
+
+    addNewClass() {
+       /* Form code */
+      /* ... */
+    },
+
+    confirmEditClassName(teacherClass, confirm) {
+      teacherClass.edit = false;
+      if (confirm) {
+
+      } else {
+
+      }
+    },
+
+    async deleteStudent(student) {
+      var confirm = false;
+      /* Confirm delete code */
+      /* ... */
+      if (confirm) {
+        try {
+          await this.$axios
+          .post(
+            `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/delete_student`,
+            { 
+              responseType: 'json',
+              email: `${student.email}`,
+            },
+          )
+          .then((response) => {
+            if (response) {
+                /* Students in class */
+                success = response.data;
+              }
+          })
+          .catch((error) => console.log(error));
+        } catch (e) {
+          console.log(e);
+        }
+      }
     },
   },
 };
