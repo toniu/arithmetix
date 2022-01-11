@@ -74,17 +74,13 @@
         <div v-for="(teacherClass, tcIndex) in classData" :key="tcIndex">
           
           <div v-if="teacherClass.teaches" class="m-1 px-5 py-2 bg-gray-900 text-white text-lg text-left">
-            <input type="text" class="p-1 bg-none bg-gray rounded-t border-b-2 border-blue-400
-            text-black"
-            v-bind:placeholder="teacherClass.class_name"
-            v-show="teacherClass.edit">
-            <span v-show="!teacherClass.edit">
+            <span>
               Class
               <span class="font-bold"> {{ teacherClass.class_name }} </span> 
             </span>
             <div class="inline">
-                <button class="mx-2" v-show="!teacherClass.edit"
-                @click="teacherClass.edit = true">
+              <!-- Edit -->
+                <button class="mx-2">
                   <i
                     class="
                       px-2
@@ -96,42 +92,6 @@
                       text-white
                       bg-gray-800
                       hover:bg-gray-700
-                      transition
-                      0.1s
-                    "
-                  />
-                </button>
-                <button class="mx-2" v-show="teacherClass.edit"
-                @click="confirmEditClassName(teacherClass, true)">
-                  <i
-                    class="
-                      px-2
-                      py-2
-                      m-1
-                      fas
-                      fa-check
-                      rounded
-                      text-white
-                      bg-green-800
-                      hover:bg-green-700
-                      transition
-                      0.1s
-                    "
-                  />
-                </button>
-                <button class="mx-2" v-show="teacherClass.edit"
-                @click="confirmEditClassName(teacherClass, false)">
-                  <i
-                    class="
-                      px-2
-                      py-2
-                      m-1
-                      fas
-                      fa-times
-                      rounded
-                      text-white
-                      bg-red-800
-                      hover:bg-red-700
                       transition
                       0.1s
                     "
@@ -246,23 +206,41 @@
       </div>
     </section>
 
-    <alert
+    <Alert
       :show="showAlert"
       :close="closeAlert"
       :success="alertSuccess"
       v-bind:title="alertMessage"
       v-bind:description="alertDescription"
     />
+
+    <Confirm
+      :show="showConfirm"
+      :close="showConfirm"
+      v-bind:title="confirmMessage"
+      v-bind:description="alertDescription"
+    />
+    <Form
+      :show="showForm"
+      :close="closeForm"
+      v-bind:title="formTitle"
+      v-bind:form="formChosen"
+      v-bind:object="formObject"
+    />
   </div>
 </template>
 
 <script>
 import Alert from '../general/Alert';
+import Confirm from '../general/Confirm';
+import Form from '../teacher/ClassForm'
 
 export default {
   name: 'Classes',
   components: {
-    Alert
+    Alert,
+    Confirm,
+    Form
   },
   data: () => ({
     email: localStorage.getItem('user'),
@@ -270,16 +248,28 @@ export default {
     classData: {},
     
     /* Alert information */
-    showAlert: true,
+    showAlert: false,
     alertMessage: '',
     alertDescription: '',
     alertSuccess: false,
+
+     /* Confirm information */
+    showConfirm: false,
+    confirmMessage: '',
+    confirmDescription: '',
+
+    /* Form information */
+    showForm: true,
+    formTitle: 'Ad',
+    formChosen: 'add_student',
+    formObject: null,
+    errorMsg: '',
   }),
   mounted() {
     this.getClassData();
   },
   methods: {
-    /* Alert methods */
+    /*--- Alert methods ---*/
     /**
      * Alerts the user with a dialog box
      * @param {String} message - the message to alert
@@ -301,6 +291,62 @@ export default {
       (this.alertMessage = ''), (this.alertDescription = '');
     },
 
+    /*--- Confirm methods ---*/
+    /**
+     * Confirm action  with a dialog box
+     * @param {String} message - the message to dialog
+     * @param {String} description - the description of the message
+     */
+    confirmAction(message, description) {
+      this.confirmMessage = message;
+      this.confirmDescription = description;
+      this.showConfirm = true;
+    },
+
+    /**
+     * Closes the alert dialog box.
+     */
+    closeConfirm() {
+      this.showConfirm = false;
+      (this.confirmMessage = ''), (this.confirmDescription = '');
+    },
+
+    /*--- Form Methods ---*/
+    
+    /**
+     * Opens the form based on user's chosen action
+     * @param {String} form - the form chosen based on action
+     * @param {String} object - the selected model (a student or class)
+     */
+    openForm(form, object) {
+      var title = '';
+      if (form == 'add_class') {
+        title = 'Add Class'
+      } else if (form == 'add_student') {
+        title = 'Add Student'
+      } else if (form == 'rename_class') {
+        title = 'Rename Class'
+      } 
+
+      this.formTitle = title;
+      this.formChosen = form;
+      this.formObject = object;
+      this.showForm = true;
+    },
+
+    /**
+     * Closes the form
+     */
+    closeForm() {
+      this.showForm = false;
+      (this.formTitle = ''), (this.formChosen = ''), (this.formObject = null);
+    },
+
+    /*--- Retrieve Data ---*/
+
+    /**
+     * Gets class data of logged in user's school
+     */
     async getClassData() {
       /* All existing classes of school */
       var classData = await this.getClassesInSchool();

@@ -337,9 +337,24 @@ router.post('/get_classes_teached_by', async (req, res) => {
   }
 });
 
+/**
+ * Adds new class into a school
+ */
 router.post('/add_class', async (req, res) => {});
+
+/**
+ * Re-names the name of a class
+ */
 router.post('/edit_class', async (req, res) => {});
+
+/**
+ * Adds new student into a class
+ */
 router.post('/add_student', async (req, res) => {});
+
+/**
+ * Removes a student from a class
+ */
 router.post('/delete_student', async (req, res) => {});
 
 router.post('/add_assignment', async (req, res) => {});
