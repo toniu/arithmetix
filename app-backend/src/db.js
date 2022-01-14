@@ -209,6 +209,126 @@ class Db {
     return rows;
   }
 
+  /**
+   * Gets all of the existing students of a specific year
+   * @param schoolCode - The code of the school
+   * @param classCode - The code of the class
+   * @param year - The year
+   * @returns {rows} - The students
+   */
+   async getStudentsByYear(schoolCode, classCode, year) {
+    const {rows} = await pool.query(
+      `SELECT
+      student_no, student_email, year 
+      FROM students 
+      WHERE school_code = $1
+      AND year = $2`,
+    [schoolCode, year]);
+    console.log(rows);
+    return rows;
+  }
+
+  /**
+   * Adds a new class into the school
+   * @param {*} classCode - the class code of the new class
+   * @param {*} className - the name the new class
+   * @param {*} year - the year of the new class
+   * @param {*} schoolCode - the school code of the new class
+   * @returns the inserted class
+   */
+  async addClassToSchool(classCode, className, year, schoolCode) {
+    let classInsert = await pool.query(`INSERT INTO classes (class_code, class_name, year, school_code)
+      VALUES ($1, $2, $3, $4)`,
+      [classCode, className, year, schoolCode]
+    );
+    return classInsert;
+  }
+
+  /**
+   * Adds a new student(s) into the class (chosen from existing student users)
+   * @param {*} studentEmails - array of emails of student
+   * @param {*} schoolCode - the school code of new student
+   * @param {*} classCode - the class code of the class the student is in
+   * @param {*} year - the year the student is in
+   * @returns the inserted student(s)
+   */
+  async addStudentsToClass(studentEmails, schoolCode, classCode) {
+    const conn = await pool.connect();
+
+    /* Array of student's class code to update */
+    for (let index = 0; index < studentEmails.length; index++) {
+      const email = studentEmails[index];
+      await conn.query(
+        `UPDATE students
+        SET class_code = $1
+        WHERE student_email = $2 AND
+        school_code = $3`
+        [classCode, email, schoolCode]
+      ); 
+    }
+
+    return await conn.release();
+  }
+
+  /**
+   * Removes student(s) from the class (chosen from existing student users)
+   * @param {*} studentEmails - array of emails of student
+   * @param {*} schoolCode - the school code of student(s)
+   * @returns the removed student(s)
+   */
+   async removeStudentsFromClass(studentEmails, schoolCode) {
+    const conn = await pool.connect();
+
+    /* Array of student's class code to update */
+    for (let index = 0; index < studentEmails.length; index++) {
+      const email = studentEmails[index];
+      await conn.query(
+        `UPDATE students
+        SET class_code = 0
+        WHERE student_email = $1
+        AND schoolCode = $2`
+        [email, schoolCode]
+      ); 
+    }
+
+    return await conn.release();
+  }
+
+  /**
+   * Renames the name of a class
+   * @param {*} classCode - the class code
+   * @param {*} schoolCode - the school code
+   * @param {*} newName - the new name assigned to the class
+   * @returns The updated class name
+   */
+  async renameClass(classCode, schoolCode, newName) {
+    let classNameUpdate = await pool.query(
+      `UPDATE classes
+      SET class_name = $1
+      WHERE school_code = $2 AND
+      class_code = $3`,
+      [newName, schoolCode, classCode]
+    );
+
+    return classNameUpdate;
+  }
+
+  /**
+   * Deletes a class from school
+   * @param {*} schoolCode - the school code
+   * @param {*} classCode - the class code
+   * @returns the deleted class
+   */
+   async deleteClass(schoolCode, classCode) {
+    return await pool.query(
+      `
+      DELETE FROM classes
+      WHERE school_code = $1
+      AND class_code = $2`,
+      [schoolCode, classCode],
+    );
+  }
+
 
 }
 

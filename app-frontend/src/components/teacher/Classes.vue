@@ -226,6 +226,7 @@
       v-bind:title="formTitle"
       v-bind:form="formChosen"
       v-bind:object="formObject"
+      v-bind:errorMsg="errorMsg"
     />
   </div>
 </template>
@@ -338,6 +339,10 @@ export default {
      * Closes the form
      */
     closeForm() {
+      /* Validate */
+      
+
+      /* Close form */
       this.showForm = false;
       (this.formTitle = ''), (this.formChosen = ''), (this.formObject = null);
     },
@@ -464,6 +469,39 @@ export default {
               /* Students in class */
               students = response.data;
               console.log('Students in class ' + classID + ': ', students);
+            }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
+
+      return students;
+    },
+
+    /**
+     * Gets all students in a specific year
+     * @param yearOfSchool the year
+     * @return The students found in the specific year of a school
+     */
+    async getStudentsByYear(yearOfSchool) {
+      var students = null;
+
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/get_students_by_year`,
+          { 
+            responseType: 'json',
+            school_code: `${this.schoolID}`,
+            year: `${yearOfSchool}`
+          },
+        )
+        .then((response) => {
+          if (response) {
+              /* Students in class */
+              students = response.data;
+              console.log('Students by year ' + yearOfSchool + + ': ', students);
             }
         })
         .catch((error) => console.log(error));

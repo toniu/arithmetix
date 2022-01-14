@@ -1,7 +1,7 @@
 <template>
   <div v-show="show" class="overlay flex items-center">
     <!-- Add Class -->
-    <div class="form-box align-center m-auto w-full md:w-5/6 justify-center p-2 rounded opacity-100 bg-blue-50" v-if="form == 'add_class'">
+    <div class="form-box align-center m-auto w-full md:w-5/6 justify-center p-2 rounded opacity-100 bg-white" v-if="form == 'add_class'">
       <form class="p-10">
           <h2 class="text-2xl p-2 text-center font-light text-gray-900 mb-4">
                 <i class="fas fa-chalkboard-teacher text-blue-400 mx-2"></i>
@@ -107,7 +107,7 @@
 
     <!-- Add Student -->
     <div
-      class="form-box align-center m-auto w-full md:w-5/6 justify-center p-2 rounded opacity-100 bg-blue-50"
+      class="form-box align-center m-auto w-full md:w-5/6 justify-center p-2 rounded opacity-100 bg-white"
       v-if="form == 'add_student'">
       <form class="p-10">
           <h2 class="text-2xl p-2 text-center font-light text-gray-900 mb-4">
@@ -214,7 +214,7 @@
     </div>
 
     <!-- Rename Class -->
-     <div class="form-box align-center m-auto w-full md:w-5/6 justify-center p-2 rounded opacity-100 bg-blue-50" v-if="form == 'rename_class'">
+     <div class="form-box align-center m-auto w-full md:w-5/6 justify-center p-2 rounded opacity-100 bg-white" v-if="form == 'rename_class'">
         <form class="p-10">
           <h2 class="text-2xl p-2 text-center font-light text-gray-900 mb-4">
                 <i class="fas fa-chalkboard-teacher text-blue-400 mx-2"></i>
@@ -327,7 +327,7 @@
 
 <script>
 export default {
-  props: ['show', 'close', 'title', 'form', 'object'],
+  props: ['show', 'close', 'title', 'form', 'object','errorMsg'],
   data: () => ({
       errorMsg: ''
   }),

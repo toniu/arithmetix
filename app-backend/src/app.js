@@ -338,29 +338,146 @@ router.post('/get_classes_teached_by', async (req, res) => {
 });
 
 /**
+ * Gets all the students of a specific year in a school
+ */
+ router.post('/get_students_by_year', async (req, res) => {
+  try {
+    var studentsByYear = await db.getStudentsByYear(req.body.school_code,
+      req.body.year);
+    
+    for (const i in studentsByYear) {
+      /* Add names of students */
+      if (studentsByYear[i]) {
+        studentsByYear[i].first_name = await db.getFirstName(studentsOfClass[i].student_email);
+        studentsByYear[i].last_name = await db.getLastName(studentsOfClass[i].student_email);
+      }
+    }
+    res.send({success: true, data: studentsByYear});
+  } catch (e) {
+    res.send({success: false, error: 'Could not get students of class by year'});
+    return false;
+  }
+});
+
+/**
  * Adds new class into a school
  */
-router.post('/add_class', async (req, res) => {});
+router.post('/add_class', async (req, res) => {
+  try {
+    let insertedClass = await db.addClassToSchool(
+      req.body.class_code,
+      req.body.class_name,
+      req.body.year,
+      req.body.school_code);
+
+    /* Add array of students to add in forum */
+      res.send({success: true, data: insertedClass});
+  } catch(e) {
+    res.send({success: false, error: 'Could not add class'});
+    return false;
+  }
+});
 
 /**
  * Re-names the name of a class
  */
-router.post('/edit_class', async (req, res) => {});
+router.post('/rename_class', async (req, res) => {
+  try {
+    let renamedClass = await db.renameClass(
+      req.body.class_code,
+      req.body.school_code,
+      req.body.new_name);
+    res.send({success: true, data: renamedClass});
+  } catch(e) {
+    res.send({success: false, error: 'Could not rename class'});
+    return false;
+  }
+});
 
 /**
  * Adds new student into a class
  */
-router.post('/add_student', async (req, res) => {});
+router.post('/add_students_to_class', async (req, res) => {
+  /* Add student (or students) to a class -
+    changing the student's class code to a class that is not void (i.e. not '0') */
+  try {
+    let insertedStudents = await db.addStudentsToClass(
+      req.body.student_emails,
+      req.body.school_code,
+      req.body.class_code);
+    res.send({success: true, data: insertedStudents});
+  } catch(e) {
+    res.send({success: false, error: 'Could not add student(s) to class'});
+    return false;
+  }
+});
 
 /**
  * Removes a student from a class
  */
-router.post('/delete_student', async (req, res) => {});
+router.post('/remove_students_from_class', async (req, res) => {
+  try {
+    /* Deleting a student(s) from a class -
+    changing the student's class code to '0' (void) */
 
-router.post('/add_assignment', async (req, res) => {});
-router.post('/edit_assignment', async (req, res) => {});
-router.post('/remove_assignment', async (req, res) => {});
+    let updatedStudents = await db.removeStudentsFromClass(
+      req.body.student_emails,
+      req.body.school_code
+    );
+    res.send({success: true, data: updatedStudents});
+  } catch (e) {
+    res.send({success: false, error: 'Could not remove student(s) from class'});
+    return false;
+  }
+});
 
+/**
+ * Deletes a class from school
+ */
+router.post('/delete_class', async (req, res) => {
+  try {
+    /* Remove students from class */
+    let deletedStudents = await db.removeStudentsFromClass(
+      req.body.student_emails,
+      req.body.school_code
+    );
+
+    console.log('Students removed from class: ', deletedStudents);
+
+    /* Delete class from system */
+    let deletedClass = await db.deleteClass(
+      req.body.school_code,
+      req.body.class_code
+    );
+    res.send({success: true, data: deletedClass});
+  } catch (e) {
+    res.send({success: false, error: 'Could not delete class'});
+    return false;
+  }
+});
+
+/* ----- */
+router.post('/add_assignment', async (req, res) => {
+
+});
+router.post('/edit_assignment', async (req, res) => {
+
+});
+router.post('/remove_assignment', async (req, res) => {
+
+});
+router.post('/send_submission', async (req, res) => {
+  /* Update Status */
+
+});
+router.post('/update_feedback', async (req, res) => {
+
+});
+router.post('/get_submitted', async (req, res) => {
+
+});
+
+/* --- */
 router.post('/create_notification', async (req, res) => {});
 router.post('/send_notification', async (req, res) => {});
 router.post('/read_notification', async (req, res) => {});
