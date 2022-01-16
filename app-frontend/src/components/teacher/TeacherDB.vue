@@ -64,8 +64,8 @@
           "
         >
           <i class="fas fa-school mx-3 rounded-full px-3 py-4 bg-gray-300 text-gray-800"> </i>
-          <span class="mx-1"> <span class="font-light"> Teaching at </span> Richmond College 
-            <span class="block font-normal text-base text-gray-300 ml-20"> Richmond, London, United Kingdom </span> 
+          <span class="mx-1"> <span class="font-light"> Teaching at </span> {{ schoolInfo.school_name }}
+            <span class="block font-normal text-base text-gray-300 ml-20"> {{ schoolInfo.city }}, {{ schoolInfo.county }}, United Kingdom </span> 
           </span> 
         </h2>
         <!-- Teaching -->
@@ -149,11 +149,44 @@ export default {
     return {
       firstName: localStorage.getItem('firstName'),
       lastName: localStorage.getItem('lastName'),
+      schoolID: localStorage.getItem('schoolCode'),
+      schoolInfo: {},
     };
+  },
+  mounted() {
+    this.getSchoolData();
   },
   methods: {
     goTo(link) {
       this.$router.push(link);
+    },
+
+    /**
+     * Gets school information
+     */
+    async getSchoolData() {
+       console.log('pep');
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/get_school_info`,
+          { 
+            responseType: 'json',
+            school_code: `${this.schoolID}`,
+          },
+        )
+        .then((response) => {
+          if (response) {
+              /* School data */
+              var schoolData = response.data.data;
+              console.log('School is: ', schoolData);
+              this.schoolInfo = schoolData;
+            }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
 };

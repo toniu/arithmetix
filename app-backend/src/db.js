@@ -167,14 +167,17 @@ class Db {
       `SELECT
       class_code, school_code 
       FROM teachers 
-      WHERE teacher_email = $1`,
+      WHERE teacher_email = $1
+      AND class_code <> 0`,
     [teacherEmail]);
     console.log(rows);
     return rows;
   }
 
   /**
-   * Gets all existing classes of a school
+   * Gets all existing classes of a school.
+   * Avoids void classes (class_code = 0); 
+   * which means students who are in no class
    * @param schoolCode - The code of the school
    * @returns {rows} - The classes 
    */
@@ -184,6 +187,7 @@ class Db {
       class_code, class_name, year 
       FROM classes 
       WHERE school_code = $1
+      AND class_code <> 0
       ORDER BY year`,
     [schoolCode]);
     console.log(rows);
@@ -200,12 +204,11 @@ class Db {
    async getStudentsOfClass(schoolCode, classCode) {
     const {rows} = await pool.query(
       `SELECT
-      student_no, student_email, year 
+      student_no, student_email, class_code, year 
       FROM students 
       WHERE school_code = $1
       AND class_code = $2`,
     [schoolCode, classCode]);
-    console.log(rows);
     return rows;
   }
 
@@ -216,10 +219,10 @@ class Db {
    * @param year - The year
    * @returns {rows} - The students
    */
-   async getStudentsByYear(schoolCode, classCode, year) {
+   async getStudentsByYear(schoolCode, year) {
     const {rows} = await pool.query(
       `SELECT
-      student_no, student_email, year 
+      student_no, student_email, class_code, year 
       FROM students 
       WHERE school_code = $1
       AND year = $2`,

@@ -330,6 +330,7 @@ router.post('/get_classes_teached_by', async (req, res) => {
         studentsOfClass[i].last_name = await db.getLastName(studentsOfClass[i].student_email);
       }
     }
+    console.log(studentsOfClass);
     res.send({success: true, data: studentsOfClass});
   } catch (e) {
     res.send({success: false, error: 'Could not get students of given class'});
@@ -348,8 +349,8 @@ router.post('/get_classes_teached_by', async (req, res) => {
     for (const i in studentsByYear) {
       /* Add names of students */
       if (studentsByYear[i]) {
-        studentsByYear[i].first_name = await db.getFirstName(studentsOfClass[i].student_email);
-        studentsByYear[i].last_name = await db.getLastName(studentsOfClass[i].student_email);
+        studentsByYear[i].first_name = await db.getFirstName(studentsByYear[i].student_email);
+        studentsByYear[i].last_name = await db.getLastName(studentsByYear[i].student_email);
       }
     }
     res.send({success: true, data: studentsByYear});
@@ -371,6 +372,14 @@ router.post('/add_class', async (req, res) => {
       req.body.school_code);
 
     /* Add array of students to add in forum */
+    if (req.body.student_emails.length > 0) {
+      let insertedStudents = await db.addStudentsToClass(
+        req.body.student_emails,
+        req.body.school_code,
+        req.body.class_code);
+      console.log('Students in new class: ', insertedStudents);
+    }
+
       res.send({success: true, data: insertedClass});
   } catch(e) {
     res.send({success: false, error: 'Could not add class'});

@@ -61,8 +61,11 @@
           <i class="fas fa-chalkboard-teacher mx-3 rounded-full p-3 bg-blue-500"> </i>
           My classes
         </h2>
-        <button class="px-5 py-2 md:rounded-3xl font-bold w-full md:w-11/12 text-white bg-green-800 hover:bg-green-700 transition 0.1s">
-            Add new class
+
+        <div class="flex space-x-1">
+          <button class="px-5 py-2 md:rounded-3xl font-bold text-sm w-full md:w-11/12 text-white bg-green-800 hover:bg-green-700 transition 0.1s"
+          @click="addNewClass(12)">
+            Add Year 12 Class
             <i
               class="
                 m-1
@@ -70,7 +73,20 @@
                 fa-plus
               "
             />
-          </button>
+        </button>
+        <button class="px-5 py-2 md:rounded-3xl font-bold text-sm w-full md:w-11/12 text-white bg-green-800 hover:bg-green-700 transition 0.1s"
+        @click="addNewClass(13)">
+          Add Year 13 Class
+          <i
+            class="
+              m-1
+              fas
+              fa-plus
+            "
+          />
+        </button>
+        </div>
+      
         <div v-for="(teacherClass, tcIndex) in classData" :key="tcIndex">
           
           <div v-if="teacherClass.teaches" class="m-1 px-5 py-2 bg-gray-900 text-white text-lg text-left">
@@ -79,8 +95,9 @@
               <span class="font-bold"> {{ teacherClass.class_name }} </span> 
             </span>
             <div class="inline">
-              <!-- Edit -->
-                <button class="mx-2">
+              <!-- Rename class -->
+                <button class="mx-2"
+                @click="renameClass(teacherClass)">
                   <i
                     class="
                       px-2
@@ -97,7 +114,9 @@
                     "
                   />
                 </button>
-                <button class="float-right">
+                <!-- Add new student to class -->
+                <button class="float-right"
+                @click="addNewStudent(teacherClass)">
                   <i
                     class="
                       p-2
@@ -206,6 +225,7 @@
       </div>
     </section>
 
+    <!-- Alert box -->
     <Alert
       :show="showAlert"
       :close="closeAlert"
@@ -214,19 +234,23 @@
       v-bind:description="alertDescription"
     />
 
+    <!-- Confirmation box -->
     <Confirm
       :show="showConfirm"
       :close="showConfirm"
       v-bind:title="confirmMessage"
       v-bind:description="alertDescription"
     />
+
+    <!-- Form box -->
     <Form
       :show="showForm"
+      :submit="submitMethod"
       :close="closeForm"
       v-bind:title="formTitle"
       v-bind:form="formChosen"
-      v-bind:object="formObject"
-      v-bind:errorMsg="errorMsg"
+      v-bind:params="formParams"
+      v-bind:errorMsg="formError"
     />
   </div>
 </template>
@@ -261,10 +285,11 @@ export default {
 
     /* Form information */
     showForm: true,
-    formTitle: 'Ad',
+    submitMethod: null,
+    formTitle: 'add student',
     formChosen: 'add_student',
-    formObject: null,
-    errorMsg: '',
+    formParams: null,
+    formError: '',
   }),
   mounted() {
     this.getClassData();
@@ -319,32 +344,38 @@ export default {
      * @param {String} form - the form chosen based on action
      * @param {String} object - the selected model (a student or class)
      */
-    openForm(form, object) {
+    openForm(form, params, year) {
+      console.log('Opened form params: ', params);
       var title = '';
       if (form == 'add_class') {
-        title = 'Add Class'
+        title = 'add year ' + year + ' class'
       } else if (form == 'add_student') {
-        title = 'Add Student'
+        title = 'add student'
       } else if (form == 'rename_class') {
-        title = 'Rename Class'
+        title = 'rename class'
       } 
 
       this.formTitle = title;
       this.formChosen = form;
-      this.formObject = object;
+      this.formParams = params;
       this.showForm = true;
     },
 
     /**
      * Closes the form
      */
-    closeForm() {
+    async closeForm() {
+      
+
       /* Validate */
       
+      /* Refresh data */
+      // await this.getClassData();
 
       /* Close form */
       this.showForm = false;
-      (this.formTitle = ''), (this.formChosen = ''), (this.formObject = null);
+      (this.formTitle = ''), (this.formChosen = ''),
+      (this.formParams = {});
     },
 
     /*--- Retrieve Data ---*/
@@ -512,18 +543,63 @@ export default {
       return students;
     },
 
-    addNewClass() {
-       /* Form code */
+    /**
+     * Opens a form to add a new class into a school;
+     * provides a list of students the user can add into the
+     * new class as well.
+     * @param year - The year
+     */
+    async addNewClass(year) {
+       /* Get all students of year */
+       var studentsOfYear = await this.getStudentsByYear(year);
+       var SOYArray = studentsOfYear.data;
+
+       /* Students to choose from (i.e. students of the same year who are not in any class) */
+      const studentsToChooseFrom = SOYArray.filter(student => student.class_code == 0);
+      console.log('Students to add from', studentsToChooseFrom);
+
+       this.openForm('add_class',
+       {students: studentsToChooseFrom},
+       year);
       /* ... */
     },
 
-    confirmEditClassName(teacherClass, confirm) {
-      teacherClass.edit = false;
-      if (confirm) {
+    /**
+     * Opens a form to select a student to add into a class
+     * @param classID - The selected class code to add the student into
+     * @param year - The year
+     */
+    async addNewStudent(teacherClass) {
+      var classID = teacherClass.class_code;
+      var year = teacherClass.year;
+      /* Get all students of year */
+       var studentsOfYear = await this.getStudentsByYear(year);
+       var SOYArray = studentsOfYear.data;
+       console.log('SOY ', SOYArray );
 
+      var studentsToChooseFrom = SOYArray.filter(student => student.class_code != classID);
+      console.log('Students to add from', studentsToChooseFrom);
+
+      if (studentsToChooseFrom.length > 0) {
+        this.openForm(
+        'add_student',
+        {class: teacherClass,
+        students: studentsToChooseFrom,
+        studentsToAdd: []},
+        year);
       } else {
-
+        console.log('There are no students of this year to add');
+        this.alertUser('Cannot add student',
+        'There are no students from Year ' + year + ' (who is not in a class) to add in this class',
+        false);
       }
+    },
+
+    /**
+     * 
+     */
+    renameClass(teacherClass) {
+      this.openForm('rename_class', {class: teacherClass}, null);
     },
 
     async deleteStudent(student) {
@@ -552,6 +628,43 @@ export default {
         }
       }
     },
+
+    /*--- Confirm methods ---*/
+
+    async submitAddClass(formEntries) {
+      /* Validation Check */
+
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/add_class`,
+          { 
+            responseType: 'json',
+            class_code: `${student.email}`,
+            class_name: `${formEntries.class}`,
+            year: `${formEntries.year}`,
+            school_code: `${this.schoolID}`,
+          },
+        )
+        .then((response) => {
+          if (response) {
+              /* SUCCESS */
+              var dataSubmitted = response.data;
+              console.log('Submit entry: ', dataSubmitted);
+            }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async submitAddStudent() {
+
+    },
+    async submitRenameClass() {
+
+    }
   },
 };
 </script>

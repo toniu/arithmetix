@@ -71,10 +71,13 @@ INSERT INTO schools (school_code, school_name, street, city, county, post_code)
 VALUES (6, 'Richmond-upon-Thames College', 'Egerton Road', 'South West London', 'London', 'SW2 7HJ');
 
 ------ Hard-coded classes
+
 INSERT INTO classes(class_code, class_name, year, school_code)
-VALUES(1, 'C3801', '2019', 1);
+VALUES(0, 'NOCLASS', '0', 1);
 INSERT INTO classes(class_code, class_name, year, school_code)
-VALUES(2, 'C3802', '2019', 1);
+VALUES(1, 'C3801', '12', 1);
+INSERT INTO classes(class_code, class_name, year, school_code)
+VALUES(2, 'C3802', '13', 1);
 
 ------ Hard-coded students 
 INSERT INTO students (student_email, school_code, class_code, year)
@@ -109,6 +112,24 @@ INSERT INTO students (student_email, school_code, class_code, year)
 VALUES ('testuser15@gmail.com', 1, 2, '13');
 INSERT INTO students (student_email, school_code, class_code, year)
 VALUES ('testuser16@gmail.com', 1, 2, '13');
+
+--- Students not in a class
+INSERT INTO students (student_email, school_code, class_code, year)
+VALUES ('testuser17@gmail.com', 1, 0, '12');
+INSERT INTO students (student_email, school_code, class_code, year)
+VALUES ('testuser18@gmail.com', 1, 0, '12');
+INSERT INTO students (student_email, school_code, class_code, year)
+VALUES ('testuser19@gmail.com', 1, 0, '12');
+INSERT INTO students (student_email, school_code, class_code, year)
+VALUES ('testuser20@gmail.com', 1, 0, '12');
+INSERT INTO students (student_email, school_code, class_code, year)
+VALUES ('testuser21@gmail.com', 1, 0, '13');
+INSERT INTO students (student_email, school_code, class_code, year)
+VALUES ('testuser22@gmail.com', 1, 0, '13');
+INSERT INTO students (student_email, school_code, class_code, year)
+VALUES ('testuser23@gmail.com', 1, 0, '13');
+INSERT INTO students (student_email, school_code, class_code, year)
+VALUES ('testuser24@gmail.com', 1, 0, '13');
 
 
 ------ Hardcoded teachers
