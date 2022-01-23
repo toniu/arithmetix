@@ -92,7 +92,7 @@
               </td>
               <td class="px-5 py-5 border-b border-gray-200 bg-white">
                 <button class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-700 transition 0.1s"
-                @click="openPDF(exam.PDFLink)"
+                @click="getFile(exam.PDFLink)"
                 v-if="exam.PDFLink != ''"> 
                   <i class="fas fa-file-pdf  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> download pdf </span>
@@ -179,6 +179,7 @@ export default {
     },
     
     async getFile(fileURL) {
+      this.$router.push('/github');
       //window.open("/Users/neka/CS3821Repo/app-backend/" + fileURL);
     }, 
     

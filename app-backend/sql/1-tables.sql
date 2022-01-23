@@ -35,6 +35,13 @@ CREATE TABLE IF NOT EXISTS students (
 );
 
 CREATE TABLE IF NOT EXISTS teachers (
+  school_code INT,
+  teacher_email TEXT,
+  FOREIGN KEY (school_code) REFERENCES schools(school_code) ON DELETE CASCADE,
+  FOREIGN KEY (teacher_email) REFERENCES users(email) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS leaders (
   class_code INT,
   school_code INT,
   teacher_email TEXT,

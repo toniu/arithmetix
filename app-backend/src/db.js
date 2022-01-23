@@ -166,7 +166,7 @@ class Db {
     const {rows} = await pool.query(
       `SELECT
       class_code, school_code 
-      FROM teachers 
+      FROM leaders 
       WHERE teacher_email = $1
       AND class_code <> 0`,
     [teacherEmail]);
@@ -232,18 +232,28 @@ class Db {
   }
 
   /**
-   * Adds a new class into the school
+   * Adds a new class into the school with leader as the teacher logged in
    * @param {*} classCode - the class code of the new class
    * @param {*} className - the name the new class
    * @param {*} year - the year of the new class
    * @param {*} schoolCode - the school code of the new class
+   * @param {*} teacherEmail - the teacher's email
    * @returns the inserted class
    */
-  async addClassToSchool(classCode, className, year, schoolCode) {
+  async addClassToSchool(classCode, className, year, schoolCode, teacherEmail) {
+    /* Add class to system */
+    console.log(classCode, className, year, schoolCode, teacherEmail);
     let classInsert = await pool.query(`INSERT INTO classes (class_code, class_name, year, school_code)
       VALUES ($1, $2, $3, $4)`,
       [classCode, className, year, schoolCode]
     );
+    
+    /* Set the teacher as the leader of the class */
+    await pool.query(`INSERT into leaders (class_code, school_code, teacher_email)
+      VALUES ($1, $2, $3)`,
+      [classCode, schoolCode, teacherEmail]
+    );
+
     return classInsert;
   }
 
@@ -256,18 +266,27 @@ class Db {
    * @returns the inserted student(s)
    */
   async addStudentsToClass(studentEmails, schoolCode, classCode) {
+    console.log('SE ', studentEmails);
     const conn = await pool.connect();
 
     /* Array of student's class code to update */
-    for (let index = 0; index < studentEmails.length; index++) {
-      const email = studentEmails[index];
-      await conn.query(
-        `UPDATE students
-        SET class_code = $1
-        WHERE student_email = $2 AND
-        school_code = $3`
-        [classCode, email, schoolCode]
-      ); 
+    for (let i = 0; i < studentEmails.length; i++) {
+      if (studentEmails[i]) {
+        console.log('hello');
+        var email = studentEmails[i];
+
+        console.log('SC: ', schoolCode);
+        console.log('EM: ', email);
+        console.log('CC: ', classCode);
+
+        await conn.query(
+          `UPDATE students
+          SET class_code = $1
+          WHERE student_email = $2 AND
+          school_code = $3`
+          [classCode, email, schoolCode]
+        ); 
+      } 
     }
 
     return await conn.release();

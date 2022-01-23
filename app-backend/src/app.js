@@ -364,23 +364,31 @@ router.post('/get_classes_teached_by', async (req, res) => {
  * Adds new class into a school
  */
 router.post('/add_class', async (req, res) => {
+  console.log('Body: ',
+  req.body);
+
+  const emails = req.body.student_emails.split(',');
+  console.log('Emails Array: ', emails);
   try {
     let insertedClass = await db.addClassToSchool(
       req.body.class_code,
       req.body.class_name,
       req.body.year,
-      req.body.school_code);
+      req.body.school_code,
+      req.body.teacher_email);
+
+    console.log(insertedClass);
 
     /* Add array of students to add in forum */
-    if (req.body.student_emails.length > 0) {
+    if (emails.length > 0) {
       let insertedStudents = await db.addStudentsToClass(
-        req.body.student_emails,
+        emails,
         req.body.school_code,
         req.body.class_code);
       console.log('Students in new class: ', insertedStudents);
     }
 
-      res.send({success: true, data: insertedClass});
+    res.send({success: true, data: insertedClass});
   } catch(e) {
     res.send({success: false, error: 'Could not add class'});
     return false;
@@ -409,9 +417,13 @@ router.post('/rename_class', async (req, res) => {
 router.post('/add_students_to_class', async (req, res) => {
   /* Add student (or students) to a class -
     changing the student's class code to a class that is not void (i.e. not '0') */
+  var student = [];
+  student.push(req.body.student_emails);
+
+  console.log('Student:  ', student);
   try {
     let insertedStudents = await db.addStudentsToClass(
-      req.body.student_emails,
+      student,
       req.body.school_code,
       req.body.class_code);
     res.send({success: true, data: insertedStudents});

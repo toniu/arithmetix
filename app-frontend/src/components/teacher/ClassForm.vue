@@ -1,9 +1,9 @@
 <template>
-  <div v-show="show" class="overlay flex items-center">
+  <div v-show="showForm" class="overlay flex items-center">
     <!-- Add Class -->
     <div class="form-box align-center m-auto w-full md:w-5/6 justify-center p-2 rounded opacity-100 bg-white" v-if="form == 'add_class'">
-      <form class="p-10">
-          <h2 class="text-2xl p-2 text-center font-light text-gray-900 mb-4">
+      <div class="p-10">
+          <h2 class="text-2xl p-2 mt-6 md:mt-0 text-center font-light text-gray-900 mb-4">
                 <i class="fas fa-chalkboard-teacher text-blue-400 mx-2"></i>
                 <span class="font-semibold"> {{ title }} </span>
             </h2>
@@ -17,49 +17,55 @@
           <h5 class="flex text-lg align-left w-full font-semibold my-1">class name</h5>
           <div class="p-3 mx-0 h-14 flex align-center">
             <input type="text"
-            required
-            autofocus
+            v-model="inputs.addClass.name"
             class="block p-1 m-1 h-full border-b-2 hover:border-blue-400 focus:border-blue-400
             w-5/6 outline-none inset-0 text-gray-900 transition 0.2s" 
             placeholder="class name"
             />
           </div>
 
-          <!-- year -->
-          <h5 class="flex text-lg align-left w-full font-semibold my-3">select year</h5>
-          <div class="flex justify-center">
-            <div class="mb-3 w-5/6">
-              <select class="form-select appearance-none
-                block
-                w-full
-                px-4
-                py-1.5
-                text-base
-                font-normal
-                text-gray-700
-                bg-white bg-clip-padding bg-no-repeat
-                border border-solid border-gray-300
-                rounded-3xl
-                transition
-                ease-in-out
-                m-0
-                hover:border-blue-500 hover:bg-gray-100
-                focus:text-gray-700 focus:bg-white focus:border-blue-500 focus:outline-none" aria-label="Select Year">
-                  <option value="12"> Year 12 </option>
-                  <option value="12"> Year 13 </option>
-              </select>
-            </div>
-          </div>
-
           <!-- choose students -->
           <h5 class="flex text-lg align-left w-full font-semibold my-3">select students</h5>
-          <div>
+          <div class="block md:flex md:space-x-5">
+            <div class="w-full md:w-1/2">
+              <h2 class=""> students to add </h2>
+              <ul class="w-full h-32 md:h-48 overflow-y-scroll">
+                <li class="px-3 py-1 m-2 bg-gray-100 border-gray-700 border-l-2 w-full" v-if="params.students.length == 0">
+                  -
+                </li>
+                 <li class="px-3 py-1 m-2 bg-gray-100 border-gray-700 border-l-2 w-full" v-for="(student, studentIndex) in params.students" :key="studentIndex">
+                {{ student.last_name }}, {{ student.first_name }}
 
+                <button class="p-1 float-right rounded text-white bg-green-700 hover:bg-green-600 transition 0.1s"
+                type="button"
+                @click="addStudentToList(student, studentIndex)">
+                  <i class="fas fa-plus"/>
+                </button>
+                </li>
+              </ul>
+            </div>
+            <div class="w-full md:w-1/2">
+              <h2> added students to class </h2>
+              <ul class="w-full h-32 md:h-48 overflow-y-scroll">
+                <li class="px-3 py-1 m-2 bg-gray-100 border-gray-700 border-l-2 w-full" v-if="params.studentsToAdd.length == 0">
+                  <span class="font-semibold"> No students </span>
+                </li>
+                <li class="px-3 py-1 m-2 bg-gray-100 border-gray-700 border-l-2 w-full" v-for="(student, studentIndex) in params.studentsToAdd" :key="studentIndex">
+                  {{ student.last_name }}, {{ student.first_name }}
+
+                  <button class="p-1 float-right rounded text-white bg-red-700 hover:bg-red-600 transition 0.1s"
+                  type="button"
+                  @click="removeStudentFromList(student, studentIndex)">
+                    <i class="fas fa-minus"/>
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
 
           <div class="md:flex">
             <button
-                type="submit"
+                @click="validateChoices('add_class')"
                 class="
                 md:w-4/6
                 w-full
@@ -81,8 +87,8 @@
                 confirm 
             </button>
             <button
-                type="submit"
-                @click="close"
+                type="text"
+                @click="closeForm"
                 class="
                 md:w-4/6
                 w-full
@@ -104,14 +110,14 @@
                 cancel 
             </button>
           </div>
-        </form>
+        </div>
     </div>
 
     <!-- Add Student -->
     <div
       class="form-box align-center m-auto w-full md:w-5/6 justify-center p-2 rounded opacity-100 bg-white"
       v-if="form == 'add_student'">
-      <form class="p-10">
+      <div class="p-10">
           <h2 class="text-2xl p-2 text-center font-light text-gray-900 mb-4">
                 <i class="fas fa-user text-blue-400 mx-2"></i>
                 <span class="font-bold"> {{ title }} </span>
@@ -129,7 +135,8 @@
           </div>
           <div class="flex justify-center">
             <div class="mb-3 w-5/6">
-              <select class="form-select appearance-none
+              <select v-model="inputs.addStudent.student"
+              class="form-select appearance-none
                 block
                 w-full
                 px-4
@@ -161,7 +168,7 @@
 
           <div class="md:flex">
             <button
-                type="submit"
+                @click="validateChoices('add_student')"
                 class="
                 md:w-4/6
                 w-full
@@ -183,8 +190,8 @@
                 confirm 
             </button>
             <button
-                type="submit"
-                @click="close"
+                type="text"
+                @click="closeForm"
                 class="
                 md:w-4/6
                 w-full
@@ -206,12 +213,12 @@
                 cancel 
             </button>
           </div>
-        </form>
+        </div>
     </div>
 
     <!-- Rename Class -->
      <div class="form-box align-center m-auto w-full md:w-5/6 justify-center p-2 rounded opacity-100 bg-white" v-if="form == 'rename_class'">
-        <form class="p-10">
+        <div class="p-10">
           <h2 class="text-2xl p-2 text-center font-light text-gray-900 mb-4">
                 <i class="fas fa-chalkboard-teacher text-blue-400 mx-2"></i>
                 <span class="font-semibold"> {{ title }} </span>
@@ -226,8 +233,7 @@
           <div class="p-3 m-3 h-14 flex align-center">
             <i class="fas fa-pencil-alt m-3 text-gray-600"/>
             <input type="text"
-            required
-            autofocus
+            v-model="inputs.renameClass.name"
             class="block p-1 m-1 h-full border-b-2 hover:border-blue-400 focus:border-blue-400
             w-full outline-none inset-0 text-gray-900 transition 0.2s" 
             placeholder="new class name"
@@ -236,7 +242,7 @@
 
           <div class="md:flex">
             <button
-                type="submit"
+                @click="validateChoices('rename_class')"
                 class="
                 md:w-4/6
                 w-full
@@ -258,7 +264,7 @@
                 confirm 
             </button>
             <button
-                @click="close"
+                @click="closeForm"
                 class="
                 md:w-4/6
                 w-full
@@ -280,21 +286,264 @@
                 cancel 
             </button>
           </div>
-        </form>
+        </div>
       </div>
+      <!-- Alert box -->
+      <Alert
+        :show="showAlert"
+        :close="closeAlert"
+        :success="alertSuccess"
+        v-bind:title="alertMessage"
+        v-bind:description="alertDescription"
+      />
   </div>
 </template>
 
 <script>
-export default {
-  props: ['show', 'submit', 'close', 'title', 'form', 'params', 'errorMsg'],
-  data: () => ({
-      errorMssg: '',
-  }),
-  mounted() {
+import Alert from '../general/Alert';
 
+export default {
+  props: ['showForm', 'submit', 'closeForm', 'title', 'form', 'params', 'errorMsg'],
+  components: {
+    Alert
   },
+  data: () => ({
+    email: localStorage.getItem('user'),
+    schoolID: localStorage.getItem('schoolCode'),
+    inputs: {
+      addClass: {
+        name: '',
+      },
+      addStudent: {
+        student: null,
+      },
+      renameClass: {
+        name: ''
+      },
+    },
+    errorMssg: '',
+
+    /* Alert information */
+    showAlert: false,
+    alertMessage: '',
+    alertDescription: '',
+    alertSuccess: false
+  }),
   methods: {
+    /*--- Alert methods ---*/
+    /**
+     * Alerts the user with a dialog box
+     * @param {String} message - the message to alert
+     * @param {String} description - the description of the message
+     * @param {Boolean} success - is the alert about a success or failure?
+     */
+    alertUser(message, description, success) {
+      this.alertMessage = message;
+      this.alertDescription = description;
+      this.alertSuccess = success;
+      this.showAlert = true;
+    },
+
+    /**
+     * Closes the alert dialog box.
+     */
+    closeAlert() {
+      this.showAlert = false;
+      (this.alertMessage = ''), (this.alertDescription = '');
+    },
+
+    /*--- Request functions  ---*/
+
+    /**
+     * Request to add a new class into school and update database
+     * @param inputs - the inputs required
+     */
+    async addClass(inputs) {
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/add_class`,
+          { 
+            responseType: 'json',
+            class_code: `${inputs.class_code}`,
+            class_name: `${inputs.class_name}`,
+            year: `${inputs.year}`,
+            student_emails: `${inputs.student_emails}`,
+            school_code: `${this.schoolID}`,
+            teacher_email: `${this.email}`,
+          },
+        )
+        .then((response) => {
+          if (response) {
+            /* SUCCESS */
+            console.log('Success');
+            console.log(response.data);
+          } else {
+            console.log('Boo!');
+          }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    /**
+     * Request to add a new student into school and update database
+     * @param inputs - the inputs required
+     */
+    async addStudent(inputs) {
+      console.log('Inputs: ', inputs);
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/add_students_to_class`,
+          { 
+            responseType: 'json',
+            class_code: `${inputs.class_code}`,
+            student_emails: `${inputs.student_emails}`,
+            school_code: `${this.schoolID}`,
+          },
+        )
+        .then((response) => {
+          if (response) {
+            /* SUCCESS */
+            console.log('Success');
+            console.log(response.data);
+          } else {
+            console.log('Boo!')
+          }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    /**
+     * Request to rename class and update database
+     * @param inputs - the inputs required
+     */
+    async renameClass(inputs) {
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/rename_class`,
+          { 
+            responseType: 'json',
+            class_code: `${inputs.class_code}`,
+            new_name: `${inputs.class_name}`,
+            school_code: `${this.schoolID}`,
+          },
+        )
+        .then((response) => {
+          this.inputs.renameClass.name = '';
+          this.showForm = false;
+
+          if (response) {
+            /* SUCCESS */
+            console.log('Success');
+            console.log(response);
+            this.alertUser('Class successfully renamed',
+            'Class has been renamed to ' + inputs.class_name,
+            true);
+          } else {
+            console.log('Boo!');
+            this.alertUser('Unable to rename class',
+            'Try again later!',
+            false);
+          }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+
+    /*--- Validation choices ---*/
+
+    /**
+     * Validates the inputs of the form
+     * @param action The form to make action on (i.e. add class, 
+     * add student or renaming a class)
+     */
+    validateChoices(action) {
+      console.log('Inputs: ', this.inputs);
+      console.log('Params: ', this.params);
+      if (action == 'add_class') {
+        /* Inputs: name, students to add */
+        var name = this.inputs.addClass.name;
+        var studentsToAdd = this.params.studentsToAdd;
+        var studentEmails = studentsToAdd.map((student) => student.student_email);
+        console.log(studentEmails);
+
+        /* Other inputs: year, assigned class code */
+        var year = this.params.year;
+        var classCode = this.params.classCode;
+
+        /* Validate name */
+        if (name.length == 0) {
+          this.errorMsg = 'Must enter a class name'
+        } else {
+          this.errorMsg = '';
+
+         /* Call request to add class into database... */
+         this.addClass({
+           class_code: classCode,
+           class_name: name,
+           year: year,
+           student_emails: studentEmails,
+         });
+        }
+
+      } else if (action == 'add_student') {
+        /* Inputs: student to add */
+        var studentToAdd = [];
+        studentToAdd.push(this.inputs.addStudent.student);
+
+        var studentEmail = studentToAdd.map((student) => student.student_email);
+
+        /* Other inputs: class code */
+        var classCode = this.params.class.class_code;
+        
+        /* Validate student */
+        if (studentEmail != null) {
+          this.errorMsg = '';
+
+          /* Call request to add student into class and update database... */
+          this.addStudent({
+           class_code: classCode,
+           student_emails: studentEmail,
+          });
+        } else {
+          this.errorMsg = 'Must select a student';
+        }
+
+        this.inputs.addStudent.student = null;
+        
+      } else if (action == 'rename_class') {
+        /* Inputs: new name for class */
+        var name = this.inputs.renameClass.name;
+
+         /* Other inputs: class code, school */
+        var classCode = this.params.class.class_code;
+
+         /* Validate name */
+        if (name.length == 0 || name == this.params.class.class_name) {
+          this.errorMsg = 'Must enter a new name for class'
+        } else {
+          this.errorMsg = '';
+
+         /* Call request to rename class and update database... */
+         this.renameClass({
+           class_code: classCode,
+           class_name: name,
+          });
+        }
+      }
+    },
+
     /*--- Add Class Functions ---*/
 
     /**
@@ -305,9 +554,9 @@ export default {
      */
     addStudentToList(student, index) {
       /* Add student to added list */
-      params.studentsToAdd.push(student);
+      this.params.studentsToAdd.push(student);
       /* Remove student from selection list */
-      params.students.splice(index, 1);
+      this.params.students.splice(index, 1);
     },
 
     /**
@@ -318,11 +567,11 @@ export default {
      */
     removeStudentFromList(student, index) {
       /* Add student to selection list */
-      params.students.push(student)
+      this.params.students.push(student)
       /* Add student to added list */
-      params.studentsToAdd.splice(index, 1);
+      this.params.studentsToAdd.splice(index, 1);
     }
-  },
+  }
 };
 </script>
 

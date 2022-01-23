@@ -133,9 +133,15 @@ VALUES ('testuser24@gmail.com', 1, 0, '13');
 
 
 ------ Hardcoded teachers
-INSERT INTO teachers (class_code, school_code, teacher_email)
+INSERT INTO teachers (school_code, teacher_email)
+VALUES(1, 'testteacher1@gmail.com');
+INSERT INTO teachers (school_code, teacher_email)
+VALUES(1, 'testteacher2@gmail.com');
+
+----- Hardcoded leaders
+INSERT INTO leaders (class_code, school_code, teacher_email)
 VALUES(1, 1, 'testteacher1@gmail.com');
-INSERT INTO teachers (class_code, school_code, teacher_email)
+INSERT INTO leaders (class_code, school_code, teacher_email)
 VALUES(2, 1, 'testteacher2@gmail.com');
 
 ------ Hardcoded assignments

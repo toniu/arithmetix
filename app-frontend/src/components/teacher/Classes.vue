@@ -244,13 +244,14 @@
 
     <!-- Form box -->
     <Form
-      :show="showForm"
+      :showForm="formShow"
       :submit="submitMethod"
-      :close="closeForm"
+      :closeForm="formRefresh"
       v-bind:title="formTitle"
       v-bind:form="formChosen"
       v-bind:params="formParams"
       v-bind:errorMsg="formError"
+      :validate="validateChoices"
     />
   </div>
 </template>
@@ -284,10 +285,10 @@ export default {
     confirmDescription: '',
 
     /* Form information */
-    showForm: true,
+    formShow: false,
     submitMethod: null,
-    formTitle: 'add student',
-    formChosen: 'add_student',
+    formTitle: '',
+    formChosen: '',
     formParams: null,
     formError: '',
   }),
@@ -358,22 +359,19 @@ export default {
       this.formTitle = title;
       this.formChosen = form;
       this.formParams = params;
-      this.showForm = true;
+      this.formShow = true;
     },
 
     /**
      * Closes the form
      */
-    async closeForm() {
-      
-
-      /* Validate */
+    async formRefresh() {
       
       /* Refresh data */
-      // await this.getClassData();
+      await this.getClassData();
 
       /* Close form */
-      this.showForm = false;
+      this.formShow = false;
       (this.formTitle = ''), (this.formChosen = ''),
       (this.formParams = {});
     },
@@ -543,6 +541,8 @@ export default {
       return students;
     },
 
+    /*--- Action ---*/
+
     /**
      * Opens a form to add a new class into a school;
      * provides a list of students the user can add into the
@@ -550,6 +550,8 @@ export default {
      * @param year - The year
      */
     async addNewClass(year) {
+      /* Generate new class code */
+      var newClassCode = this.classData.length + 1;
        /* Get all students of year */
        var studentsOfYear = await this.getStudentsByYear(year);
        var SOYArray = studentsOfYear.data;
@@ -559,7 +561,10 @@ export default {
       console.log('Students to add from', studentsToChooseFrom);
 
        this.openForm('add_class',
-       {students: studentsToChooseFrom},
+       {students: studentsToChooseFrom,
+       studentsToAdd: [],
+       year: year,
+       classCode: newClassCode},
        year);
       /* ... */
     },
@@ -572,6 +577,7 @@ export default {
     async addNewStudent(teacherClass) {
       var classID = teacherClass.class_code;
       var year = teacherClass.year;
+
       /* Get all students of year */
        var studentsOfYear = await this.getStudentsByYear(year);
        var SOYArray = studentsOfYear.data;
@@ -602,7 +608,10 @@ export default {
       this.openForm('rename_class', {class: teacherClass}, null);
     },
 
-    async deleteStudent(student) {
+
+    /*--- Submit methods ---*/
+
+    async submitDeleteStudent(student) {
       var confirm = false;
       /* Confirm delete code */
       /* ... */
@@ -628,43 +637,6 @@ export default {
         }
       }
     },
-
-    /*--- Confirm methods ---*/
-
-    async submitAddClass(formEntries) {
-      /* Validation Check */
-
-      try {
-        await this.$axios
-        .post(
-          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/add_class`,
-          { 
-            responseType: 'json',
-            class_code: `${student.email}`,
-            class_name: `${formEntries.class}`,
-            year: `${formEntries.year}`,
-            school_code: `${this.schoolID}`,
-          },
-        )
-        .then((response) => {
-          if (response) {
-              /* SUCCESS */
-              var dataSubmitted = response.data;
-              console.log('Submit entry: ', dataSubmitted);
-            }
-        })
-        .catch((error) => console.log(error));
-      } catch (e) {
-        console.log(e);
-      }
-    },
-
-    async submitAddStudent() {
-
-    },
-    async submitRenameClass() {
-
-    }
   },
 };
 </script>
