@@ -4,14 +4,14 @@ describe('Practice Worksheets', () => {
     let worksheet = [];
  
     let testDirectories = [
-        './src/resources/modules',
-        './src/resources/modules/C1', 
-        './src/resources/modules/C2', 
-        './src/resources/modules/C3', 
-        './src/resources/modules/C4', 
-        './src/resources/modules/M1', 
-        './src/resources/modules/S1', 
-        './src/resources/modules/Invalid-Module', 
+        './src/resources/public/modules',
+        './src/resources/public/modules/C1', 
+        './src/resources/public/modules/C2', 
+        './src/resources/public/modules/C3', 
+        './src/resources/public/modules/C4', 
+        './src/resources/public/modules/M1', 
+        './src/resources/public/modules/S1', 
+        './src/resources/public/modules/Invalid-Module', 
     ];
 
     /* To-do list of exam-papers testing */

@@ -133,7 +133,13 @@ class EP {
                 next();
               }
               /* Add new exam paper into array */
+
               if (paperFound) {
+                npPDF = npPDF.replace('./src/', '');
+                npI = npI.replace('./src/', '');
+                npMS = npMS.replace('./src/', '');
+                npSOL = npSOL.replace('./src/', '');
+
                 examPapers.push({
                   title: npTitle,
                   PDFLink: npPDF,

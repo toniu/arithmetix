@@ -4,6 +4,8 @@ const express = require('express');
 const config = require('./config');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
+const path = require('path');
+
 const fs = require('fs');
 
 const DB = require('./db');
@@ -22,15 +24,15 @@ const db = new DB();
 
 /* Create instance of exam paper list model and load files */
 const eps = new EP();
-eps.loadPapers('./src/resources/exam-papers')
+eps.loadPapers('./src/resources/public/exam-papers')
 
 /* Create instance of revision notes list model and load files */
 const revisionNotes = new RN();
-revisionNotes.loadNotes('./src/resources/revision-notes')
+revisionNotes.loadNotes('./src/resources/public/revision-notes')
 
 /* Create instance of practice worksheets list model and load files */
 const practiceWorksheets = new WS();
-practiceWorksheets.loadWorksheets('./src/resources/modules')
+practiceWorksheets.loadWorksheets('./src/resources/public/modules')
 
 /* Create instance of quizzes model and load files */
 const quizzes = new QZ();
@@ -245,31 +247,32 @@ router.get('/get_teachers', async (req, res) => {
 /**
  * Opens the PDF with given path URL - also sets the file header
  */
-router.post('/open_pdf', async (req, res, next) => {
+router.get('/open_pdf', async (req, res) => {
   try {
-    var filePath = req.body.file_path
+    var filePath = req.query.file_path;
+
     console.log('Opening PDF... ', filePath);
+    console.log(__dirname);
 
-    var sp = filePath.split('/');
-    var fileName = sp[sp.length - 1].toLowerCase();
-    console.log('Opening PDF... ', filePath, ' with file name... ', fileName);
+    var expectedRoute = path.join(__dirname, 'resources/public');
+    var actualRoute = path.join(__dirname, filePath);
 
-    fs.readFile(filePath, function (err, data){
-        res.contentType("application/pdf");
-        res.send(data);
-        console.log(data);
-    });
-    /*
-     Set header of file and start reading file synchronously 
-    var file = fs.createReadStream(filePath);
-    var stat = fs.statSync(filePath);
+    console.log('ER: ', expectedRoute);
+    console.log('AR: ', actualRoute);
 
-    res.setHeader('Content-Length', stat.size);
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Accept','application/pdf');
-    res.setHeader( "Content-Disposition", "filename=\"" + fileName + "\"" );
-    file.pipe(res);
-    */
+    if (actualRoute.startsWith(expectedRoute)) { 
+      var sp = filePath.split('/');
+      var fileName = sp[sp.length - 1].toLowerCase();
+      console.log('Opening PDF... ', filePath, ' with file name... ', fileName);
+
+      fs.readFile(actualRoute, function (err, data){
+          res.contentType("application/pdf");
+          res.send(data);
+          console.log(data);
+      });
+    } else {
+      res.send({data: null});
+    }
   } catch (e) {
     console.log(e);
     res.send({data: null});

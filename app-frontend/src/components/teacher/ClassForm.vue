@@ -359,6 +359,7 @@ export default {
      * @param inputs - the inputs required
      */
     async addClass(inputs) {
+      var success = false;
       try {
         await this.$axios
         .post(
@@ -378,13 +379,16 @@ export default {
             /* SUCCESS */
             console.log('Success');
             console.log(response.data);
+            success = true;
           } else {
             console.log('Boo!');
+            success = false;
           }
         })
         .catch((error) => console.log(error));
       } catch (e) {
         console.log(e);
+        success = false;
       }
     },
 
@@ -393,6 +397,7 @@ export default {
      * @param inputs - the inputs required
      */
     async addStudent(inputs) {
+      var success = false;
       console.log('Inputs: ', inputs);
       try {
         await this.$axios
@@ -410,13 +415,16 @@ export default {
             /* SUCCESS */
             console.log('Success');
             console.log(response.data);
+            success = true;
           } else {
             console.log('Boo!')
+            success = false;
           }
         })
         .catch((error) => console.log(error));
       } catch (e) {
         console.log(e);
+        success = false;
       }
     },
 
@@ -425,6 +433,8 @@ export default {
      * @param inputs - the inputs required
      */
     async renameClass(inputs) {
+      var success = false;
+
       try {
         await this.$axios
         .post(
@@ -444,19 +454,15 @@ export default {
             /* SUCCESS */
             console.log('Success');
             console.log(response);
-            this.alertUser('Class successfully renamed',
-            'Class has been renamed to ' + inputs.class_name,
-            true);
+            success = true;
           } else {
-            console.log('Boo!');
-            this.alertUser('Unable to rename class',
-            'Try again later!',
-            false);
+            success = false;
           }
         })
         .catch((error) => console.log(error));
       } catch (e) {
         console.log(e);
+        success = false;
       }
     },
 
@@ -468,7 +474,7 @@ export default {
      * @param action The form to make action on (i.e. add class, 
      * add student or renaming a class)
      */
-    validateChoices(action) {
+    async validateChoices(action) {
       console.log('Inputs: ', this.inputs);
       console.log('Params: ', this.params);
       if (action == 'add_class') {
@@ -489,12 +495,23 @@ export default {
           this.errorMsg = '';
 
          /* Call request to add class into database... */
-         this.addClass({
+         var success = await this.addClass({
            class_code: classCode,
            class_name: name,
            year: year,
            student_emails: studentEmails,
          });
+
+         if (success) {
+            this.alertUser('Successfully added class',
+            'Class ' + this.inputs.addClass.name +
+            ' added to school',
+            true)
+          } else {
+            this.alertUser('Unable to add class',
+            'Try again later',
+            false)
+          }
         }
 
       } else if (action == 'add_student') {
@@ -512,10 +529,22 @@ export default {
           this.errorMsg = '';
 
           /* Call request to add student into class and update database... */
-          this.addStudent({
+          var success = await this.addStudent({
            class_code: classCode,
            student_emails: studentEmail,
           });
+
+          if (success) {
+            this.alertUser('Successfully added student to class',
+            this.inputs.addStudent.student.first_name + ' ' +
+            this.inputs.addStudent.student.last_name,
+            true)
+          } else {
+            this.alertUser('Unable to add student',
+            'Try again later',
+            false)
+          }
+
         } else {
           this.errorMsg = 'Must select a student';
         }
@@ -536,10 +565,20 @@ export default {
           this.errorMsg = '';
 
          /* Call request to rename class and update database... */
-         this.renameClass({
+         var success = await this.renameClass({
            class_code: classCode,
            class_name: name,
           });
+        
+          if (success) {
+            this.alertUser('Successfully renamed class',
+            'Class renamed to ' + this.inputs.renameClass.name,
+            true)
+          } else {
+            this.alertUser('Unable to rename class',
+            'Try again later',
+            false)
+          }
         }
       }
     },

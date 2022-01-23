@@ -110,6 +110,8 @@ class RN {
               }
               /* Add new revision notes sheet into array */
               if (notesFound) {
+                rURL = rURL.replace('./src/', '');
+
                 revisionNotes.push({
                     title: npTitle,
                     URL: rURL,

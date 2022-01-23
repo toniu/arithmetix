@@ -233,30 +233,11 @@ export default {
      */
     async openPDF(fileURL) {
       try {
-        await this.$axios
-        .post(
-          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/open_pdf`,
-          {
-            responseType: 'blob',
-            file_path: `${fileURL}`,
-          },
-        )
-        .then((response) => {
-          if (response) {
-              /* Uses blob for PDF */
-              const pdfBlob = new Blob([response.data], { type: "application/pdf" })
+        /* Uses path of PDF as target */
+        var target = `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/open_pdf?file_path=${fileURL}`
+        /* Opens new tab */
+        window.open(target, '_blank');
 
-              /* Anchor tag to direct page to the PDF in new tab */
-              const blobUrl = window.URL.createObjectURL(pdfBlob)
-              const link = document.createElement('a')
-                    link.href = blobUrl
-                    link.setAttribute('target', '_blank')
-                    link.click();
-                    link.remove();
-              URL.revokeObjectURL(blobUrl);
-            }
-        })
-        .catch((error) => console.log(error));
       } catch (e) {
         console.log(e);
       }

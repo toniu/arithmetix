@@ -4,14 +4,14 @@ describe('Revision Notes', () => {
     let revisionNotes = [];
  
     let testDirectories = [
-        './src/resources/revision-notes',
-        './src/resources/revision-notes/C1', 
-        './src/resources/revision-notes/C2', 
-        './src/resources/revision-notes/C3', 
-        './src/resources/revision-notes/C4', 
-        './src/resources/revision-notes/M1', 
-        './src/resources/revision-notes/S1', 
-        './src/resources/revision-notes/Invalid-Module', 
+        './src/resources/public/revision-notes',
+        './src/resources/public/revision-notes/C1', 
+        './src/resources/public/revision-notes/C2', 
+        './src/resources/public/revision-notes/C3', 
+        './src/resources/public/revision-notes/C4', 
+        './src/resources/public/revision-notes/M1', 
+        './src/resources/public/revision-notes/S1', 
+        './src/resources/public/revision-notes/Invalid-Module', 
     ];
 
     /* To-do list of exam-papers testing */

@@ -92,7 +92,7 @@
               </td>
               <td class="px-5 py-5 border-b border-gray-200 bg-white">
                 <button class="block md:inline-block bg-gray-900 w-14 md:w-auto px-2 m-2 rounded-2xl text-white uppercase hover:bg-gray-700 transition 0.1s"
-                @click="getFile(exam.PDFLink)"
+                @click="openPDF(exam.PDFLink)"
                 v-if="exam.PDFLink != ''"> 
                   <i class="fas fa-file-pdf  text-white p-2 md:text-lg text-2xl"></i>
                   <span class="font-semibold hidden md:inline-block"> download pdf </span>
@@ -178,42 +178,25 @@ export default {
       }
     },
     
+    /*
     async getFile(fileURL) {
       this.$router.push('/github');
-      //window.open("/Users/neka/CS3821Repo/app-backend/" + fileURL);
+      window.open("/Users/neka/CS3821Repo/app-backend/" + fileURL);
     }, 
-    
-    async openPDF(fileURL) {
-      try {
-        await this.$axios
-        .post(
-          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/open_pdf`,
-          {
-            responseType: 'blob',
-            file_path: `${fileURL}`,
-          },
-        )
-        .then((response) => {
-          if (response) {
-              /* Uses blob for PDF */
-              const pdfBlob = new Blob([response.data], { type: "application/pdf" })
-              console.log('Response data:', response.data);
+    */
 
-              /* Anchor tag to direct page to the PDF in new tab */
-              const blobUrl = window.URL.createObjectURL(pdfBlob)
-              const link = document.createElement('a')
-                    link.href = blobUrl
-                    link.setAttribute('target', '_blank')
-                    link.click();
-                    link.remove();
-              URL.revokeObjectURL(blobUrl);
-            }
-        })
-        .catch((error) => console.log(error));
-      } catch (e) {
-        console.log(e);
-      }
-    },
+   async openPDF(fileURL) {
+     try {
+      /* Uses path of PDF as target */
+       var target = `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/open_pdf?file_path=${fileURL}`
+       /* Opens new tab */
+       window.open(target, '_blank');
+
+     } catch (e) {
+       console.log(e);
+     }
+   },
+
     /**
      * Filters the list of exam papers based on keyword input e.g. 
      * 'AQA' --> only display exam papers including the title 'AQA'

@@ -4,11 +4,11 @@ describe('Exam papers', () => {
     let eps = [];
  
     let testDirectories = [
-        './src/resources/exam-papers',
-        './src/resources/exam-papers/AQA',
-        './src/resources/exam-papers/OCR',
-        './src/resources/exam-papers/Edexcel',
-        './src/resources/exam-papers/Board-That-Does-Not-Exist',
+        './src/resources/public/exam-papers',
+        './src/resources/public/exam-papers/AQA',
+        './src/resources/public/exam-papers/OCR',
+        './src/resources/public/exam-papers/Edexcel',
+        './src/resources/public/exam-papers/Board-That-Does-Not-Exist',
     ];
 
     /* To-do list of exam-papers testing */

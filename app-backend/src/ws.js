@@ -138,6 +138,9 @@ class WS {
               }
               /* Add new practice paper worksheet (by topic) into array */
               if (paperFound) {
+                wsPDF = wsPDF.replace('./src/', '');
+                wsSOL = wsSOL.replace('./src/', '');
+
                 workSheets.push({
                   title: wsTitle,
                   PDFLink: wsPDF,
