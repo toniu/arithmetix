@@ -33,6 +33,27 @@
 <script>
 export default {
   props: ['show', 'title', 'description', 'close'],
+  methods: {
+    /*--- Conformation choices ---*/
+    /**
+     * Confirmation of action from dialog box.
+     * Only applies for deleting items in database
+     * @param answer Confirmation of action: yes or No
+     */
+    async confirmChoices(action, answer) {
+      if (answer) {
+        /* Action is confirmed */
+        if (action == 'delete_class') {
+
+        } else if (action == 'delete_student') {
+
+        }
+      } else {
+        /* Action is not confirmed, close form */
+        this.showForm = false;
+      }
+    },
+  }
 };
 </script>
 

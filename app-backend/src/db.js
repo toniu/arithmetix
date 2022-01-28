@@ -241,20 +241,23 @@ class Db {
    * @returns the inserted class
    */
   async addClassToSchool(classCode, className, year, schoolCode, teacherEmail) {
-    /* Add class to system */
+    /* Add class to system and set the teacher as the leader of the class*/
+    console.log('---------DB CALL: add class to school');
     console.log(classCode, className, year, schoolCode, teacherEmail);
-    let classInsert = await pool.query(`INSERT INTO classes (class_code, class_name, year, school_code)
+    const conn = await pool.connect();
+
+    await conn.query(`INSERT INTO classes (class_code, class_name, year, school_code)
       VALUES ($1, $2, $3, $4)`,
       [classCode, className, year, schoolCode]
     );
-    
-    /* Set the teacher as the leader of the class */
-    await pool.query(`INSERT into leaders (class_code, school_code, teacher_email)
+
+    await conn.query(`INSERT into leaders (class_code, school_code, teacher_email)
       VALUES ($1, $2, $3)`,
       [classCode, schoolCode, teacherEmail]
     );
 
-    return classInsert;
+    console.log('yea');
+    return await conn.release();
   }
 
   /**
@@ -266,24 +269,26 @@ class Db {
    * @returns the inserted student(s)
    */
   async addStudentsToClass(studentEmails, schoolCode, classCode) {
-    console.log('SE ', studentEmails);
+    console.log('---------DB CALL: add students to newly added class');
+    console.log(studentEmails, schoolCode, classCode);
     const conn = await pool.connect();
 
     /* Array of student's class code to update */
     for (let i = 0; i < studentEmails.length; i++) {
       if (studentEmails[i]) {
-        console.log('hello');
         var email = studentEmails[i];
+        console.log('---add student: ', email);
 
         console.log('SC: ', schoolCode);
         console.log('EM: ', email);
         console.log('CC: ', classCode);
 
         await conn.query(
-          `UPDATE students
-          SET class_code = $1
-          WHERE student_email = $2 AND
-          school_code = $3`
+          `
+          UPDATE students 
+          SET class_code = $1 
+          WHERE student_email = $2 AND 
+          school_code = $3`,
           [classCode, email, schoolCode]
         ); 
       } 

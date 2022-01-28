@@ -177,13 +177,6 @@ export default {
         console.log(e);
       }
     },
-    
-    /*
-    async getFile(fileURL) {
-      this.$router.push('/github');
-      window.open("/Users/neka/CS3821Repo/app-backend/" + fileURL);
-    }, 
-    */
 
    async openPDF(fileURL) {
      try {

@@ -367,32 +367,35 @@ router.post('/get_classes_teached_by', async (req, res) => {
  * Adds new class into a school
  */
 router.post('/add_class', async (req, res) => {
-  console.log('Body: ',
+  console.log('----------APP REQUEST: add class');
+  console.log('body: ',
   req.body);
 
-  const emails = req.body.student_emails.split(',');
-  console.log('Emails Array: ', emails);
+  var emails = req.body.student_emails.split(',');
+
   try {
-    let insertedClass = await db.addClassToSchool(
+    await db.addClassToSchool(
       req.body.class_code,
       req.body.class_name,
       req.body.year,
       req.body.school_code,
       req.body.teacher_email);
-
-    console.log(insertedClass);
+    
+    console.log('Inserted Class!');
 
     /* Add array of students to add in forum */
     if (emails.length > 0) {
-      let insertedStudents = await db.addStudentsToClass(
+      await db.addStudentsToClass(
         emails,
         req.body.school_code,
         req.body.class_code);
-      console.log('Students in new class: ', insertedStudents);
+      console.log('RIGHT THUR');
+      console.log('Students added in new class!');
     }
 
-    res.send({success: true, data: insertedClass});
+    res.send({success: true, data: req.body.class_name});
   } catch(e) {
+    console.log(e);
     res.send({success: false, error: 'Could not add class'});
     return false;
   }
@@ -418,19 +421,23 @@ router.post('/rename_class', async (req, res) => {
  * Adds new student into a class
  */
 router.post('/add_students_to_class', async (req, res) => {
+  console.log('----------APP REQUEST: add students to class');
+  console.log('body: ',
+  req.body);
   /* Add student (or students) to a class -
     changing the student's class code to a class that is not void (i.e. not '0') */
   var student = [];
+  console.log('Body Email', req.body.student_emails);
   student.push(req.body.student_emails);
 
-  console.log('Student:  ', student);
   try {
-    let insertedStudents = await db.addStudentsToClass(
+    await db.addStudentsToClass(
       student,
       req.body.school_code,
       req.body.class_code);
-    res.send({success: true, data: insertedStudents});
+    res.send({success: true, data: student});
   } catch(e) {
+    console.log(e);
     res.send({success: false, error: 'Could not add student(s) to class'});
     return false;
   }

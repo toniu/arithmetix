@@ -251,7 +251,7 @@
       v-bind:form="formChosen"
       v-bind:params="formParams"
       v-bind:errorMsg="formError"
-      :validate="validateChoices"
+      :refreshData="getClassData"
     />
   </div>
 </template>
@@ -583,7 +583,8 @@ export default {
        var SOYArray = studentsOfYear.data;
        console.log('SOY ', SOYArray );
 
-      var studentsToChooseFrom = SOYArray.filter(student => student.class_code != classID);
+      /* Only pick from students who are not in a class */
+      var studentsToChooseFrom = SOYArray.filter(student => student.class_code == 0);
       console.log('Students to add from', studentsToChooseFrom);
 
       if (studentsToChooseFrom.length > 0) {
