@@ -307,17 +307,19 @@ class Db {
     const conn = await pool.connect();
 
     /* Array of student's class code to update */
-    for (let index = 0; index < studentEmails.length; index++) {
-      const email = studentEmails[index];
-      await conn.query(
-        `UPDATE students
-        SET class_code = 0
-        WHERE student_email = $1
-        AND schoolCode = $2`
-        [email, schoolCode]
-      ); 
+    for (let i = 0; i < studentEmails.length; i++) {
+      if (studentEmails[i]) {
+        var email = studentEmails[i];
+        await conn.query(
+          `
+          UPDATE students 
+          SET class_code = 0 
+          WHERE student_email = $1 AND 
+          school_code = $2`,
+          [email, schoolCode]
+        ); 
+      }
     }
-
     return await conn.release();
   }
 
@@ -330,9 +332,10 @@ class Db {
    */
   async renameClass(classCode, schoolCode, newName) {
     let classNameUpdate = await pool.query(
-      `UPDATE classes
-      SET class_name = $1
-      WHERE school_code = $2 AND
+      `
+      UPDATE classes 
+      SET class_name = $1 
+      WHERE school_code = $2 AND 
       class_code = $3`,
       [newName, schoolCode, classCode]
     );
@@ -347,16 +350,26 @@ class Db {
    * @returns the deleted class
    */
    async deleteClass(schoolCode, classCode) {
-    return await pool.query(
+    const conn = await pool.connect();
+
+    await conn.query(
       `
-      DELETE FROM classes
-      WHERE school_code = $1
-      AND class_code = $2`,
+      DELETE FROM leaders 
+      WHERE school_code = $1 AND 
+      class_code = $2`,
       [schoolCode, classCode],
     );
+
+    await conn.query(
+      `
+      DELETE FROM classes 
+      WHERE school_code = $1 AND 
+      class_code = $2`,
+      [schoolCode, classCode],
+    );
+
+    return await conn.release();
   }
-
-
 }
 
 module.exports = Db;

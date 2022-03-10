@@ -311,7 +311,7 @@
 import Alert from '../general/Alert';
 
 export default {
-  props: ['showForm', 'submit', 'closeForm', 'title', 'form', 'params', 'errorMsg', 'refreshData'],
+  props: ['showForm', 'submit', 'closeForm', 'title', 'form', 'params', 'refreshData'],
   components: {
     Alert
   },
@@ -337,7 +337,11 @@ export default {
     showAlert: false,
     alertMessage: '',
     alertDescription: '',
-    alertSuccess: false
+    alertSuccess: false,
+
+    /* Form info */
+    errorMsg: '',
+
   }),
   methods: {
     /*--- Alert methods ---*/
@@ -352,6 +356,7 @@ export default {
       this.alertDescription = description;
       this.alertSuccess = success;
       this.showAlert = true;
+      this.showForm = false;
     },
 
     /**

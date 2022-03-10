@@ -45,7 +45,9 @@
         </span>
       </h1>
     </section>
-    <section></section>
+    <section class="block md:grid md:grid-cols-2">
+
+    </section>
   </div>
 </template>
 

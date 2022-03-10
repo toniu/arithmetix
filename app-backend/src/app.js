@@ -249,22 +249,27 @@ router.get('/get_teachers', async (req, res) => {
  */
 router.get('/open_pdf', async (req, res) => {
   try {
+    /* The file path to access */
     var filePath = req.query.file_path;
 
     console.log('Opening PDF... ', filePath);
     console.log(__dirname);
 
+    /* Expected route vs. actual route */
     var expectedRoute = path.join(__dirname, 'resources/public');
     var actualRoute = path.join(__dirname, filePath);
 
     console.log('ER: ', expectedRoute);
     console.log('AR: ', actualRoute);
 
-    if (actualRoute.startsWith(expectedRoute)) { 
+    /* Open file if the actual route matches with the expected route */
+    if (actualRoute.startsWith(expectedRoute)) {
+      /* String manipulation to retrieve file name */ 
       var sp = filePath.split('/');
       var fileName = sp[sp.length - 1].toLowerCase();
       console.log('Opening PDF... ', filePath, ' with file name... ', fileName);
 
+      /* Read data of PDF file */
       fs.readFile(actualRoute, function (err, data){
           res.contentType("application/pdf");
           res.send(data);
@@ -450,13 +455,17 @@ router.post('/remove_students_from_class', async (req, res) => {
   try {
     /* Deleting a student(s) from a class -
     changing the student's class code to '0' (void) */
+    var student = [];
+    console.log('Body Email', req.body.student_emails);
+    student.push(req.body.student_emails);
 
-    let updatedStudents = await db.removeStudentsFromClass(
-      req.body.student_emails,
+    await db.removeStudentsFromClass(
+      student,
       req.body.school_code
     );
-    res.send({success: true, data: updatedStudents});
+    res.send({success: true, data: student[0]});
   } catch (e) {
+    console.log(e);
     res.send({success: false, error: 'Could not remove student(s) from class'});
     return false;
   }
@@ -468,26 +477,29 @@ router.post('/remove_students_from_class', async (req, res) => {
 router.post('/delete_class', async (req, res) => {
   try {
     /* Remove students from class */
+    var emails = req.body.student_emails.split(',');
+
     let deletedStudents = await db.removeStudentsFromClass(
-      req.body.student_emails,
+      emails,
       req.body.school_code
     );
 
     console.log('Students removed from class: ', deletedStudents);
 
     /* Delete class from system */
-    let deletedClass = await db.deleteClass(
+    await db.deleteClass(
       req.body.school_code,
-      req.body.class_code
+      req.body.class_code,
     );
-    res.send({success: true, data: deletedClass});
+    res.send({success: true, data: req.body.class_code});
   } catch (e) {
+    console.log(e);
     res.send({success: false, error: 'Could not delete class'});
     return false;
   }
 });
 
-/* ----- */
+/* ------ */
 router.post('/add_assignment', async (req, res) => {
 
 });

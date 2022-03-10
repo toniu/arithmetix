@@ -114,24 +114,44 @@
                     "
                   />
                 </button>
-                <!-- Add new student to class -->
-                <button class="float-right"
-                @click="addNewStudent(teacherClass)">
-                  <i
-                    class="
-                      p-2
-                      m-1
-                      fas
-                      fa-user-plus
-                      rounded
-                      text-white
-                      bg-green-600
-                      hover:bg-green-500
-                      transition
-                      0.1s
-                    "
-                  />
-                </button>
+                <div class="float-right">
+                  <!-- Add new student to class -->
+                  <button class=""
+                  @click="addNewStudent(teacherClass)">
+                    <i
+                      class="
+                        p-2
+                        m-1
+                        fas
+                        fa-user-plus
+                        rounded
+                        text-white
+                        bg-green-600
+                        hover:bg-green-500
+                        transition
+                        0.1s
+                      "
+                    />
+                  </button>
+                  <!-- Delete class -->
+                  <button class=""
+                  @click="deleteClass(teacherClass)">
+                    <i
+                      class="
+                        p-2
+                        m-1
+                        fas
+                        fa-trash-alt
+                        rounded
+                        text-white
+                        bg-red-600
+                        hover:bg-red-500
+                        transition
+                        0.1s
+                      "
+                    />
+                  </button>
+                </div>
               </div>
           </div>
           <ul v-if="teacherClass.teaches" class="p-1 m-1 bg-gray-100 inline-block w-full">
@@ -154,7 +174,8 @@
                 <i class="fas fa-user p-1 m-1 text-lg text-left"></i>
                 {{ student.last_name }},<span class="font-normal"> {{ student.first_name }} </span> </span>
               <div class="inline">
-                <button>
+                <button
+                @click="removeStudent(teacherClass, student)">
                   <i
                     class="
                       p-2
@@ -236,10 +257,15 @@
 
     <!-- Confirmation box -->
     <Confirm
-      :show="showConfirm"
-      :close="showConfirm"
+      :showDialog="showConfirm"
+      :closeDialog="closeConfirm"
       v-bind:title="confirmMessage"
-      v-bind:description="alertDescription"
+      v-bind:description="confirmDescription"
+      v-bind:params="actionParams"
+      :icon="actionIcon"
+      :refreshData="getClassData"
+      :action="actionChosen"
+
     />
 
     <!-- Form box -->
@@ -250,7 +276,6 @@
       v-bind:title="formTitle"
       v-bind:form="formChosen"
       v-bind:params="formParams"
-      v-bind:errorMsg="formError"
       :refreshData="getClassData"
     />
   </div>
@@ -283,6 +308,10 @@ export default {
     showConfirm: false,
     confirmMessage: '',
     confirmDescription: '',
+    actionChosen: '',
+    actionParams: null,
+    actionIcon: '',
+    confirmAnswer: false,
 
     /* Form information */
     formShow: false,
@@ -290,7 +319,6 @@ export default {
     formTitle: '',
     formChosen: '',
     formParams: null,
-    formError: '',
   }),
   mounted() {
     this.getClassData();
@@ -320,13 +348,31 @@ export default {
 
     /*--- Confirm methods ---*/
     /**
-     * Confirm action  with a dialog box
-     * @param {String} message - the message to dialog
-     * @param {String} description - the description of the message
+     * Open dialog to confirm action: YES or NO buttons
+     * @param {String} action - the action to execute if confirmed
+     * @param {String} params - the parameters required for the action
      */
-    confirmAction(message, description) {
-      this.confirmMessage = message;
-      this.confirmDescription = description;
+    confirmAction(action, params) {
+      if (action == 'delete_class') {
+        var className = params.class.class_name;
+
+        this.confirmMessage = 'Delete class';
+        this.confirmDescription = 'Confirm deleting class ' +
+        className + '?';
+        this.actionIcon = 'fa fa-trash-alt py-6 text-7xl text-white';
+      } else if (action == 'remove_student') {
+        var className = params.class.class_name;
+
+        this.confirmMessage = 'Remove student';
+        this.confirmDescription = 'Confirm removing student ' +
+        params.student.first_name + ' ' + params.student.last_name +
+        ' from class ' +
+        className + '?';
+        this.actionIcon = 'fa fa-user-minus py-6 text-7xl text-white';
+      }
+
+      this.actionChosen = action;
+      this.actionParams = params;
       this.showConfirm = true;
     },
 
@@ -335,6 +381,7 @@ export default {
      */
     closeConfirm() {
       this.showConfirm = false;
+      this.actionParams = null;
       (this.confirmMessage = ''), (this.confirmDescription = '');
     },
 
@@ -541,7 +588,28 @@ export default {
       return students;
     },
 
-    /*--- Action ---*/
+    /*--- Button Actions ---*/
+
+    /**
+     * Opens a dialog box to confirm the action of 
+     * deleting a class
+     * @param teacherClass - the class selected
+     */
+    deleteClass(teacherClass) {
+      /* --- */
+      this.confirmAction('delete_class', {class: teacherClass})
+    },
+
+    /**
+     * Opens a dialog box to confirm the action of 
+     * removing a student from a class
+     */
+    removeStudent(teacherClass, studentSelected) {
+      /* --- */
+      this.confirmAction('remove_student',
+      {class: teacherClass, student: studentSelected})
+    },
+
 
     /**
      * Opens a form to add a new class into a school;
@@ -551,7 +619,18 @@ export default {
      */
     async addNewClass(year) {
       /* Generate new class code */
-      var newClassCode = this.classData.length + 1;
+      var classesCount = this.classData.length
+      var newClassCode = 1;
+
+      /* Auto-increment, otherwise new class code is 1 */
+      if (classesCount > 0) {
+        var latestClass = this.classData[classesCount - 1];
+        newClassCode = latestClass.class_code + 1;
+      }
+
+      console.log('NEW CC IS... ', newClassCode);
+
+      console.log('new class code of class to add: ', newClassCode);
        /* Get all students of year */
        var studentsOfYear = await this.getStudentsByYear(year);
        var SOYArray = studentsOfYear.data;
