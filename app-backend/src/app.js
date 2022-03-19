@@ -500,24 +500,154 @@ router.post('/delete_class', async (req, res) => {
 });
 
 /* ------ */
+
+/**
+ * Add new assignment to class 
+ */
 router.post('/add_assignment', async (req, res) => {
+  try {
+    const assignmentAdded = await db.addAssignment(
+      req.body.assignment_code,
+      req.body.assignment_name,
+      req.body.assignment_desc,
+      req.body.assignment_url,
+      req.body.deadline,
+      req.body.class_code,
+      req.body.school_code
+      );
+    console.log('Inserted assignment!');
 
+    res.send({success: true, data: assignmentAdded});
+    /* */
+  } catch (e) {
+    console.log(e);
+    res.send({success: false, error: 'Could not add assignment'});
+  }
 });
+
+/**
+ * Edit particular assignment
+ */
 router.post('/edit_assignment', async (req, res) => {
+  try {
+    let editedAssignment = await db.editAssignment(
+      req.body.assignment_name,
+      req.body.assignment_desc,
+      req.body.deadline,
+      req.body.assignment_code,
+      req.body.class_code,
+      req.body.school_code);
+    console.log('Edited assignment!');
 
+    res.send({success: true, data: editedAssignment});
+  } catch (e) {
+    console.log(e);
+    res.send({success: false, error: 'Could not edit assignment'});
+  }
 });
-router.post('/remove_assignment', async (req, res) => {
 
+/**
+ * Remove assignments
+ */
+router.post('/delete_assignment', async (req, res) => {
+  try {
+    await db.deleteAssignment(
+      req.body.assignment_code,
+      req.body.class_code,
+      req.body.school_code
+    );
+    res.send({success: true, data: req.body.class_code});
+  } catch (e) {
+    console.log(e);
+    res.send({success: false, error: 'Could not delete assignment'});
+  }
 });
+
+/**
+ * Send a new submission for assignment
+ */
 router.post('/send_submission', async (req, res) => {
-  /* Update Status */
+  try {
+    const submissionAdded = await db.sendSubmission(
+      req.body.submission_code,
+      req.body.assignment_code,
+      req.body.student_email,
+      req.body.file_submission,
+      req.body.feedback_code
+      );
+    console.log('Inserted new student submission!');
 
+    res.send({success: true, data: submissionAdded});
+    /* */
+  } catch (e) {
+    console.log(e);
+    res.send({success: false, error: 'Could not send student submission'});
+  }
 });
+
+/**
+ * Deletes an existing submission from the student
+ */
+router.post('/delete_submission', async (req, res) => {
+  try {
+    await db.deleteSubmission(
+      req.body.submission_code,
+      req.body.student_email,
+      req.body.feedback_code
+    );
+    res.send({success: true, data: req.body.submission_code});
+  } catch (e) {
+    console.log(e);
+    res.send({success: false, error: 'Could not delete submission'});
+  }
+});
+
+/**
+ * Update the feedback on a submission made on the assignment
+ */
 router.post('/update_feedback', async (req, res) => {
+  try {
+    let editedFeedback = await db.setFeedback(
+      req.body.grade,
+      req.body.teacher_email,
+      req.body.comments,
+      req.body.feedback_no,
+      req.body.submission_code);
+    console.log('Edited feedback!');
 
+    res.send({success: true, data: editedFeedback});
+  } catch (e) {
+    console.log(e);
+    res.send({success: false, error: 'Could not edit feedback'});
+  }
 });
-router.post('/get_submitted', async (req, res) => {
 
+/**
+ * Get student submissions on a particular assignment
+ */
+router.post('/get_submissions', async (req, res) => {
+  try {
+    const studentSubmissions = await db.getSubmissions(req.body.submission_code, req.body.assignment_code);
+    res.send({success: true, data: studentSubmissions});
+  } catch (e) {
+    res.send({success: false, error: 'Could not get student submissions for particular assignment'});
+    return false;
+  }
+});
+
+/**
+ * Get assignments set by a particular teacher
+ */
+ router.post('/get_assignments_by_teacher', async (req, res) => {
+  try {
+    const assignments = await db.getAssignmentsByTeacher(req.body.school_code,
+      req.body.class_code,
+      req.body.teacher_email);
+    res.send({success: true, data: assignments});
+  } catch (e) {
+    res.send({success: false, error: 'Could not get assignments set by teacher'});
+    return false;
+  }
 });
 
 /* --- */

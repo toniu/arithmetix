@@ -50,20 +50,42 @@ CREATE TABLE IF NOT EXISTS leaders (
   FOREIGN KEY (teacher_email) REFERENCES users(email) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS tests (
-  test_code INT,
-  test_link TEXT,
-  duration INT,
-  class_code INT,
-  FOREIGN KEY (class_code) REFERENCES classes(class_code) ON DELETE CASCADE
-);
 CREATE TABLE IF NOT EXISTS assignments (
   assignment_code INT PRIMARY KEY,
-  assignment_link TEXT,
-  assign_date TEXT,
+  assignment_name TEXT,
+  assignment_desc TEXT,
+  assignment_url TEXT,
+  assign_date timestamp,
   deadline TEXT,
   assigned_by TEXT,
   class_code INT,
+  school_code INT,
   FOREIGN KEY (assigned_by) REFERENCES users(email) ON DELETE CASCADE,
   FOREIGN KEY (class_code) REFERENCES classes(class_code) ON DELETE CASCADE
+  FOREIGN KEY (school_code) REFERENCES schools(school_code) ON DELETE CASCADE,
 );
+
+CREATE TABLE IF NOT EXISTS submissions (
+  submission_code INT PRIMARY KEY,
+  assignment_code INT,
+  student_email TEXT,
+  submission_status TEXT,
+  grade_status TEXT,
+  last_modified timestamp,
+  file_submission TEXT,
+  FOREIGN KEY (assignment_code) REFERENCES assignments(assignment_code) ON DELETE CASCADE,
+  FOREIGN KEY (student_email) REFERENCES users(email) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS feedback (
+  feedback_no INT PRIMARY KEY,
+  assignment_code INT,
+  submission_code INT,
+  grade TEXT,
+  graded_on timestamp,
+  graded_by TEXT,
+  comments TEXT,
+  FOREIGN KEY (assignment_code) REFERENCES assignments(assignment_code) ON DELETE CASCADE,
+  FOREIGN KEY (submission_code) REFERENCES submissions(submission_code) ON DELETE CASCADE,
+  FOREIGN KEY (graded_by) REFERENCES users(email)
+)

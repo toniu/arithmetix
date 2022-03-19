@@ -1,1 +1,41 @@
 question,imageURL,options,method,answer,category
+"Given functions f : x → 4x − 3, x ∈ R; g : x → 2 − x, x ∈ R; h : x → x<sup>2</sup> + 5, x ∈ R; Evaluate gf(2)",,-3|-2|3|1,,-3,Functions
+"Given functions f : x → 4x − 3, x ∈ R; g : x → 2 − x, x ∈ R; h : x → x<sup>2</sup> + 5, x ∈ R; Evaluate gh(1)",,-4|-3|-2|1,,-4,Functions
+"Given functions f : x → 4x − 3, x ∈ R; g : x → 2 − x, x ∈ R; h : x → x<sup>2</sup> + 5, x ∈ R; Evaluate fg(-3)",,17|16|15|14,,17,Functions
+"Given functions f : x → 4x − 3, x ∈ R; g : x → 2 − x, x ∈ R; h : x → x<sup>2</sup> + 5, x ∈ R; Evaluate hf(3)",,86|85|75|87,,86,Functions
+"Given functions f : x → 4x − 3, x ∈ R; g : x → 2 − x, x ∈ R; h : x → x<sup>2</sup> + 5, x ∈ R; Evaluate gg(5)",,5|4|3|2,,5,Functions
+"Given functions f : x → 4x − 3, x ∈ R; g : x → 2 − x, x ∈ R; h : x → x<sup>2</sup> + 5, x ∈ R; Evaluate ff(1/2)",,-7|-5|-2|-3,,-7,Functions
+"Given functions f : x → 4x − 3, x ∈ R; g : x → 2 − x, x ∈ R; h : x → x<sup>2</sup> + 5, x ∈ R; Evaluate hg(8)",,41|40|30|21,,41,Functions
+"Given functions f : x → 4x − 3, x ∈ R; g : x → 2 − x, x ∈ R; h : x → x<sup>2</sup> + 5, x ∈ R; Evaluate fh(1 1/2)",,26|27|28|29,,26,Functions
+"Given that N≤ 5, find the integer N such that there is a root of the equation f(x) = 0 in the interval (N, N + 1): f(x) = x<sup>3</sup> - 3 √x − 4",,N = 2|N = 1|N = 0|N = -2,,N = 2,Numerical Methods
+"Given that N≤ 5, find the integer N such that there is a root of the equation f(x) = 0 in the interval (N, N + 1): f(x) = x ln x - (12 / x)",,N = 3|N = -3|N = -1|N = 0,,N = 3,Numerical Methods
+"Given that N≤ 5, find the integer N such that there is a root of the equation f(x) = 0 in the interval (N, N + 1): f(x) = 2x<sup>5</sup> + 4x + 15",,N = -2|N = -1|N = 1|N = 0,,N = -2,Numerical Methods
+"Given that N≤ 5, find the integer N such that there is a root of the equation f(x) = 0 in the interval (N, N + 1): f(x) = e<sup>x - 1</sup> + 4x - 2",,N = 0|N = 2|N = 1|N = -2,,N = 0,Numerical Methods
+"Given that N≤ 5, find the integer N such that there is a root of the equation f(x) = 0 in the interval (N, N + 1): f(x) = e<sup>x</sup> - 3 sin x",,N = -4|N = -3|N = -2|N = 2,,N = -4,Numerical Methods
+"Given that N≤ 5, find the integer N such that there is a root of the equation f(x) = 0 in the interval (N, N + 1): f(x) = tan(0.1x) + x - 6",,N = 5|N = 2|N = 3|N = -1,,N = 5,Numerical Methods
+"Find, to 3 significant figures, the value of: e<sup>3</sup>",,20.1|21|10|2,,20.1,Exponentials
+"Find, to 3 significant figures, the value of: e<sup>-2</sup>",,0.135|0.2|0.3|0.22,,0.135,Exponentials
+"Find, to 3 significant figures, the value of: 5e",,13.6|12|11.2|10.3,,13.6,Exponentials
+"Find, to 3 significant figures, the value of: ln 0.55",,-0.598|0.6|-0.3|0.23,,-0.598,Exponentials
+"Find, to 3 significant figures, the value of: 3/7 ln 100",,1.97|1.87|1.6|2.3,,1.97,Exponentials
+"Find, to 3 significant figures, the value of: log<sub>10</sub>e",,0.434|0.343|0.142|0.231,,0.434,Exponentials
+Find to 2 decimal places the value of: sec 23°,,1.09|1.08|1.07|1.10,,1.09,Trigonometry
+Find to 2 decimal places the value of: cosec 185°,,-11.47|-11.48|-11.45|-11.23,,-11.47,Trigonometry
+Find to 2 decimal places the value of: cot 251.9°,,0.33|0.99|0.66|0.1,,0.33,Trigonometry
+Find to 2 decimal places the value of: sec (-302°),,1.89|1.78|1.23|1.34,,1.89,Trigonometry
+Find the exact value of: cosec 30°,,2|3|4|1,,2,Trigonometry
+Find the exact value of: cot 45°,,1|2|3|4,,1,Trigonometry
+Find the exact value of: sec 150°,,-2/√3|-3/√3|2/√3|3√3,,-2/√3,Trigonometry
+Find the exact value of: cosec 300°,,-2/√3|-3/√3|2/√3|3√4,,-2/√3,Trigonometry
+Find the exact value of: cot 90°,,0|-2|-1|2,,0,Trigonometry
+Find the exact value of: sec 225°,,-√2|√2|√3|2√2,,-√2,Trigonometry
+Find the exact value of: cosec 270°,,-1|-2|0|2,,-1,Trigonometry
+Find the exact value of: cot 330°,,-√3|-√2|√2|2√3,,-√3,Trigonometry
+Find the exact value of: sec 660°,,2|3|1|4,,2,Trigonometry
+Find the exact value of: cosec (-45°),,-√2|-2√2|√2|3√2,,-√2,Trigonometry
+Find the exact value of: cot (-240°),,-1/√3|1/√3|2/√3|3/√3,,-1/√3,Trigonometry
+Find the exact value of: sec (-315°),,√2|√3|2√2|3√2,,√2,Trigonometry
+Differentiate with respect to x: e<sup>x</sup>,,e<sup>x</sup>|1|0|e<sup>2x</sup>,,e<sup>x</sup>,Differentiation
+Differentiate with respect to x: 3e<sup>x</sup>,,3e<sup>x</sup>|2e<sup>x</sup>|3e<sup>3x</sup>|e<sup>x</sup>,,3e<sup>x</sup>,Differentiation
+Differentiate with respect to x: ln x,,1/x|1/2x|x/2|3/x,,1/x,Differentiation
+Differentiate with respect to x: 1/2 ln x,,1/2x|1/3x|2/3x|x,,1/2x,Differentiation

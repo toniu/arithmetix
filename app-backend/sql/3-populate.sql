@@ -145,3 +145,7 @@ INSERT INTO leaders (class_code, school_code, teacher_email)
 VALUES(2, 1, 'testteacher2@gmail.com');
 
 ------ Hardcoded assignments
+
+------ Submissions
+
+------ Feedback
