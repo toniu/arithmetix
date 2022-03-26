@@ -612,7 +612,8 @@ router.post('/update_feedback', async (req, res) => {
       req.body.teacher_email,
       req.body.comments,
       req.body.feedback_no,
-      req.body.submission_code);
+      req.body.submission_code,
+      req.body.assignment_code);
     console.log('Edited feedback!');
 
     res.send({success: true, data: editedFeedback});
@@ -627,7 +628,9 @@ router.post('/update_feedback', async (req, res) => {
  */
 router.post('/get_submissions', async (req, res) => {
   try {
-    const studentSubmissions = await db.getSubmissions(req.body.submission_code, req.body.assignment_code);
+    const studentSubmissions = await db.getSubmissions(req.body.assignment_code,
+      req.body.school_code,
+      req.body.class_code);
     res.send({success: true, data: studentSubmissions});
   } catch (e) {
     res.send({success: false, error: 'Could not get student submissions for particular assignment'});
@@ -636,11 +639,11 @@ router.post('/get_submissions', async (req, res) => {
 });
 
 /**
- * Get assignments set by a particular teacher
+ * Get assignments of a class, set by a particular teacher
  */
- router.post('/get_assignments_by_teacher', async (req, res) => {
+ router.post('/get_class_assignments_by_teacher', async (req, res) => {
   try {
-    const assignments = await db.getAssignmentsByTeacher(req.body.school_code,
+    const assignments = await db.getClassAssignmentsByTeacher(req.body.school_code,
       req.body.class_code,
       req.body.teacher_email);
     res.send({success: true, data: assignments});
@@ -649,6 +652,20 @@ router.post('/get_submissions', async (req, res) => {
     return false;
   }
 });
+
+/**
+ * Retrieves the feedback for a student submission
+ */
+router.post('/get_submission_feedback', async (req, res) => {
+  try {
+    const feedback = await db.getFeedback(req.body.submission_code,
+      req.body.assignment_code);
+    res.send({success: true, data: feedback});
+  } catch (e) {
+    res.send({success: false, error: 'Could not get feedback for submission'});
+    return false;
+  }
+}); 
 
 /* --- */
 router.post('/create_notification', async (req, res) => {});

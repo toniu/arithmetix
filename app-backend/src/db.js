@@ -382,10 +382,10 @@ class Db {
    * @param {*} schoolCode the school code
    * @returns 
    */
-  async addAssignment(assignmentCode, assignmentName, assignmentDesc, assignmentURL, deadline, classCode, schoolCode) {
-    await conn.query(`INSERT INTO assignments (assignment_code, assignment_name, assignment_desc, assignment_url, deadline, assigned_by, class_code, school_code)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-      [assignmentCode, assignmentName, assignmentDesc, assignmentURL, deadline, classCode, schoolCode]
+  async addAssignment(assignmentName, assignmentDesc, assignmentURL, deadline, classCode, schoolCode) {
+    await conn.query(`INSERT INTO assignments (assignment_name, assignment_desc, assignment_url, deadline, assigned_by, class_code, school_code)
+      VALUES ($1, $2, $3, $4, $5, $6)`,
+      [assignmentName, assignmentDesc, assignmentURL, deadline, classCode, schoolCode]
     );
 
     return await conn.release();
@@ -408,7 +408,7 @@ class Db {
       SET assignment_name = $1, 
       assignment_desc = $2,  
       deadline = $3,
-      WHERE assignment_code = $4,  
+      WHERE assignment_code = $4 AND 
       class_code = $5 AND  
       school_code = $6`,
       [assignmentName, assignmentDesc, deadline, assignmentCode, classCode, schoolCode]
@@ -431,7 +431,7 @@ class Db {
     await conn.query(
       `
       DELETE FROM assignments 
-      WHERE assignment_code = $1, 
+      WHERE assignment_code = $1 AND 
       school_code = $2 AND 
       class_code = $3`,
       [assignmentCode, schoolCode, classCode],
@@ -441,7 +441,7 @@ class Db {
     await conn.query(
       `
       DELETE FROM submissions 
-      WHERE assignment_code = $1, 
+      WHERE assignment_code = $1 AND 
       class_code = $2 AND 
       school_code = $3
       `,
@@ -452,7 +452,7 @@ class Db {
     await conn.query(
       `
       DELETE FROM feedback 
-      WHERE assignment_code = $1, 
+      WHERE assignment_code = $1 AND 
       class_code = $2 AND 
       school_code = $3
       `,
@@ -554,16 +554,25 @@ class Db {
    * @param {*} submissionCode the submission code
    * @returns 
    */
-  async setFeedback(grade, teacherEmail, comments, feedbackNo, submissionCode) {
+  async setFeedback(grade, teacherEmail, comments, feedbackNo, submissionCode, assignmentCode) {
     let feedbackUpdate = await pool.query(
       `
       UPDATE feedback 
       SET grade = $1, 
       graded_by = $2,
-      comments = $3,
-      WHERE feedback_no = $4 AND  
+      comments = $3 
+      WHERE feedback_no = $4 AND 
       submission_code = $5`,
       [grade, teacherEmail, comments, feedbackNo, submissionCode]
+    );
+
+    /* Update submissions to Graded */
+    await pool.query(
+      `
+      UPDATE submissions 
+      SET grade_status = 'Graded' 
+      WHERE assignment_code = $1 AND submission_code = $2`,
+      [assignmentCode, submissionCode]
     );
 
     return feedbackUpdate;
@@ -571,31 +580,33 @@ class Db {
 
   /**
    * Retrieves the list of submissions of a particular assignment code
-   * @param {*} submissionCode the submission code
    * @param {*} assignmentCode the assignment code
+   * @param {*} schoolCode the school code
+   * @param {*} classCode the class code
    * @returns the rows returned
    */
-  async getSubmissions(submissionCode, assignmentCode) {
+  async getSubmissions(assignmentCode, schoolCode, classCode) {
     const {rows} = await pool.query(
       `SELECT * 
       FROM submissions 
-      WHERE submission_code = $1 AND 
-      assignment_code = $2 
+      WHERE assignment_code = $1 AND 
+      school_code = $2 AND 
+      class_code = $3  
       ORDER BY last_modified`,
-    [submissionCode, assignmentCode]);
+    [assignmentCode, schoolCode, classCode]);
 
     console.log(rows);
     return rows;
   }
 
   /**
-   * Retrieves the list of assignments set by a teacher
+   * Retrieves the list of assignments of a class set by a teacher
    */
-  async getAssignmentsByTeacher(schoolCode, classCode, teacherEmail) {
+  async getClassAssignmentsByTeacher(schoolCode, classCode, teacherEmail) {
     const {rows} = await pool.query(
       `SELECT * 
       FROM assignments 
-      WHERE school_code = $1, 
+      WHERE school_code = $1 AND 
       class_code = $2 AND 
       assigned_by = $3 
       ORDER BY assign_date`,
@@ -603,6 +614,21 @@ class Db {
 
     console.log(rows);
     return rows;
+  }
+
+  /**
+   * Retrieves the feedback for a student submission
+   */
+  async getFeedback(submissionCode, assignmentCode) {
+    const {rows} = await pool.query(
+      `SELECT * 
+      FROM feedback 
+      WHERE submission_code = $1 AND 
+      assignment_code = $2`,
+    [submissionCode, assignmentCode]);
+
+    console.log(rows);
+    return rows[0];
 
   }
 }

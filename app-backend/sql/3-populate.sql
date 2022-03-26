@@ -145,7 +145,24 @@ INSERT INTO leaders (class_code, school_code, teacher_email)
 VALUES(2, 1, 'testteacher2@gmail.com');
 
 ------ Hardcoded assignments
+INSERT INTO assignments (assignment_name, assignment_desc, assignment_url, deadline, assigned_by, class_code, school_code) 
+VALUES('MX2003 Practice A', 'Answer the questions in the attached PDF.','/linktest','24/03/22','testteacher1@gmail.com', 1, 1);
+INSERT INTO assignments (assignment_name, assignment_desc, assignment_url, deadline, assigned_by, class_code, school_code) 
+VALUES('MX2003 Practice B', 'Answer the questions in the attached PDF.','/linktest','22/03/22','testteacher1@gmail.com', 1, 1);
+INSERT INTO assignments (assignment_name, assignment_desc, assignment_url, deadline, assigned_by, class_code, school_code) 
+VALUES('AX2005 Practice A', 'Answer the questions in the attached PDF.','/linktest','26/03/22','testteacher1@gmail.com', 2, 1);
+INSERT INTO assignments (assignment_name, assignment_desc, assignment_url, deadline, assigned_by, class_code, school_code) 
+VALUES('MX1200 Practice B', 'Answer the questions in the attached PDF.','/linktest','25/03/22','testteacher1@gmail.com', 2, 1);
 
------- Submissions
-
------- Feedback
+------ Hardcoded Submissions
+INSERT INTO submissions (assignment_code, student_email, submission_status, grade_status, file_submission) 
+VALUES(1, 'testuser1@gmail.com','Submitted','Not graded','/testurl');
+INSERT INTO submissions (assignment_code, student_email, submission_status, grade_status, file_submission) 
+VALUES(1, 'testuser2@gmail.com','Submitted','Not graded','/testurl');
+INSERT INTO submissions (assignment_code, student_email, submission_status, grade_status, file_submission) 
+VALUES(1, 'testuser3@gmail.com','Submitted','Not graded','/testurl');
+INSERT INTO submissions (assignment_code, student_email, submission_status, grade_status, file_submission) 
+VALUES(1, 'testuser4@gmail.com','Submitted','Not graded','/testurl');
+INSERT INTO submissions (assignment_code, student_email, submission_status, grade_status, file_submission) 
+VALUES(1, 'testuser5@gmail.com','Submitted','Not graded','/testurl');
+------ Hardcoded Feedback
