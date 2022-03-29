@@ -393,7 +393,6 @@ export default {
      * @param {String} object - the selected model (a student or class)
      */
     openForm(form, params, year) {
-      console.log('Opened form params: ', params);
       var title = '';
       if (form == 'add_class') {
         title = 'add year ' + year + ' class'
@@ -457,8 +456,6 @@ export default {
         }
 
         this.classData = classData;
-
-        console.log('hello there: ', this.classData);
       }
     },
     /**
@@ -480,7 +477,6 @@ export default {
           if (response) {
               /* Classes */
               classes = response.data.data;
-              console.log('Classes teached by user: ', classes);
             }
         })
         .catch((error) => console.log(error));
@@ -511,7 +507,6 @@ export default {
           if (response) {
               /* Classes */
               classes = response.data.data;
-              console.log('Classes: ', classes);
             }
         })
         .catch((error) => console.log(error));
@@ -544,7 +539,6 @@ export default {
           if (response) {
               /* Students in class */
               students = response.data;
-              console.log('Students in class ' + classID + ': ', students);
             }
         })
         .catch((error) => console.log(error));
@@ -577,7 +571,6 @@ export default {
           if (response) {
               /* Students in class */
               students = response.data;
-              console.log('Students by year ' + yearOfSchool + + ': ', students);
             }
         })
         .catch((error) => console.log(error));
@@ -628,16 +621,12 @@ export default {
         newClassCode = latestClass.class_code + 1;
       }
 
-      console.log('NEW CC IS... ', newClassCode);
-
-      console.log('new class code of class to add: ', newClassCode);
        /* Get all students of year */
        var studentsOfYear = await this.getStudentsByYear(year);
        var SOYArray = studentsOfYear.data;
 
        /* Students to choose from (i.e. students of the same year who are not in any class) */
       const studentsToChooseFrom = SOYArray.filter(student => student.class_code == 0);
-      console.log('Students to add from', studentsToChooseFrom);
 
        this.openForm('add_class',
        {students: studentsToChooseFrom,
@@ -660,11 +649,9 @@ export default {
       /* Get all students of year */
        var studentsOfYear = await this.getStudentsByYear(year);
        var SOYArray = studentsOfYear.data;
-       console.log('SOY ', SOYArray );
 
       /* Only pick from students who are not in a class */
       var studentsToChooseFrom = SOYArray.filter(student => student.class_code == 0);
-      console.log('Students to add from', studentsToChooseFrom);
 
       if (studentsToChooseFrom.length > 0) {
         this.openForm(

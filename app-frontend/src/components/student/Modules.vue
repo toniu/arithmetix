@@ -195,7 +195,6 @@ export default {
       .then((response) => {
         /* List of revision notes finally set */
         this.revisionNotes = response.data;
-        console.log('NOTES: ', this.revisionNotes);
       });
       } catch(e) {
         console.log(e);
@@ -221,7 +220,6 @@ export default {
         /* List of practice worksheets finally set */
         this.practiceWorksheets = response.data;
         this.filteredWS = this.practiceWorksheets;
-        console.log('WS:', this.practiceWorksheets);
       });
       } catch(e) {
         console.log(e);

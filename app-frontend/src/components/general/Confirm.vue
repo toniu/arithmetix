@@ -114,6 +114,11 @@ export default {
     },
 
     /*--- Action methods ---*/
+
+    /**
+     * Request to delete class
+     * @param inputs The required inputs for the request body
+     */
     async deleteClass(inputs) {
       var success = false;
       try {
@@ -128,11 +133,9 @@ export default {
           },
         )
         .then((response) => {
-          console.log('e3');
           var res = response.data
           if (res.success) {
             /* Request for database update successful */
-            console.log('Success');
             success = true;
           }
         })
@@ -146,8 +149,11 @@ export default {
       return success;
     },
 
+    /**
+     * Request to remove student from class
+     * @param inputs The required inputs for the request body
+     */
     async removeStudentFromClass(inputs) {
-      console.log('e2');
       var success = false;
       try {
         await this.$axios
@@ -160,11 +166,9 @@ export default {
           },
         )
         .then((response) => {
-          console.log('e3');
           var res = response.data
           if (res.success) {
             /* Request for database update successful */
-            console.log('Success');
             success = true;
           }
         })
@@ -178,6 +182,10 @@ export default {
       return success;
     },
 
+    /**
+     * Request to delete assignment
+     * @param inputs The required inputs for the request body
+     */
     async deleteAssignment(inputs) {
       var success = false;
       try {
@@ -192,11 +200,9 @@ export default {
           },
         )
         .then((response) => {
-          console.log('e3');
           var res = response.data
           if (res.success) {
             /* Request for database update successful */
-            console.log('Success');
             success = true;
           }
         })
@@ -212,9 +218,7 @@ export default {
 
     /*--- Confirm choices ---*/
     async confirmChoices(action) {
-      console.log('e');
       if (action == 'delete_class') {
-        console.log('a1');
         /* Inputs: class code... */
         var classCode = this.params.class.class_code;
         /* The list of students to remove from deleted class */
@@ -244,7 +248,6 @@ export default {
           false)
         }
       } else if (action == 'remove_student') {
-        console.log('a1');
         /* Inputs: the student to remove */
         var studentToRemove = [];
         studentToRemove.push(this.params.student);
@@ -274,7 +277,6 @@ export default {
           false)
         }
       } else if (action == 'delete_assignment') {
-        console.log('c1');
         /* Inputs: the assignment to remove */
         var assignment = this.params.assignment;
         var teacherClass = this.params.class;

@@ -213,7 +213,6 @@ export default {
               } 
             }
           }
-          console.log('QUIZZES: ', this.quizTables);
         });
         } catch(e) {
           console.log(e);

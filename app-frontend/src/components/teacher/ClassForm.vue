@@ -417,6 +417,52 @@
             </p>
           </div> 
           <!-- -->
+
+          <!-- Inputs: Name (text-field) -->
+          <h5 class="flex text-lg align-left w-full font-semibold my-1">assignment name</h5>
+          <div class="p-3 mx-0 h-14 flex align-center">
+            <input type="text"
+            v-model="inputs.editAssignment.name"
+            class="block p-1 m-1 h-full border-b-2 hover:border-blue-400 focus:border-blue-400
+            w-5/6 outline-none inset-0 text-gray-900 transition 0.2s" 
+            placeholder="assignment name"
+            />
+          </div>
+
+          <!-- Inputs: Description (text-area) -->
+          <h5 class="flex text-lg align-left w-full font-semibold my-1">assignment description</h5>
+          <div class="p-3 mx-0 h-14 flex align-center">
+            <textarea type="text"
+            v-model="inputs.editAssignment.description"
+            class="block p-1 m-1 h-full border-b-2 z-10 bg-gray-50 hover:border-blue-400 focus:border-blue-400
+            w-5/6 outline-none inset-0 text-gray-900 transition 0.2s" 
+            placeholder="assignment description"
+            />
+          </div>
+
+          <!-- Inputs: URL (uploads pdf into system; url for pdf is created) -->
+          <h5 class="flex text-lg align-left w-full font-semibold my-1">assignment PDF</h5>
+          <div class="p-3 mx-0 h-16 flex align-center">
+            <input type="file"
+            accept=".pdf"
+            class="block p-1 m-1 h-full rounded-lg border-2 border-gray-300 hover:border-blue-500
+            w-5/6 outline-none inset-0 text-gray-900 hover:text-gray-500 transition 0.2s" 
+            placeholder="assignment description"
+            />
+          </div>
+
+          <!-- Inputs: Deadline (dateTime input) -->
+          <h5 class="flex text-lg align-left w-full font-semibold my-1">assignment deadline</h5>
+          <div class="p-3 mx-0 h-14 flex align-center">
+            <input type="datetime-local"
+            v-model="inputs.editAssignment.deadline"
+            class="block p-1 m-1 h-full border-b-2 hover:border-blue-400 focus:border-blue-400
+            w-5/6 outline-none inset-0 text-gray-900 transition 0.2s" 
+            placeholder="deadline"
+            />
+          </div>
+
+          <!-- -->
           <div class="md:flex">
               <button
                   type="button"
@@ -684,8 +730,16 @@ export default {
       this.showForm = false;
       (this.alertMessage = ''), (this.alertDescription = '');
     },
+    
 
-    /*--- Submission and Feedback functions  ---*/
+    /*--- Assignment-related functions  ---*/
+    setFields(assignment) {
+      /* Initially sets the fields of the current details of the assignment to edit */
+      this.inputs.editAssignment.name = assignment.assignment_name;
+      this.inputs.editAssignment.description = assignment.assignment_desc;
+      this.inputs.editAssignment.deadline = assignment.deadline;
+    },
+
     submissionFormCloseHandler() {
       this.closeForm();
       this.selectedStudent = null;
@@ -723,7 +777,6 @@ export default {
         .then((response) => {
           if (response) {
             feedback = response.data.data;
-            console.log('Feedback for selected submission: ', feedback);
           }
         })
       } catch (e) {
@@ -740,7 +793,6 @@ export default {
      */
     async addClass(inputs) {
       var success = false;
-      console.log('ADD CLASS REQUEST; Inputs: ', inputs);
       try {
         await this.$axios
         .post(
@@ -779,7 +831,6 @@ export default {
      */
     async addStudent(inputs) {
       var success = false;
-      console.log('ADD STUDENT REQUEST; Inputs: ', inputs);
       try {
         await this.$axios
         .post(
@@ -815,7 +866,6 @@ export default {
      */
     async renameClass(inputs) {
       var success = false;
-      console.log('RENAME CLASS REQUEST; Inputs: ', inputs);
 
       try {
         await this.$axios
@@ -845,6 +895,85 @@ export default {
 
       return success;
     },
+
+    /**
+     * Request to add assignment
+     * @param inputs - the inputs required
+     */
+    async addAssignment(inputs) {
+      var success = false;
+
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/add_assignment`,
+          { 
+            responseType: 'json',
+            assignment_name: `${inputs.assignment_name}`,
+            assignment_desc: `${inputs.assignment_desc}`,
+            assignment_url: `${inputs.assignment_url}`,
+            deadline: `${inputs.deadline}`,
+            class_code: `${inputs.class_code}`,
+            school_code: `${this.schoolID}`
+          },
+        )
+        .then((response) => {
+          var res = response.data
+          if (res.success) {
+            /* Request for database update successful */
+            console.log('Success');
+            success = true;
+          }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        /* Request unsuccessful - alert user */
+        console.log(e);
+        success = false;
+      }
+
+      return success;
+    },
+
+     /**
+     * Request to edit assignment
+     * @param inputs - the inputs required
+     */
+    async editAssignment(inputs) {
+      var success = false;
+
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/edit_assignment`,
+          { 
+            responseType: 'json',
+            assignment_name: `${inputs.assignment_name}`,
+            assignment_desc: `${inputs.assignment_desc}`,
+            assignment_url: `${inputs.assignment_url}`,
+            deadline: `${inputs.deadline}`,
+            assignment_code: `${inputs.assignment_code}`,
+            class_code: `${inputs.class_code}`,
+            school_code: `${this.schoolID}`
+          },
+        )
+        .then((response) => {
+          var res = response.data
+          if (res.success) {
+            /* Request for database update successful */
+            console.log('Success');
+            success = true;
+          }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        /* Request unsuccessful - alert user */
+        console.log(e);
+        success = false;
+      }
+
+      return success;
+    },
     
     /**
      * Request to update feedback on a submission
@@ -852,7 +981,6 @@ export default {
      */
     async updateFeedback(inputs) {
       var success = false;
-      console.log('UPDATE FEEDBACK REQUEST; Inputs: ', inputs);
 
       try {
         await this.$axios
@@ -894,8 +1022,6 @@ export default {
      * add student or renaming a class)
      */
     async validateChoices() {
-      console.log('Inputs: ', this.inputs);
-      console.log('Params: ', this.params);
       if (this.form == 'add_class') {
         /* Form Inputs: name, students to add */
         var name = this.inputs.addClass.name;
@@ -1014,6 +1140,134 @@ export default {
             this.refreshData();
           } else {
             this.alertUser('Unable to rename class',
+            'Try again later',
+            false)
+          }
+        }
+      } else if (this.form == 'add_assignment') {
+        /* Form Inputs: new name for assignment */
+        var name = this.inputs.addAssignment.name;
+        var desc = this.inputs.addAssignment.description;
+        var url = this.inputs.addAssignment.file_upload;
+        var deadlinedate = this.inputs.addAssignment.deadline;
+
+         /* Other inputs: class code, school */
+        var classCode = this.params.class.class_code;
+
+        /* Validate name: must be length > 0 */
+        if (name.length == 0) {
+          this.errorMsg = 'Must assignment a new name for class'
+        } if (name.length < 3) {
+          this.errorMsg = 'New assignment name must be at least 3 characters long'
+        } else {
+          /* The form input is valid */
+          this.errorMsg = '';
+
+          /* Call request to rename class and update database... */
+         var success = await this.addAssignment({
+           assignment_name: name,
+           assignment_desc: desc,
+           assignment_url: url,
+           deadline: deadlinedate,
+           class_code: classCode,
+          });
+          
+          /* Alert if the database update is successful */
+          if (success) {
+            this.alertUser('Successfully added new assignment',
+            'New assignment added called ' + this.inputs.addAssignment.name,
+            true)
+            /* Refresh data */
+            this.refreshData();
+          } else {
+            this.alertUser('Unable to rename class',
+            'Try again later',
+            false)
+          }
+        }
+      } else if (this.form == 'edit_assignment') {
+        /* Form Inputs: new name for assignment */
+        var name = this.inputs.addAssignment.name;
+        var desc = this.inputs.addAssignment.description;
+        var url = this.inputs.addAssignment.file_upload;
+        var deadlinedate = this.inputs.addAssignment.deadline;
+
+         /* Other inputs: class code, school */
+        var classCode = this.params.class.class_code;
+        var assignmentCode = this.params.assignment.assignment_code;
+
+        /* Validate name: must be length > 0 */
+        if (name.length == 0 || name == this.params.assignment.assignment_name) {
+          this.errorMsg = 'Must assignment a new name for class'
+        } if (name.length < 3) {
+          this.errorMsg = 'New assignment name must be at least 3 characters long'
+        } else {
+          /* The form input is valid */
+          this.errorMsg = '';
+
+          /* Call request to rename class and update database... */
+         var success = await this.editAssignment({
+           assignment_name: name,
+           assignment_desc: desc,
+           assignment_url: url,
+           deadline: deadlinedate,
+           assignment_code: assignmentCode,
+           class_code: classCode,
+          });
+          
+          /* Alert if the database update is successful */
+          if (success) {
+            this.alertUser('Successfully edited existing assignment',
+            'Existing assignment: ' + this.inputs.editAssignment.name,
+            true)
+            /* Refresh data */
+            this.refreshData();
+          } else {
+            this.alertUser('Unable to edit assignment',
+            'Try again later',
+            false)
+          }
+        }
+      } else if (this.form == 'see_submissions') {
+        /* This will attempt to validate and update feedback details of a particular submission */
+
+        /* Form Inputs: new name for assignment */
+        var inputGrade = this.inputs.editFeedback.grade;
+        var inputComments = this.inputs.editFeedback.comments;
+
+         /* Other inputs: class code, school */
+        var feedbackNo = this.selectedStudent.feedback.feedback_no;
+        var submissionCode = this.selectedStudent.submission_code;
+        var assignmentCode = this.params.assignment.assignment_code;
+
+        /* Validate name: comments be length < 100 */
+        if (inputComments.length >= 100) {
+          this.errorMsg = 'Comments maximum 100 characters long'
+        } else if (inputGrade.length >= 10) {
+          this.errorMsg = 'Grading maximum 10 characters long'
+        } else {
+          /* The form input is valid */
+          this.errorMsg = '';
+
+          /* Call request to rename class and update database... */
+          var success = await this.updateFeedback({
+          grade: inputGrade,
+          comments: inputComments,
+          feedback_no: feedbackNo,
+          submission_code: submissionCode,
+          assignment_code: assignmentCode,
+          });
+          
+          /* Alert if the database update is successful */
+          if (success) {
+            this.alertUser('Successfully edited feedback on submission',
+            'Submission #' + submissionCode + ' by student ' + this.selectedStudent.first_name + ' ' +
+            this.selectedStudent.last_name,
+            true)
+            /* Refresh data */
+            this.refreshData();
+          } else {
+            this.alertUser('Unable to edit feedback on submission',
             'Try again later',
             false)
           }

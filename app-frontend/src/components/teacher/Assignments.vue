@@ -152,7 +152,7 @@
                   />
                 </button>
                 <button
-                @click="deleteAssignment(assignment)"
+                @click="deleteAssignment(teacherClass, assignment)"
                 >
                   <i
                     class="
@@ -317,7 +317,6 @@ export default {
        * @param {String} object - the selected model (a student or class)
        */
       openForm(form, params) {
-        console.log('Opened form params: ', params);
         var title = '';
         if (form == 'add_assignment') {
           title = 'add assignment for class ' + params.class.class_name;
@@ -376,7 +375,6 @@ export default {
           }
 
           this.classData = classData;
-          console.log('CD: ', this.classData);
         }
       },
 
@@ -399,7 +397,6 @@ export default {
             if (response) {
                 /* Classes */
                 classes = response.data.data;
-                console.log('Classes teached by user: ', classes);
               }
           })
           .catch((error) => console.log(error));
@@ -509,7 +506,6 @@ export default {
        */
       deleteAssignment(selClass, selAssignment) {
         /* --- */
-         console.log('FIRED: ', selClass, selAssignment);
         this.confirmAction('delete_assignment', {class: selClass, assignment: selAssignment})
       },
 
@@ -518,7 +514,6 @@ export default {
        * @param selClass - The selected class
        */
       addNewAssignment(selClass) {
-        console.log('FIRED: ', selClass);
         this.openForm('add_assignment', {class: selClass})
       },
 
@@ -527,7 +522,6 @@ export default {
        * @param selAssignment The selected assignment
        */
       editAssignment(selAssignment) {
-         console.log('FIRED: ', selAssignment);
         this.openForm('edit_assignment', {assignment: selAssignment});
       },
 
@@ -537,8 +531,6 @@ export default {
        * @param selAssignment The selected assignment
        */
       async seeSubmissions(selClass, selAssignment) {
-        console.log('FIREDCC: ', selClass);
-        console.log('FIREDAA: ', selAssignment);
         /* Request to get all submissions of selected assingment */
         var submissionsFound = await this.getSubmissions(selClass.class_code, selAssignment.assignment_code);
       

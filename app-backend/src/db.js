@@ -242,8 +242,6 @@ class Db {
    */
   async addClassToSchool(classCode, className, year, schoolCode, teacherEmail) {
     /* Add class to system and set the teacher as the leader of the class*/
-    console.log('---------DB CALL: add class to school');
-    console.log(classCode, className, year, schoolCode, teacherEmail);
     const conn = await pool.connect();
 
     await conn.query(`INSERT INTO classes (class_code, class_name, year, school_code)
@@ -256,7 +254,6 @@ class Db {
       [classCode, schoolCode, teacherEmail]
     );
 
-    console.log('yea');
     return await conn.release();
   }
 
@@ -269,19 +266,12 @@ class Db {
    * @returns the inserted student(s)
    */
   async addStudentsToClass(studentEmails, schoolCode, classCode) {
-    console.log('---------DB CALL: add students to newly added class');
-    console.log(studentEmails, schoolCode, classCode);
     const conn = await pool.connect();
 
     /* Array of student's class code to update */
     for (let i = 0; i < studentEmails.length; i++) {
       if (studentEmails[i]) {
         var email = studentEmails[i];
-        console.log('---add student: ', email);
-
-        console.log('SC: ', schoolCode);
-        console.log('EM: ', email);
-        console.log('CC: ', classCode);
 
         await conn.query(
           `
@@ -373,7 +363,6 @@ class Db {
 
   /**
    * Adds a new assignment for a particular class
-   * @param {*} assignmentCode the assignment code
    * @param {*} assignmentName the name of assignment
    * @param {*} assignmentDesc the description of assignment
    * @param {*} assignmentURL the URL of the PDF 
@@ -395,23 +384,25 @@ class Db {
    * Edits the details of an existing assignment
    * @param {*} assignmentName the new name of the assignment
    * @param {*} assignmentDesc the description of the assignment
+   * @param {*} assignmentName the file URL of the assignment
    * @param {*} deadline the changed deadline of the assignment
    * @param {*} assignmentCode the assignment code
    * @param {*} classCode the class code
    * @param {*} schoolCode the school code
    * @returns 
    */
-  async editAssignment(assignmentName, assignmentDesc, deadline, assignmentCode, classCode, schoolCode) {
+  async editAssignment(assignmentName, assignmentDesc, assignmentURL, deadline, assignmentCode, classCode, schoolCode) {
     let assignmentUpdate = await pool.query(
       `
       UPDATE assignments 
       SET assignment_name = $1, 
-      assignment_desc = $2,  
-      deadline = $3,
-      WHERE assignment_code = $4 AND 
-      class_code = $5 AND  
-      school_code = $6`,
-      [assignmentName, assignmentDesc, deadline, assignmentCode, classCode, schoolCode]
+      assignment_desc = $2, 
+      assignment_url = $3,  
+      deadline = $4, 
+      WHERE assignment_code = $5 AND 
+      class_code = $6 AND   
+      school_code = $7`,
+      [assignmentName, assignmentDesc, assignmentURL, deadline, assignmentCode, classCode, schoolCode]
     );
 
     return assignmentUpdate;

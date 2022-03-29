@@ -16,8 +16,6 @@ import ExamPapers from '@/components/student/ExamPapers';
 import Teacher from '@/components/teacher/Teacher';
 import Assignments from '@/components/teacher/Assignments';
 import Classes from '@/components/teacher/Classes';
-import Feedback from '@/components/teacher/Feedback';
-import Resources from '@/components/teacher/Resources';
 
 /* Vue uses router */
 Vue.use(Router);
@@ -92,18 +90,6 @@ const router = new Router({
       },
       children: [
         {path: '/teacher/classes', name: 'classes', component: Classes,
-          meta: {
-            requiresAuth: true,
-            isTeacher: true,
-          },
-        },
-        {path: '/teacher/feedback', name: 'feedback', component: Feedback,
-          meta: {
-            requiresAuth: true,
-            isTeacher: true,
-          },
-        },
-        {path: '/teacher/resources', name: 'resources', component: Resources,
           meta: {
             requiresAuth: true,
             isTeacher: true,

@@ -1,5 +1,16 @@
 # arithmetix. Application - e-learning maths application
 
+## Login details (Development)
+There are test users in this system to test the system in various rules as a student or a teacher. The user credentials can also be configured in the '3-populate.sql' SQL file which populates the data.
+
+As a student...
+Username: 'testuser1@gmail.com' Password: 'student'
+Username: 'testuser2@gmail.com' Password: 'student'
+Username: 'testuser3@gmail.com' Password: 'student' ...
+
+As a teacher...
+Username: 'testteacher1@gmail.com' Password: 'teacher' ...
+
 ## Dependencies
 
 - [NodeJS](https://nodejs.org/)
@@ -68,11 +79,13 @@ Edit local storage values in the browser console to test for different user type
 
 ## Usage
 
-1. Run the API (backend) with: `cd app-backend && npm run start`
-2. Run the Vue frontend with: `cd app-frontend && npm run start`
+1. Run the API (backend) with: `cd app-backend && npm start`
+2. Run the Vue frontend with: `cd app-frontend && npm start`
 
-## Deployment (assumed, ubuntu. Similar steps for other environments)
-* Steps 0: The server should be configured to expose the ports in the configuration file and those used by nginx (80,443). Make sure to fill in the server domain/ip in the .env file etc. see Configuration. Make sure nodejs is installed and you have ran `npm i` in the app-frontend and app-backend directories. Make sure postgres is installed, and you have ran the initialisation script `./init-db`.
+## Deployment (Assumption: Ubuntu. Similar steps for other environments)
+* Steps 0: The server should be configured to expose the ports in the configuration file and those used by nginx (80,443). Make sure to fill in the server domain/ip in the .env file etc. see Configuration.
+
+Make sure NodeJS is installed and you have ran `npm i` in the app-frontend and app-backend directories. Make sure postgres is installed, and you have ran the initialisation script `./factory-db.sh`.
 
 * Step 1:
 build the vue app (the frontend)
@@ -94,7 +107,7 @@ nano /var/www/html/index.html # change something in the default page then visit 
 cd .. # if not already in project root
 rm -rf /var/www/html # delete folder
 mkdir /var/www/html # make new empty folder in same location
-cp ./vue-app/build /var/www/html # copy build files
+cp ./app-frontend/build /var/www/html # copy build files
 ```
 Visit the servers IP address in the web browser. You should see the login page.
 

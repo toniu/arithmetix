@@ -73,7 +73,6 @@ router.post(
     try {
       const errorsFound = validationResult(req);
       if (!errorsFound.isEmpty()) {
-        console.log({errorsFound: errorsFound.array()});
         throw 'Invalid username/password';
       }
 
@@ -86,7 +85,6 @@ router.post(
         let teachers = await db.getTeachers();
         /* Convert to array of emails */
         let teacherEmails = teachers.map((e) => e.email);
-        console.log('Teacher emails: ', teacherEmails);
 
         let isTeacher = false;
         if (teacherEmails.includes(email)) {
@@ -122,7 +120,6 @@ router.post(
         };
 
         res.status(200).send(entries);
-        console.log(entries);
       } else {
         throw 'No user found'
       }
@@ -154,7 +151,7 @@ router.get('/get_teachers', async (req, res) => {
  router.get('/get_exam_papers', async (req, res) => {
   try {
     let list = eps.getPapers();
-    console.log('--- [EXAM PAPERS] from directory search: ', list);
+    console.log('Exam papers from directory search... ', list);
     res.send({success: true, data: list});
   } catch (e) {
     res.send({success: false, error: 'Could not get exams'});
@@ -168,7 +165,7 @@ router.get('/get_teachers', async (req, res) => {
  router.get('/get_revision_notes', async (req, res) => {
   try {
     let list = revisionNotes.getNotes();
-    console.log('--- [REVISION NOTES]  from directory search: ', list);
+    console.log('Revision notes from directory search... ', list);
     res.send({success: true, data: list});
   } catch (e) {
     res.send({success: false, error: 'Could not get exams'});
@@ -182,7 +179,7 @@ router.get('/get_teachers', async (req, res) => {
  router.get('/get_practice_worksheets', async (req, res) => {
   try {
     let list = practiceWorksheets.getWorksheets();
-    console.log('--- [PRACTICE WORKSHEETS] from directory search: ', list);
+    console.log('Practice worksheets from directory search... ', list);
     res.send({success: true, data: list});
   } catch (e) {
     res.send({success: false, error: 'Could not get worksheets'});
@@ -196,7 +193,7 @@ router.get('/get_teachers', async (req, res) => {
  router.get('/get_quizzes', async (req, res) => {
   try {
     let list = quizzes.getPools();
-    console.log('--- [QUIZ POOLS] from directory search: ', list);
+    console.log('Quiz pools from directory search... ', list);
     res.send({success: true, data: list});
   } catch (e) {
     res.send({success: false, error: 'Could not get quizzes'});
@@ -213,12 +210,10 @@ router.get('/get_teachers', async (req, res) => {
     let quizData = [];
     if (replay) {
       var csvFile = quizzes.getCSVFile();
-      console.log('Re-generating quiz with... ', csvFile);
       var poolPath = req.body.file_path;
       /* Quiz data generated - randomly selected 10 questions from chosen pool */
       quizData = await quizzes.chooseQuestions(poolPath);
     } else {
-      console.log('Generating quiz with... ', req.body.file_path);
       var poolPath = req.body.file_path;
       /* Quiz data generated - randomly selected 10 questions from chosen pool */
       quizData = await quizzes.chooseQuestions(poolPath);
@@ -236,7 +231,7 @@ router.get('/get_teachers', async (req, res) => {
  router.get('/get_quiz_data', async (req, res) => {
   try {
     let list = quizzes.getQuizData();
-    console.log('--- [QUIZ DATA] from CSV: ', list);
+    console.log('Quiz data from CSV file... ', list);
     res.send({success: true, data: list});
   } catch (e) {
     res.send({success: false, error: 'Could not get quiz data'});
@@ -252,28 +247,20 @@ router.get('/open_pdf', async (req, res) => {
     /* The file path to access */
     var filePath = req.query.file_path;
 
-    console.log('Opening PDF... ', filePath);
-    console.log(__dirname);
-
     /* Expected route vs. actual route */
     var expectedRoute = path.join(__dirname, 'resources/public');
     var actualRoute = path.join(__dirname, filePath);
-
-    console.log('ER: ', expectedRoute);
-    console.log('AR: ', actualRoute);
 
     /* Open file if the actual route matches with the expected route */
     if (actualRoute.startsWith(expectedRoute)) {
       /* String manipulation to retrieve file name */ 
       var sp = filePath.split('/');
       var fileName = sp[sp.length - 1].toLowerCase();
-      console.log('Opening PDF... ', filePath, ' with file name... ', fileName);
 
       /* Read data of PDF file */
       fs.readFile(actualRoute, function (err, data){
           res.contentType("application/pdf");
           res.send(data);
-          console.log(data);
       });
     } else {
       res.send({data: null});
@@ -338,7 +325,6 @@ router.post('/get_classes_teached_by', async (req, res) => {
         studentsOfClass[i].last_name = await db.getLastName(studentsOfClass[i].student_email);
       }
     }
-    console.log(studentsOfClass);
     res.send({success: true, data: studentsOfClass});
   } catch (e) {
     res.send({success: false, error: 'Could not get students of given class'});
@@ -372,9 +358,6 @@ router.post('/get_classes_teached_by', async (req, res) => {
  * Adds new class into a school
  */
 router.post('/add_class', async (req, res) => {
-  console.log('----------APP REQUEST: add class');
-  console.log('body: ',
-  req.body);
 
   var emails = req.body.student_emails.split(',');
 
@@ -394,7 +377,6 @@ router.post('/add_class', async (req, res) => {
         emails,
         req.body.school_code,
         req.body.class_code);
-      console.log('RIGHT THUR');
       console.log('Students added in new class!');
     }
 
@@ -426,13 +408,9 @@ router.post('/rename_class', async (req, res) => {
  * Adds new student into a class
  */
 router.post('/add_students_to_class', async (req, res) => {
-  console.log('----------APP REQUEST: add students to class');
-  console.log('body: ',
-  req.body);
   /* Add student (or students) to a class -
     changing the student's class code to a class that is not void (i.e. not '0') */
   var student = [];
-  console.log('Body Email', req.body.student_emails);
   student.push(req.body.student_emails);
 
   try {
@@ -456,7 +434,6 @@ router.post('/remove_students_from_class', async (req, res) => {
     /* Deleting a student(s) from a class -
     changing the student's class code to '0' (void) */
     var student = [];
-    console.log('Body Email', req.body.student_emails);
     student.push(req.body.student_emails);
 
     await db.removeStudentsFromClass(
@@ -507,7 +484,6 @@ router.post('/delete_class', async (req, res) => {
 router.post('/add_assignment', async (req, res) => {
   try {
     const assignmentAdded = await db.addAssignment(
-      req.body.assignment_code,
       req.body.assignment_name,
       req.body.assignment_desc,
       req.body.assignment_url,
@@ -515,7 +491,6 @@ router.post('/add_assignment', async (req, res) => {
       req.body.class_code,
       req.body.school_code
       );
-    console.log('Inserted assignment!');
 
     res.send({success: true, data: assignmentAdded});
     /* */
@@ -533,6 +508,7 @@ router.post('/edit_assignment', async (req, res) => {
     let editedAssignment = await db.editAssignment(
       req.body.assignment_name,
       req.body.assignment_desc,
+      req.body.assignment_url,
       req.body.deadline,
       req.body.assignment_code,
       req.body.class_code,

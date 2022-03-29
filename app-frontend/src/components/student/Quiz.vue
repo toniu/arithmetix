@@ -487,8 +487,6 @@ export default {
         let quizFound = response.data;
         this.quizData = quizFound;
 
-        console.log('Generated Quiz Data (client side): ', this.quizData);
-
         this.questions = this.generateQuestions();
         this.renderQuiz(this.questions, this.presentIndex);
         this.getProgressindicator(this.questions.length);
@@ -523,17 +521,13 @@ export default {
      * @return The questions in shuffled order.
      */
     generateQuestions() {
-      console.log('1', this.quizData);
       var questions = this.shuffleArray(this.quizData);
-      console.log('2', questions);
       /** Shuffle order of answer options **/
       for (const i in questions) {
         if (questions[i]) {
-          console.log('4', questions[i]);
           questions[i].options = this.shuffleArray(questions[i].options);
         }
       }
-      console.log('5');
       return questions;
     },
 
@@ -595,8 +589,6 @@ export default {
       var currentQuest = questions[index];
       this.renderQuestion(currentQuest.question, index);
       this.renderOptions(currentQuest.options);
-      console.log('Question');
-      console.log(questions[index]);
     },
 
     /**
@@ -736,7 +728,6 @@ export default {
         return a.category - b.category;
       });
 
-      console.log('Category count: ', categoryCount);
       return categoryCount;
     },
 
@@ -912,7 +903,6 @@ export default {
      */
     renderResult(resultList) {
       var results = resultList;
-      console.log(results);
       var countCorrect = this.countAnswers(results)[0],
         countWrong = this.countAnswers(results)[1];
 
@@ -958,7 +948,6 @@ export default {
       } else {
         this.progressValue -= 11.1;
       }
-      console.log('PV', this.progressValue);
 
       if (this.progressValue < 100) {
         if (this.progressValue == 99) this.progressValue = 100;
@@ -995,9 +984,6 @@ export default {
         category: questions[presentIndex].category,
       };
       this.resultList.push(result);
-
-      console.log('result');
-      console.log(result);
     },
 
     /**

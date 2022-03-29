@@ -91,7 +91,7 @@
               </div>
               <!-- Feedback -->
               <div class="shadow-lg">
-                <button @click="goTo('/teacher/feedback')" class="p-2 w-full bg-purple-900 text-white font-semibold rounded-t-lg hover:bg-purple-800 transition 0.1s">
+                <button @click="goTo('/teacher/assignments')" class="p-2 w-full bg-purple-900 text-white font-semibold rounded-t-lg hover:bg-purple-800 transition 0.1s">
                   <span class="p-1 float-left"> Quick Feedback </span>
                   <i class="fas fa-arrow-right float-right mx-3 my-1 text-xl"/>
                 </button>
@@ -165,7 +165,6 @@ export default {
      * Gets school information
      */
     async getSchoolData() {
-       console.log('pep');
       try {
         await this.$axios
         .post(
