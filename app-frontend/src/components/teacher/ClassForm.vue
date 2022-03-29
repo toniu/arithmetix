@@ -295,7 +295,303 @@
             </div>
           </div>
         </div>
-        <!-- Alert Box: Form validation -->
+
+    <!-- Add assignment -->
+    <div class="form-box align-center m-auto w-full md:w-5/6 justify-center p-2 rounded opacity-100 bg-white" v-if="form == 'add_assignment'">
+      <div class="p-10">
+         <h2 class="text-2xl p-2 mt-6 md:mt-0 text-center font-light text-gray-900 mb-4">
+            <i class="fas fa-chalkboard-teacher text-blue-400 mx-2"></i>
+            <span class="font-semibold"> {{ title }} </span>
+          </h2>
+          <div v-if="errorMsg.length > 0">
+            <p class="block m-2 p-2 w-full text-center text-base bg-red-100 text-red-900">
+              {{ errorMsg }}
+            </p>
+          </div>
+
+          <!-- Inputs: Name (text-field) -->
+          <h5 class="flex text-lg align-left w-full font-semibold my-1">assignment name</h5>
+          <div class="p-3 mx-0 h-14 flex align-center">
+            <input type="text"
+            v-model="inputs.addAssignment.name"
+            class="block p-1 m-1 h-full border-b-2 hover:border-blue-400 focus:border-blue-400
+            w-5/6 outline-none inset-0 text-gray-900 transition 0.2s" 
+            placeholder="assignment name"
+            />
+          </div>
+
+          <!-- Inputs: Description (text-area) -->
+          <h5 class="flex text-lg align-left w-full font-semibold my-1">assignment description</h5>
+          <div class="p-3 mx-0 h-14 flex align-center">
+            <textarea type="text"
+            v-model="inputs.addAssignment.description"
+            class="block p-1 m-1 h-full border-b-2 z-10 bg-gray-50 hover:border-blue-400 focus:border-blue-400
+            w-5/6 outline-none inset-0 text-gray-900 transition 0.2s" 
+            placeholder="assignment description"
+            />
+          </div>
+
+          <!-- Inputs: URL (uploads pdf into system; url for pdf is created) -->
+          <h5 class="flex text-lg align-left w-full font-semibold my-1">assignment PDF</h5>
+          <div class="p-3 mx-0 h-16 flex align-center">
+            <input type="file"
+            accept=".pdf"
+            class="block p-1 m-1 h-full rounded-lg border-2 border-gray-300 hover:border-blue-500
+            w-5/6 outline-none inset-0 text-gray-900 hover:text-gray-500 transition 0.2s" 
+            placeholder="assignment description"
+            />
+          </div>
+
+          <!-- Inputs: Deadline (dateTime input) -->
+          <h5 class="flex text-lg align-left w-full font-semibold my-1">assignment deadline</h5>
+          <div class="p-3 mx-0 h-14 flex align-center">
+            <input type="datetime-local"
+            v-model="inputs.addAssignment.deadline"
+            class="block p-1 m-1 h-full border-b-2 hover:border-blue-400 focus:border-blue-400
+            w-5/6 outline-none inset-0 text-gray-900 transition 0.2s" 
+            placeholder="deadline"
+            />
+          </div>
+
+        <!-- -->
+        <div class="md:flex">
+              <button
+                  type="button"
+                  @click="validateChoices()"
+                  class="
+                  md:w-4/6
+                  w-full
+                  py-2
+                  my-6
+                  md:mx-10
+                  rounded-full
+                  block
+                  md:inline
+                  font-bold
+                  text-base
+                  md:text-lg
+                  bg-green-600
+                  hover:bg-green-700
+                  text-gray-100
+                  focus:outline-none
+                  "
+              >
+                  confirm 
+              </button>
+              <button
+                  @click="closeForm"
+                  class="
+                  md:w-4/6
+                  w-full
+                  py-2
+                  my-6
+                  md:mx-10
+                  rounded-full
+                  block
+                  md:inline
+                  font-bold
+                  text-base
+                  md:text-lg
+                  bg-red-600
+                  hover:bg-red-700
+                  text-gray-100
+                  focus:outline-none
+                  "
+              >
+                  cancel 
+              </button>
+        </div>
+      </div>
+    </div>
+
+     <!-- Edit assignment -->
+    <div class="form-box align-center m-auto w-full md:w-5/6 justify-center p-2 rounded opacity-100 bg-white" v-if="form == 'edit_assignment'">
+      <div class="p-10">
+          <h2 class="text-2xl p-2 mt-6 md:mt-0 text-center font-light text-gray-900 mb-4">
+            <i class="fas fa-chalkboard-teacher text-blue-400 mx-2"></i>
+            <span class="font-semibold"> {{ title }} </span>
+          </h2>
+          <div v-if="errorMsg.length > 0">
+            <p class="block m-2 p-2 w-full text-center text-base bg-red-100 text-red-900">
+              {{ errorMsg }}
+            </p>
+          </div> 
+          <!-- -->
+          <div class="md:flex">
+              <button
+                  type="button"
+                  @click="validateChoices()"
+                  class="
+                  md:w-4/6
+                  w-full
+                  py-2
+                  my-6
+                  md:mx-10
+                  rounded-full
+                  block
+                  md:inline
+                  font-bold
+                  text-base
+                  md:text-lg
+                  bg-green-600
+                  hover:bg-green-700
+                  text-gray-100
+                  focus:outline-none
+                  "
+              >
+                  confirm 
+              </button>
+              <button
+                  @click="closeForm"
+                  class="
+                  md:w-4/6
+                  w-full
+                  py-2
+                  my-6
+                  md:mx-10
+                  rounded-full
+                  block
+                  md:inline
+                  font-bold
+                  text-base
+                  md:text-lg
+                  bg-red-600
+                  hover:bg-red-700
+                  text-gray-100
+                  focus:outline-none
+                  "
+              >
+                  cancel 
+              </button>
+          </div>
+      </div>
+    </div>
+
+     <!-- See submissions -->
+    <div class="form-box align-center m-auto w-full md:w-5/6 justify-center p-2 rounded opacity-100 bg-white" v-if="form == 'see_submissions'">
+      <div class="p-10">
+         <h2 class="text-2xl p-2 mt-6 md:mt-0 text-center font-light text-gray-900 mb-4">
+            <i class="fas fa-chalkboard-teacher text-blue-400 mx-2"></i>
+            <span class="font-semibold"> {{ title }} </span>
+          </h2>
+          <div v-if="errorMsg.length > 0">
+            <p class="block m-2 p-2 w-full text-center text-base bg-red-100 text-red-900">
+              {{ errorMsg }}
+            </p>
+          </div>
+
+          <!-- Submissions -->
+          <div class="block m-2 p-2 md:grid md:grid-cols-2 col">
+            <!-- Submissions list -->
+            <div class="m-1 p-1 w-full text-left">
+              <h2 class="p-2 m-1 text-white font-semibold bg-gray-900 rounded-t-lg"> submissions </h2>
+              <ul class="w-full overflow-y-scroll h-28 md:h-60">
+                <li class="m-1 text-base bg-gray-200 border-l-4 rounded-sm border-gray-800 truncate"
+                v-for="(submission, subIndex) in params.submissions" :key="subIndex">
+                  <span class="m-1 font-bold truncate">
+                  <i class="fas fa-user p-1 m-1 text-lg text-left"></i>
+                  {{ submission.last_name }},<span class="font-normal"> {{ submission.first_name}} </span> </span>
+
+
+                  <button class="p-1 m-1 bg-gray-900 rounded hover:bg-gray-700 float-right transition 0.1s"
+                  @click="selectSubmission(submission)">
+                    <i class="fas fa-pencil-alt m-2 text-white"/>
+                  </button>
+                  <button class="p-1 m-1 bg-blue-900 rounded hover:bg-blue-700 float-right transition 0.1s"
+                  @click="openFile(submission)">
+                    <i class="fas fa-file m-2 text-white"/>
+                  </button>
+                </li>              
+              </ul>
+            </div>
+
+            <!-- Feedback -->
+            <div class="m-1 p-2 w-full text-left">
+              <!-- Rendering depending on if a submission has been selected -->
+              <h2 v-if="!selectedStudent" class="p-2 m-1 text-white font-semibold bg-gray-900 rounded-t-lg"> feedback </h2>
+              <h2 v-if="selectedStudent" class="p-2 m-1 text-white font-semibold bg-gray-900 rounded-t-lg"> {{ selectedStudent.last_name }}, {{ selectedStudent.first_name }} </h2>
+
+              <div v-if="!selectedStudent" class="p-5 m-1 h-auto bg-gray-200 font-bold text-gray-800 text-center">
+                No submission currently selected
+              </div>
+
+              <div v-if="selectedStudent" class="p-1 m-1">    
+                <!-- Inputs: Grade (text-field) -->
+                <h5 class="mt-3 flex text-base w-full font-semibold my-1">grade</h5>
+                <div class="p-3 mx-0 h-14 flex w-full align-center">
+                  <input id="feedback-grade" type="text"
+                  v-model="inputs.editFeedback.grade"
+                  class="block p-1 m-1 h-full border-b-2 hover:border-blue-400 focus:border-blue-400
+                  w-5/6 outline-none inset-0 text-gray-900 transition 0.2s"
+                  />
+                </div>
+
+                <!-- Inputs: Comments (text-area) -->
+                <h5 class="flex text-base w-full font-semibold my-1">comments</h5>
+                <div class="p-3 mx-0 h-14 flex align-center">
+                  <textarea id="feedback-comments" type="text"
+                  v-model="inputs.editFeedback.comments"
+                  class="block p-1 m-1 h-full border-b-2 z-10 bg-gray-50 hover:border-blue-400 focus:border-blue-400
+                  w-5/6 outline-none inset-0 text-gray-900 transition 0.2s" 
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="md:flex">
+            <!-- -->
+              <button
+                  v-if="selectedStudent"
+                  type="button"
+                  @click="validateChoices()"
+                  class="
+            
+                  w-full
+                  py-2
+                  my-6
+                  md:mx-10
+                  rounded-full
+                  block
+                  md:inline
+                  font-bold
+                  text-base
+                  md:text-lg
+                  bg-green-600
+                  hover:bg-green-700
+                  text-gray-100
+                  focus:outline-none
+                  "
+              >
+                  confirm 
+              </button>
+              <button
+                
+                  @click="submissionFormCloseHandler()"
+                  class="
+    
+                  w-full
+                  py-2
+                  my-6
+                  md:mx-10
+                  rounded-full
+                  block
+                  md:inline
+                  font-bold
+                  text-base
+                  md:text-lg
+                  bg-red-600
+                  hover:bg-red-700
+                  text-gray-100
+                  focus:outline-none
+                  "
+              >
+                  cancel 
+              </button>
+          </div>
+      </div>
+    </div>
+     <!-- Alert Box: Form validation -->
         <Alert
           :show="showAlert"
           :close="closeAlert"
@@ -331,6 +627,27 @@ export default {
       renameClass: {
         name: ''
       },
+      addAssignment: {
+        name: '',
+        description: '',
+        file_upload: null,
+        deadline: '',
+      },
+      editAssignment: {
+        name: '',
+        description: '',
+        file_upload: null,
+        deadline: '',
+      },
+      editFeedback: {
+        grade: '',
+        comments: '',
+      },
+    },
+
+    /* Selected student (for submissions) */
+    selectedStudent: {
+      feedback: {}
     },
 
     /* The alert information */
@@ -366,6 +683,53 @@ export default {
       this.showAlert = false;
       this.showForm = false;
       (this.alertMessage = ''), (this.alertDescription = '');
+    },
+
+    /*--- Submission and Feedback functions  ---*/
+    submissionFormCloseHandler() {
+      this.closeForm();
+      this.selectedStudent = null;
+    },
+
+    openFile(submission) {
+      /* Opens file of selected submisison */
+    },
+
+    async selectSubmission(submission) {
+      /* Get current feedback of selected student */
+      var feedback = await this.getFeedback(submission.submission_code, this.params.assignment.assignment_code);
+
+      this.inputs.editFeedback.grade = feedback.grade;
+      this.inputs.editFeedback.comments = feedback.comments;
+
+      submission.feedback = feedback;
+
+      /* Set selected submission */
+      this.selectedStudent = submission;
+    },
+
+    async getFeedback(submissionCode, assignmentCode) {
+      var feedback = null;
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/get_submission_feedback`,
+          { 
+            responseType: 'json',
+            submission_code: `${submissionCode}`,
+            assignment_code: `${assignmentCode}`,
+          },
+        )
+        .then((response) => {
+          if (response) {
+            feedback = response.data.data;
+            console.log('Feedback for selected submission: ', feedback);
+          }
+        })
+      } catch (e) {
+        console.log(e);
+      }
+      return feedback;
     },
 
     /*--- Request functions  ---*/
@@ -481,6 +845,47 @@ export default {
 
       return success;
     },
+    
+    /**
+     * Request to update feedback on a submission
+     * @param inputs - the inputs required
+     */
+    async updateFeedback(inputs) {
+      var success = false;
+      console.log('UPDATE FEEDBACK REQUEST; Inputs: ', inputs);
+
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/update_feedback`,
+          { 
+            responseType: 'json',
+            grade: `${inputs.class_code}`,
+            teacher_email: `${this.email}`,
+            comments: `${inputs.comments}`,
+            feedback_no: `${inputs.feedback_no}`,
+            submission_code: `${inputs.submission_code}`,
+            assignment_code: `${inputs.assignment_code}`
+          },
+        )
+        .then((response) => {
+          var res = response.data
+          if (res.success) {
+            /* Request for database update successful */
+            console.log('Success');
+            success = true;
+          }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        /* Request unsuccessful - alert user */
+        console.log(e);
+        success = false;
+      }
+
+      return success;
+    },
+
     /*--- Validation choices ---*/
 
     /**
@@ -619,6 +1024,8 @@ export default {
       this.inputs.addClass.name = '';
       this.inputs.addStudent.student = null;
       this.inputs.renameClass.name = '';
+
+      this.selectedStudent = null;
     },
 
     /*--- Add Class Functions ---*/

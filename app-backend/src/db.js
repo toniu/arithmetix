@@ -581,19 +581,15 @@ class Db {
   /**
    * Retrieves the list of submissions of a particular assignment code
    * @param {*} assignmentCode the assignment code
-   * @param {*} schoolCode the school code
-   * @param {*} classCode the class code
    * @returns the rows returned
    */
-  async getSubmissions(assignmentCode, schoolCode, classCode) {
+  async getSubmissions(assignmentCode) {
     const {rows} = await pool.query(
       `SELECT * 
       FROM submissions 
-      WHERE assignment_code = $1 AND 
-      school_code = $2 AND 
-      class_code = $3  
+      WHERE assignment_code = $1 
       ORDER BY last_modified`,
-    [assignmentCode, schoolCode, classCode]);
+    [assignmentCode]);
 
     console.log(rows);
     return rows;

@@ -628,9 +628,20 @@ router.post('/update_feedback', async (req, res) => {
  */
 router.post('/get_submissions', async (req, res) => {
   try {
-    const studentSubmissions = await db.getSubmissions(req.body.assignment_code,
-      req.body.school_code,
-      req.body.class_code);
+    const studentSubmissions = await db.getSubmissions(req.body.assignment_code);
+    
+    /* Add student names to submissions found */
+    for (let i = 0; i < studentSubmissions.length; i++) {
+      if (studentSubmissions[i]) {
+        var submission = studentSubmissions[i];
+        var first_name = await db.getFirstName(submission.student_email);
+        var last_name = await db.getLastName(submission.student_email);
+
+        studentSubmissions[i].first_name = first_name;
+        studentSubmissions[i].last_name = last_name;
+      }
+    }
+    
     res.send({success: true, data: studentSubmissions});
   } catch (e) {
     res.send({success: false, error: 'Could not get student submissions for particular assignment'});

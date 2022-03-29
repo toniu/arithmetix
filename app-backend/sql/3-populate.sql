@@ -165,4 +165,35 @@ INSERT INTO submissions (assignment_code, student_email, submission_status, grad
 VALUES(1, 'testuser4@gmail.com','Submitted','Not graded','/testurl');
 INSERT INTO submissions (assignment_code, student_email, submission_status, grade_status, file_submission) 
 VALUES(1, 'testuser5@gmail.com','Submitted','Not graded','/testurl');
+INSERT INTO submissions (assignment_code, student_email, submission_status, grade_status, file_submission) 
+VALUES(2, 'testuser9@gmail.com','Submitted','Not graded','/testurl');
+INSERT INTO submissions (assignment_code, student_email, submission_status, grade_status, file_submission) 
+VALUES(2, 'testuser10@gmail.com','Submitted','Not graded','/testurl');
+INSERT INTO submissions (assignment_code, student_email, submission_status, grade_status, file_submission) 
+VALUES(2, 'testuser11@gmail.com','Submitted','Not graded','/testurl');
+INSERT INTO submissions (assignment_code, student_email, submission_status, grade_status, file_submission) 
+VALUES(2, 'testuser12@gmail.com','Submitted','Not graded','/testurl');
+INSERT INTO submissions (assignment_code, student_email, submission_status, grade_status, file_submission) 
+VALUES(2, 'testuser13@gmail.com','Submitted','Not graded','/testurl');
+
 ------ Hardcoded Feedback
+INSERT INTO feedback (assignment_code, submission_code, grade, graded_by, comments)
+VALUES(1, 1, 'A', 'testteacher1@gmail.com', 'Excellent work. Working out and solutions fully detailed overall!');
+INSERT INTO feedback (assignment_code, submission_code, grade, graded_by, comments)
+VALUES(1, 2, 'B', 'testteacher1@gmail.com', 'Good work. Working out and solutions need more detail overall!');
+INSERT INTO feedback (assignment_code, submission_code, grade, graded_by, comments)
+VALUES(1, 3, 'D', 'testteacher1@gmail.com', 'Minimal attempt on work. Answers lacked accuracy and working out');
+INSERT INTO feedback (assignment_code, submission_code, grade, graded_by, comments)
+VALUES(1, 4, 'C', 'testteacher1@gmail.com', 'Okay work. Reviewing the textbook is reccommended as there were missing parts in working out');
+INSERT INTO feedback (assignment_code, submission_code, grade, graded_by, comments)
+VALUES(1, 5, 'E', 'testteacher1@gmail.com', 'Zero attempt at majority of the questions. I expect much more of an effort next assignment');
+INSERT INTO feedback (assignment_code, submission_code, grade, graded_by, comments)
+VALUES(2, 6, 'A', 'testteacher1@gmail.com', 'Excellent work. Working out and solutions fully detailed overall!');
+INSERT INTO feedback (assignment_code, submission_code, grade, graded_by, comments)
+VALUES(2, 7, 'B', 'testteacher1@gmail.com', 'Good work. Working out and solutions need more detail overall!');
+INSERT INTO feedback (assignment_code, submission_code, grade, graded_by, comments)
+VALUES(2, 8, 'D', 'testteacher1@gmail.com', 'Minimal attempt on work. Answers lacked accuracy and working out');
+INSERT INTO feedback (assignment_code, submission_code, grade, graded_by, comments)
+VALUES(2, 9, 'C', 'testteacher1@gmail.com', 'Okay work. Reviewing the textbook is reccommended as there were missing parts in working out');
+INSERT INTO feedback (assignment_code, submission_code, grade, graded_by, comments)
+VALUES(2, 10, 'E', 'testteacher1@gmail.com', 'Zero attempt at majority of the questions. I expect much more of an effort next assignment');

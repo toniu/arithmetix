@@ -115,7 +115,6 @@ export default {
 
     /*--- Action methods ---*/
     async deleteClass(inputs) {
-      console.log('e2');
       var success = false;
       try {
         await this.$axios
@@ -157,6 +156,38 @@ export default {
           { 
             responseType: 'json',
             student_emails: `${inputs.student_emails}`,
+            school_code: `${this.schoolID}`,
+          },
+        )
+        .then((response) => {
+          console.log('e3');
+          var res = response.data
+          if (res.success) {
+            /* Request for database update successful */
+            console.log('Success');
+            success = true;
+          }
+        })
+        .catch((error) => console.log(error));
+      } catch (e) {
+        /* Request unsuccessful - alert user */
+        console.log(e);
+        success = false;
+      }
+
+      return success;
+    },
+
+    async deleteAssignment(inputs) {
+      var success = false;
+      try {
+        await this.$axios
+        .post(
+          `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/delete_assignment`,
+          { 
+            responseType: 'json',
+            assignment_code: `${inputs.assignment_code}`,
+            class_code: `${inputs.class_code}`,
             school_code: `${this.schoolID}`,
           },
         )
@@ -239,6 +270,37 @@ export default {
           this.refreshData();
         } else {
           this.alertUser('Unable to remove student from class',
+          'Try again later',
+          false)
+        }
+      } else if (action == 'delete_assignment') {
+        console.log('c1');
+        /* Inputs: the assignment to remove */
+        var assignment = this.params.assignment;
+        var teacherClass = this.params.class;
+        
+        /* ... their codes */
+        var assignmentCode = assignment.assignment_code;
+        var classCode = teacherClass.class_code;
+
+         /* Call request to delete assignment from class and update database... */
+        var success = await this.deleteAssignment({
+          assignment: assignmentCode,
+          class_code: classCode
+        });
+
+         /* Alert if the database update is successful */
+        if (success) {
+          this.alertUser('Successfully deleted assignment from class ' +
+          this.params.class.class_name,
+          this.params.assignment.assignment_name,
+          true)
+
+          this.closeDialog()
+          /* Refresh data */
+          this.refreshData();
+        } else {
+          this.alertUser('Unable to delete assignment from class',
           'Try again later',
           false)
         }
