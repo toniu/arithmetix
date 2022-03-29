@@ -457,9 +457,8 @@ export default {
         )
         .then((response) => {
           if (response) {
-              /* Classes */
+              /* Assignments found */
               assignments = response.data;
-              console.log('Assignments of ' + classCode + ' by class: ', assignments);
             }
         })
         .catch((error) => console.log(error));
@@ -487,7 +486,6 @@ export default {
           if (response) {
               /* Submissions found */
               submissions = response.data.data;
-              console.log('Submissions of assignment code ' + assignmentCode + ' by class: ', submissions);
             }
         })
         .catch((error) => console.log(error));

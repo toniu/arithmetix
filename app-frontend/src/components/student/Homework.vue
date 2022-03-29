@@ -48,7 +48,7 @@
     <section class="w-full grid-rows-2 md:flex">
       <!-- -->
       <div class="w-full md:w-1/2 p-3 mx-3">
-        <h1 class="p-1 m-1 font-semibold uppercase text-xl bg-gray-100 rounded-xl"> Upcoming deadlines </h1>
+        <h1 class="p-2 m-1 font-semibold text-lg text-white bg-gray-900 rounded-t-xl"> Upcoming deadlines </h1>
         <ul class="p-1 m-3 inline-block w-full bg-gray-100 rounded-lg">
           <div class="p-2">
             <h2 class="text-left mx-2 p-2 font-semibold"> Wednesday 14 December </h2>
@@ -94,8 +94,8 @@
           </div>
         </ul>
       </div>
-      <div class="w-full md:w-1/2 ">
-        <h1 class="p-1 m-1 font-semibold uppercase text-xl bg-gray-100 rounded-xl"> Schedule </h1>
+      <div class="p-3 w-full md:w-1/2 ">
+        <h1 class="p-2 m-1 font-semibold text-lg text-white bg-gray-900 rounded-t-xl"> Calendar </h1>
         <div id="root" class="text-center h-96 flex flex-col ">
           <h1 class="py-2 font-semibold uppercase">{{ getMonthName(month) }}, {{ year }}</h1>
           
@@ -129,9 +129,13 @@
 
 <script>
 export default {
-  name: 'ExamPapers',
+  name: 'Homework',
   data() {
     return {
+      email: localStorage.getItem('user'),
+      schoolID: localStorage.getItem('schoolCode'),
+      classData: {},
+
       monthNames: [
       'January',
       'February',
@@ -157,7 +161,94 @@ export default {
     ]
     };
   },
-  computed: {
+  mounted() {
+    this.getAssignmentsData();
+  },
+  methods: {
+  
+    /**
+     * Gets name of month 
+     */
+    getMonthName(index) {
+      return this.monthNames[index]
+    },
+
+     /**
+     * Gets assignments data of student's class
+     */
+    async getAssignmentsData() {
+      /* All existing classes of school */
+      var studentClass = await this.getStudentClass();
+        /* Only create class data if the data actually exists */
+      if (studentClass) {
+        /* Get assignments of student's existing class */
+        var assignments = await this.getAssignmentsOfClass(studentClass.class_code);
+        studentClass.assignments = assignments;
+        this.classData = studentClass;
+      }
+      console.log('AA: ' + this.classData);
+    },
+
+    async getStudentClass() {
+      var studentClass = null;
+      /* Get list of assignments */
+      try {
+      await this.$axios
+      .post(
+        `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/get_student_class`,
+        { 
+          responseType: 'json',
+          email: `${this.email}`,
+          school_code: `${this.schoolID}`,
+        },
+      )
+      .then((response) => {
+        if (response) {
+            /* Classes */
+            studentClass = response.data;
+            console.log('SC', studentClass);
+          }
+      })
+      .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
+      return studentClass;
+
+    },
+
+
+     /**
+     * Gets all assignments in student's class
+     */
+    async getAssignmentsOfClass(classCode) {
+      var assignments = null;
+      /* Get list of assignments */
+      try {
+      await this.$axios
+      .post(
+        `http://${process.env.VUE_APP_DOMAIN}:${process.env.VUE_APP_API_PORT}/get_assignments_by_class`,
+        { 
+          responseType: 'json',
+          school_code: `${this.schoolID}`,
+          class_code: `${classCode}`,
+        },
+      )
+      .then((response) => {
+        if (response) {
+            /* Assignments */
+            assignments = response;
+            console.log('Assignments of ' + classCode + ' by class: ', assignments);
+          }
+      })
+      .catch((error) => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
+      return assignments;
+    },
+  },
+    computed: {
     today() {
       return new Date()
     },
@@ -190,11 +281,6 @@ export default {
     },
     lastDayOfTheWeek() {
       return this.lastDay.getDay()
-    }
-  },
-  methods: {
-    getMonthName(index) {
-      return this.monthNames[index]
     }
   },
 };

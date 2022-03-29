@@ -119,7 +119,11 @@
                   </span>
                 </div>
               </div>
-              <div class="shadow-lg">
+              
+          </div>
+          
+          <div class="h-auto space-y-5 text-sm md:text-base">
+            <div class="shadow-lg">
                 <button @click="goTo('/student/exam-papers')" class="p-2 w-full bg-pink-900 text-white font-semibold rounded-t-lg hover:bg-pink-800 transition 0.1s">
                   <span class="p-1 float-left"> Exam Practice </span>
                   <i class="fas fa-arrow-right float-right mx-3 my-1 text-base md:text-xl"/>
@@ -131,21 +135,6 @@
                   </span>
                 </div>
               </div>
-          </div>
-          
-          <div class="h-auto space-y-5">
-            <div class="block shadow-lg text-left text-sm md:text-base">
-              <button class="p-2 w-full bg-purple-900 text-white font-semibold rounded-t-lg hover:bg-purple-800 transition 0.1s">
-                <span class="p-1 float-left"> Feedback </span>
-                <i class="fas fa-arrow-right float-right mx-3 my-1 text-base md:text-xl"/>
-              </button>
-              <div class="p-4 bg-gray-100">
-                <i class="fas fa-comments text-purple-900 text-3xl float-left"/>
-                <span class="mx-10 p-1 flex"> 
-                  Head to the forum to ask questions or receive advice from peers and teachers.
-                </span>
-              </div>
-            </div>
             <div class="block">
               <h1 class="p-3 bg-gray-900 text-white rounded-t-lg text-left font-semibold"> Upcoming Exams </h1>
               <div class="bg-gray-100">  
