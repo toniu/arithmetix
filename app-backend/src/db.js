@@ -195,6 +195,37 @@ class Db {
   }
 
   /**
+   * Gets the class the student is in
+   * @param {*} email student's email
+   * @param {*} schoolCode the code of the school
+   * @returns 
+   */
+  async getStudentClass(email, schoolCode) {
+
+    console.log(email, schoolCode);
+    var studentClass = null;
+
+    /* Get class code using student's email */
+    const {rows} = await pool.query(
+      `SELECT * FROM students WHERE student_email = $1`,
+    [email]);
+
+    var classCode = rows[0].class_code;
+    
+    /* Only get class if the student is actually in one
+    '0' means void (no class) */
+    if (classCode != 0) {
+      /* Get class using class code */
+      const {class_rows} = await pool.query(
+        `SELECT * FROM classes WHERE class_code = $1 AND school_code = $2`,
+      [classCode, schoolCode]);
+      
+    }
+
+    return studentClass;
+  }
+
+  /**
    * Gets all of the existing students of a particular class
    * in a particular school
    * @param schoolCode - The code of the school
@@ -598,6 +629,22 @@ class Db {
       assigned_by = $3 
       ORDER BY assign_date`,
     [schoolCode, classCode, teacherEmail]);
+
+    console.log(rows);
+    return rows;
+  }
+
+  /**
+   * Retrieves the list of assignments of a class
+   */
+   async getAssignmentsOfClass(schoolCode, classCode) {
+    const {rows} = await pool.query(
+      `SELECT * 
+      FROM assignments 
+      WHERE school_code = $1 AND 
+      class_code = $2
+      ORDER BY assign_date`,
+    [schoolCode, classCode]);
 
     console.log(rows);
     return rows;

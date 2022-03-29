@@ -285,6 +285,24 @@ router.get('/open_pdf', async (req, res) => {
 });
 
 /**
+ * Gets the class the student is in
+ */
+ router.post('/get_student_class', async (req, res) => {
+  try {
+    const studentClass = await db.getStudentClass(req.body.email, 
+      req.body.school_code);
+    console.log('sc', studentClass);
+    /* Successfull request if existing class for student */
+    if (studentClass != null) {
+      res.send({success: true, data: studentClass});
+    }
+  } catch (e) {
+    res.send({success: false, error: 'Could not get student class'});
+    return false;
+  }
+});
+
+/**
  * Gets all the classes the teacher teaches in
  */
 router.post('/get_classes_teached_by', async (req, res) => {
@@ -621,6 +639,20 @@ router.post('/get_submissions', async (req, res) => {
     res.send({success: true, data: studentSubmissions});
   } catch (e) {
     res.send({success: false, error: 'Could not get student submissions for particular assignment'});
+    return false;
+  }
+});
+
+/**
+ * Get assignments of a class
+ */
+ router.post('/get_assignments_by_class', async (req, res) => {
+  try {
+    const assignments = await db.getAssignmentsOfClass(req.body.school_code,
+      req.body.class_code);
+    res.send({success: true, data: assignments});
+  } catch (e) {
+    res.send({success: false, error: 'Could not get assignments set by teacher'});
     return false;
   }
 });
