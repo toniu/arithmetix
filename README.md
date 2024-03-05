@@ -1,5 +1,10 @@
 # arithmetix. Application - e-learning maths application
 
+A full-stack e-learning maths website application to help Maths A-level students in preparation for their exams. This application provides theoretical materials of modules which correspond to the specifications of standard A-level maths exam boards (Edexcel, AQA and OCR) as well as practical resources (e.g. quizzes and exam papers) for students to test and improve their knowledge and skills on particular modules.
+
+Technology Stack: VueJS, TailwindCSS, Webpack, NodeJS, Express, PostgreSQL.
+
+
 ## Login details (Development)
 There are test users in this system to test the system in various rules as a student or a teacher. The user credentials can also be configured in the '3-populate.sql' SQL file which populates the data.
 
