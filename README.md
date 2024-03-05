@@ -1,8 +1,40 @@
 # arithmetix. Application - e-learning maths application
 
-A full-stack e-learning maths website application to help Maths A-level students in preparation for their exams. This application provides theoretical materials of modules which correspond to the specifications of standard A-level maths exam boards (Edexcel, AQA and OCR) as well as practical resources (e.g. quizzes and exam papers) for students to test and improve their knowledge and skills on particular modules.
+A full-stack e-learning maths website application to help Maths A-level students in preparation for their exams. This application provides theoretical materials of modules which correspond to the specifications of standard A-level maths exam boards (Edexcel, AQA and OCR) as well as practical resources (e.g. quizzes and exam papers) for students to test and improve their knowledge and skills on particular modules. The roles of this application include the administrator, the student and the user.
 
 Technology Stack: VueJS, TailwindCSS, Webpack, NodeJS, Express, PostgreSQL.
+
+## The main features of the system:
+**Login:** Login section which includes pre-set database of school admins and students. There is also user authentication using JWT tokens.
+![login](demo-images/ax-login.png)
+
+**Dashboard (student):** The dashboard section to welcome the user.
+![dashboard-student](demo-images/ax-student-dashboard.png)
+
+**Dashboard (teacher):** The dashboard section to welcome the teacher (the admin).
+![dashboard-student](demo-images/ax-teacher-dashboard.png)
+
+**Manage classes (teacher):** The teacher's (admin) management of their classes.
+![teacher-classes](demo-images/ax-teacher-classes.png)
+
+**Manage assignments (teacher):** The teacher's (admin) management of setting assignments for students.
+![teacher-assignments](demo-images/ax-teacher-assignments.png)
+
+**View modules:** View and download module notes of the syllabus (Core, Mechanics and Statistics).
+![modules](demo-images/ax-modules.png)
+![modules-download](demo-images/ax-module-download.png)
+
+**View exam papers:** View and download exam papers from the exam boards of AQA, Edexecel, OCR.
+![exam-papers](demo-images/ax-exam-papers.png)
+
+**Quiz:** Practice quizzes from the module content (Core, Mechanics and Statistics)
+![quiz](demo-images/ax-quiz.png)
+![quiz-question](demo-images/ax-quiz-question.png)
+![quiz-answers](demo-images/ax-quiz-answers.png)
+
+**Quiz review:** Review the score and performance on the quiz, including a breakdown of correct and incorrect answers and by category.
+![quiz-review](demo-images/ax-quiz-review.png)
+![quiz-review-category](demo-images/ax-quiz-review-category.png)
 
 
 ## Login details (Development)
