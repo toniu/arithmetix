@@ -8,9 +8,9 @@ try {
 }
 
 module.exports = {
-  NODE_ENV: '"production"',
+  NODE_ENV: JSON.stringify('production'),
   // For production, use VUE_APP_API_URL if set, otherwise construct from DOMAIN and PORT
-  VUE_APP_API_URL: process.env.VUE_APP_API_URL || undefined,
-  VUE_APP_DOMAIN: process.env.DOMAIN,
-  VUE_APP_API_PORT: process.env.API_PORT,
+  VUE_APP_API_URL: JSON.stringify(process.env.VUE_APP_API_URL || ''),
+  VUE_APP_DOMAIN: JSON.stringify(process.env.DOMAIN || ''),
+  VUE_APP_API_PORT: JSON.stringify(process.env.API_PORT || ''),
 };

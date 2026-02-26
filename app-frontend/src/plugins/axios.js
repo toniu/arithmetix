@@ -2,7 +2,7 @@ import ax from 'axios';
 
 // Configure base URL for API requests
 const API_URL = process.env.VUE_APP_API_URL || 
-  `http://${process.env.VUE_APP_DOMAIN?.replace(/"/g, '') || 'localhost'}:${process.env.VUE_APP_API_PORT || 3000}`;
+  `http://${process.env.VUE_APP_DOMAIN || 'localhost'}:${process.env.VUE_APP_API_PORT || 3000}`;
 
 const axios = ax.create({
   baseURL: API_URL,

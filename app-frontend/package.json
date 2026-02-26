@@ -20,7 +20,8 @@
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
     "vue": "^2.7.16",
-    "vue-router": "^3.6.5"
+    "vue-router": "^3.6.5",
+    "vue-tailwind": "^2.5.1"
   },
   "devDependencies": {
     "css-loader": "^7.1.2",
