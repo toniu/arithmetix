@@ -21,6 +21,9 @@ Thumbs.db
 *.swp
 *.swo
 
+# Personal notes
+.notes/
+
 # Logs
 *.log
 npm-debug.log*
