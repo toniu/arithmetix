@@ -1,165 +1,321 @@
-# arithmetix. Application - e-learning maths application
+# Arithmetix — A-Level Maths E-Learning Platform
 
-A full-stack e-learning maths website application to help Maths A-level students in preparation for their exams. This application provides theoretical materials of modules which correspond to the specifications of standard A-level maths exam boards (Edexcel, AQA and OCR) as well as practical resources (e.g. quizzes and exam papers) for students to test and improve their knowledge and skills on particular modules. The roles of this application include the administrator, the student and the user.
+A full-stack e-learning web application designed to support UK A-Level maths students in exam preparation. Arithmetix provides revision notes, practice worksheets, past exam papers (AQA, Edexcel, OCR), and interactive quizzes — all within a role-based platform where teachers can manage classes, set assignments, and provide graded feedback.
 
-Technology Stack: VueJS, TailwindCSS, Webpack, NodeJS, Express, PostgreSQL.
+> **Built with:** Vue 2 · TailwindCSS 3 · Webpack 5 · Node.js · Express 4 · PostgreSQL
 
-## The main features of the system:
-**Login:** Login section which includes pre-set database of school admins and students. There is also user authentication using JWT tokens.
-![login](demo-images/ax-login.png)
+---
 
-**Dashboard (student):** The dashboard section to welcome the user.
-![dashboard-student](demo-images/ax-student-dashboard.png)
+## Table of Contents
 
-**Dashboard (teacher):** The dashboard section to welcome the teacher (the admin).
-![dashboard-student](demo-images/ax-teacher-dashboard.png)
+- [Features](#features)
+- [Architecture Overview](#architecture-overview)
+- [Tech Stack & Key Decisions](#tech-stack--key-decisions)
+- [Screenshots](#screenshots)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [API Reference](#api-reference)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Author](#author)
 
-**Manage classes (teacher):** The teacher's (admin) management of their classes.
-![teacher-classes](demo-images/ax-teacher-classes.png)
+---
 
-**Manage assignments (teacher):** The teacher's (admin) management of setting assignments for students.
-![teacher-assignments](demo-images/ax-teacher-assignments.png)
+## Features
 
-**View modules:** View and download module notes of the syllabus (Core, Mechanics and Statistics).
-![modules](demo-images/ax-modules.png)
-![modules-download](demo-images/ax-module-download.png)
+### Student Experience
+- **Interactive Quizzes** — Randomised 10-question quizzes drawn from CSV question banks, with animated progress tracking, score breakdown by category, and Chart.js visualisations
+- **Module Resources** — Browse and download revision notes and practice worksheets organised by module (C1–C4, M1, S1)
+- **Exam Papers** — Filter and access past papers from AQA, Edexcel, and OCR with mark schemes and solutions
+- **Homework Dashboard** — View assignments, submit work, and receive graded feedback from teachers
 
-**View exam papers:** View and download exam papers from the exam boards of AQA, Edexecel, OCR.
-![exam-papers](demo-images/ax-exam-papers.png)
+### Teacher Experience
+- **Class Management** — Create, rename, and delete classes; add or remove students with real-time updates
+- **Assignment Workflow** — Set assignments with deadlines, review submissions, and provide grades and feedback
+- **School Overview** — View all classes and students across the school
 
-**Quiz:** Practice quizzes from the module content (Core, Mechanics and Statistics)
-![quiz](demo-images/ax-quiz.png)
-![quiz-question](demo-images/ax-quiz-question.png)
-![quiz-answers](demo-images/ax-quiz-answers.png)
+### Platform
+- **JWT Authentication** — Secure token-based login with role-based access control (student, teacher, admin)
+- **Responsive Design** — Mobile-first UI built with TailwindCSS, functional across all screen sizes
+- **Reusable Component System** — Generic modal dialogs (Alert, Confirm, Form) used across the application
+- **PostgreSQL Database** — Relational schema with 8 tables, bcrypt password hashing via `pgcrypto`, and parameterised queries throughout
 
-**Quiz review:** Review the score and performance on the quiz, including a breakdown of correct and incorrect answers and by category.
-![quiz-review](demo-images/ax-quiz-review.png)
-![quiz-review-category](demo-images/ax-quiz-review-category.png)
+---
 
-
-## Login details (Development)
-There are test users in this system to test the system in various rules as a student or a teacher. The user credentials can also be configured in the '3-populate.sql' SQL file which populates the data.
-
-As a student...
-Username: 'testuser1@gmail.com' Password: 'student'
-Username: 'testuser2@gmail.com' Password: 'student'
-Username: 'testuser3@gmail.com' Password: 'student' ...
-
-As a teacher...
-Username: 'testteacher1@gmail.com' Password: 'teacher' ...
-
-## Dependencies
-
-- [NodeJS](https://nodejs.org/)
-- [NPM](https://www.npmjs.com/)
-- [PostgreSQL](https://www.postgresql.org/)
-- [PM2](https://pm2.io/) 
-
-## Installation
-
-After installing the dependencies, install the modules for both components:
-
-```bash
-cd app-backend
-npm install
-cd ../app-frontend
-npm install
-cd ..
+## Architecture Overview
 
 ```
+┌─────────────────────────────────────────────────────┐
+│                   Frontend (Vue 2 SPA)              │
+│  ┌──────────┐  ┌──────────┐  ┌───────────────────┐ │
+│  │  Student  │  │  Teacher │  │  General (Auth,   │ │
+│  │ Dashboard │  │Dashboard │  │  Navigation, etc) │ │
+│  │ Quizzes   │  │ Classes  │  │  Alert / Confirm  │ │
+│  │ Modules   │  │ Assigns  │  │  Profile / 404    │ │
+│  └──────────┘  └──────────┘  └───────────────────┘ │
+│       ▼               ▼               ▼             │
+│          Axios / Fetch  →  REST API                 │
+└─────────────────────────┬───────────────────────────┘
+                          │ HTTP (JSON)
+┌─────────────────────────▼───────────────────────────┐
+│                Backend (Express 4)                   │
+│  ┌────────────┐  ┌────────────┐  ┌───────────────┐  │
+│  │  app.js    │  │   db.js    │  │  Resource      │  │
+│  │  (Routes)  │  │  (Queries) │  │  Singletons    │  │
+│  │  25+ REST  │  │  Pooled    │  │  EP, RN, WS,   │  │
+│  │  endpoints │  │  pg client │  │  Quiz (CSV→JSON)│  │
+│  └────────────┘  └─────┬──────┘  └───────────────┘  │
+└─────────────────────────┬───────────────────────────┘
+                          │ SQL (parameterised)
+┌─────────────────────────▼───────────────────────────┐
+│              PostgreSQL Database                     │
+│  users · schools · classes · students · teachers     │
+│  leaders · assignments · submissions · feedback      │
+│  (bcrypt hashing via pgcrypto extension)             │
+└─────────────────────────────────────────────────────┘
+```
 
-### Configuration
+---
+
+## Tech Stack & Key Decisions
+
+| Layer | Technology | Why |
+|-------|-----------|-----|
+| **Frontend Framework** | Vue 2 (SFC) | Component-based architecture with reactive data binding |
+| **Styling** | TailwindCSS 3 | Utility-first, mobile-first responsive design |
+| **Build Tool** | Webpack 5 | Code splitting, CSS extraction, content hashing for cache busting |
+| **Backend** | Express 4 | Lightweight REST API with `express-validator` for input validation |
+| **Database** | PostgreSQL | Relational integrity with foreign keys, cascading deletes, `pgcrypto` |
+| **Auth** | JWT (`jsonwebtoken`) | Stateless authentication with 24-hour token expiry |
+| **Testing** | Jest 29 | Unit tests for resource loading (singleton instantiation, file parsing) |
+| **Deployment** | Render + Netlify/Vercel | Backend + DB on Render; static frontend on Netlify or Vercel |
+
+### Notable Design Patterns
+
+- **Singleton Pattern** — Backend resource classes (`EP`, `RN`, `WS`, `Quiz`) are instantiated once, caching file-system traversal results in memory
+- **MVC Separation** — `db.js` as the data-access layer, `app.js` routes as controllers, Vue components as views
+- **Recursive File-System Walking** — Resource loaders dynamically discover PDFs and CSVs from nested directory structures
+- **Route Guards** — `router.beforeEach()` enforces authentication and role-based access on the frontend
+- **Reusable Modal System** — A single `ClassForm.vue` component handles six distinct form types via a template-method pattern
+
+---
+
+## Screenshots
+
+### Authentication
+![Login](demo-images/ax-login.png)
+
+### Student Views
+| Dashboard | Quizzes | Modules |
+|-----------|---------|---------|
+| ![Dashboard](demo-images/ax-student-dashboard.png) | ![Quizzes](demo-images/ax-quiz.png) | ![Modules](demo-images/ax-modules.png) |
+
+| Quiz in Progress | Quiz Results | Results by Category |
+|-------------------|-------------|---------------------|
+| ![Question](demo-images/ax-quiz-question.png) | ![Review](demo-images/ax-quiz-review.png) | ![Category](demo-images/ax-quiz-review-category.png) |
+
+| Exam Papers | Module Download |
+|-------------|----------------|
+| ![Exam Papers](demo-images/ax-exam-papers.png) | ![Download](demo-images/ax-module-download.png) |
+
+### Teacher Views
+| Dashboard | Class Management | Assignments |
+|-----------|-----------------|-------------|
+| ![Teacher Dashboard](demo-images/ax-teacher-dashboard.png) | ![Classes](demo-images/ax-teacher-classes.png) | ![Assignments](demo-images/ax-teacher-assignments.png) |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18+)
+- [PostgreSQL](https://www.postgresql.org/) (v13+)
+- npm (bundled with Node.js)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/<your-username>/arithmetix.git
+cd arithmetix
+
+# Install backend dependencies
+cd app-backend && npm install
+
+# Install frontend dependencies
+cd ../app-frontend && npm install
+cd ..
+```
+
+### Database Setup
+
+1. Start PostgreSQL:
+   ```bash
+   # macOS
+   brew services start postgresql
+
+   # Linux
+   sudo systemctl start postgresql
+
+   # WSL
+   sudo service postgresql start
+   ```
+
+2. Initialise the database:
+   ```bash
+   ./factory-db.sh
+   ```
+
+   > **Troubleshooting:** If you see "role does not exist", run `sudo -u postgres createuser -s $USER`. For permission errors, run `sudo -u postgres psql -c "ALTER USER $USER WITH SUPERUSER"`.
+
+3. To reset the database to its seed state:
+   ```bash
+   ./factory-db.sh reset
+   ```
+
+### Environment Configuration
 
 ```bash
 cp .env.example .env
-nano .env
 ```
-Where the email credentials are that of a college account. If you do not wish to store the password in the config file, delete the row ```EMAIL_PASSWORD = ""``` in .env.
-In the terminal:
+
+Edit `.env` with your settings. For email credentials you'd prefer not to store on disk:
 ```bash
-export EMAIL_PASSWORD="YOUR PASSWORD HERE" # run this every time you restart your computer
+export EMAIL_PASSWORD="your-password"
 ```
 
-### Database (for development only)
-
-1. Start the PostgreSQL daemon if it's not already running.
-   - MacOS: `brew services start postgresql`
-   - GNU/Linux: `sudo systemctl start postgresql`
-   - WSL: `sudo service postgresql start`
-2. Run the database creation script: `./factory-db.sh`
-   - If you are getting errors along the lines of "Fatal: role does not exist", you need to create a new superuser role for yourself.
-     - `sudo -u postgres createuser -s $USER`
-   - If you are getting errors errors along the lines of "Error: permission denied" or "insufficient privileges", you must grant yourself superuser privileges.
-     - `sudo -u postgres psql -c "ALTER USER $USER WITH SUPERUSER"`
-
-### Factory reset database
-
-This will delete all the students, teachers, schools and other data added to the database system, then create a new one.
-
-```sh
-    ./factory-db.sh reset
-```
-## Tips
-### Editor
-If using vscode, the eslint and tailwind extensions proved very helpful for development.
-
-### Hot Reload
-Hot reload can be configured for the backend, which is useful to see changes in realtime when developing.
+### Running Locally
 
 ```bash
-npm i -g nodemon
-cd app-backend 
-nodemon start # (instead of npm start)
+# Terminal 1 — Start the API server (default: port 3000)
+cd app-backend && npm start
+
+# Terminal 2 — Start the frontend dev server (default: port 8080)
+cd app-frontend && npm start
 ```
-### Testing
-Edit local storage values in the browser console to test for different user types
 
-## Usage
+### Test Credentials
 
-1. Run the API (backend) with: `cd app-backend && npm start`
-2. Run the Vue frontend with: `cd app-frontend && npm start`
+| Role | Email | Password |
+|------|-------|----------|
+| Student | `testuser1@gmail.com` | `student` |
+| Student | `testuser2@gmail.com` | `student` |
+| Teacher | `testteacher1@gmail.com` | `teacher` |
 
-## Deployment (Assumption: Ubuntu. Similar steps for other environments)
-* Steps 0: The server should be configured to expose the ports in the configuration file and those used by nginx (80,443). Make sure to fill in the server domain/ip in the .env file etc. see Configuration.
+> Full seed data is defined in [`app-backend/sql/3-populate.sql`](app-backend/sql/3-populate.sql).
 
-Make sure NodeJS is installed and you have ran `npm i` in the app-frontend and app-backend directories. Make sure postgres is installed, and you have ran the initialisation script `./factory-db.sh`.
+---
 
-* Step 1:
-build the vue app (the frontend)
-`cd app-frontend && npm run build`
+## Project Structure
 
-* Step 2:
-Install ningx
+```
+├── app-backend/                  # Express API server
+│   ├── src/
+│   │   ├── app.js                # Server entry point & route definitions (25+ endpoints)
+│   │   ├── db.js                 # PostgreSQL data-access layer (parameterised queries)
+│   │   ├── eps.js                # Exam paper resource loader (Singleton)
+│   │   ├── rn.js                 # Revision notes resource loader (Singleton)
+│   │   ├── ws.js                 # Worksheet resource loader (Singleton)
+│   │   ├── quiz.js               # Quiz engine (CSV parsing, shuffle, question selection)
+│   │   └── config/index.js       # Environment variable configuration
+│   ├── sql/                      # Database schema & seed data
+│   │   ├── 1-tables.sql          # 8-table relational schema with pgcrypto
+│   │   ├── 2-user.sql            # Database role creation
+│   │   └── 3-populate.sql        # Seed data (24 students, 2 teachers, 6 schools)
+│   └── test/                     # Jest test suites
+│
+├── app-frontend/                 # Vue 2 SPA
+│   ├── src/
+│   │   ├── App.vue               # Root component
+│   │   ├── main.js               # Vue instance, plugin registration
+│   │   ├── router/index.js       # Route definitions with auth guards
+│   │   ├── plugins/axios.js      # Axios HTTP client configuration
+│   │   ├── css/                  # TailwindCSS base + custom quiz styles
+│   │   └── components/
+│   │       ├── general/          # Shared UI (Login, Navigation, Alert, Confirm, etc.)
+│   │       ├── student/          # Student views (Dashboard, Quizzes, Modules, etc.)
+│   │       └── teacher/          # Teacher views (Classes, Assignments, ClassForm)
+│   ├── webpack.common.js         # Shared Webpack 5 configuration
+│   ├── webpack.dev.js            # Development build (source maps, HMR)
+│   ├── webpack.prod.js           # Production build (minification, content hashing)
+│   └── tailwind.config.js        # TailwindCSS 3 configuration
+│
+├── factory-db.sh                 # Database initialisation/reset script
+├── ecosystem.config.js           # PM2 process manager configuration
+├── render.yaml                   # Render.com deployment blueprint
+├── DEPLOYMENT.md                 # Cloud deployment guide (Render, Netlify, Vercel)
+└── QUICKSTART.md                 # Quick-start deployment steps
+```
+
+---
+
+## API Reference
+
+### Authentication
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/login` | Authenticate user, returns JWT token + user profile |
+
+### Resources (Public)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/get_exam_papers` | List all exam papers (AQA, Edexcel, OCR) |
+| GET | `/get_revision_notes` | List revision notes by module |
+| GET | `/get_practice_worksheets` | List worksheets with solutions |
+| GET | `/get_quizzes` | List available quiz pools |
+| POST | `/generate_quiz` | Generate 10 randomised questions from a pool |
+| GET | `/get_quiz_data` | Retrieve generated quiz questions |
+| GET | `/open_pdf` | Serve a PDF file (with path-traversal protection) |
+
+### Class Management (Teacher)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/add_class` | Create a new class |
+| POST | `/rename_class` | Rename an existing class |
+| POST | `/delete_class` | Delete a class |
+| POST | `/add_students_to_class` | Assign students to a class |
+| POST | `/remove_students_from_class` | Remove students from a class |
+
+### Assignments & Submissions
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/add_assignment` | Create a new assignment |
+| POST | `/edit_assignment` | Update assignment details |
+| POST | `/delete_assignment` | Delete assignment and related data |
+| POST | `/send_submission` | Submit student work |
+| POST | `/update_feedback` | Grade a submission with feedback |
+
+> See [`app-backend/src/app.js`](app-backend/src/app.js) for the complete list of 25+ endpoints.
+
+---
+
+## Testing
+
 ```bash
-sudo apt-get update
-sudo apt-get -y install nginx
-sudo systemctl enable nginx # tell nginx to auto start
-sudo systemctl start nginx # start nginx
+cd app-backend
+npm test
 ```
-Visit the servers IP address in the web browser. You should see the default nginx splash page.
 
-* Step 3: replace the default nginx page with the build files
-```bash
-nano /var/www/html/index.html # change something in the default page then visit the server IP, it should have changed
-cd .. # if not already in project root
-rm -rf /var/www/html # delete folder
-mkdir /var/www/html # make new empty folder in same location
-cp ./app-frontend/build /var/www/html # copy build files
-```
-Visit the servers IP address in the web browser. You should see the login page.
+Tests use **Jest 29** and cover resource loader instantiation and file parsing for exam papers, revision notes, and worksheets.
 
-* Step 4: 
-Install PM2 and set to auto-start. If you wish to configure pm2, edit the ecosystem.config.js file.
-```bash
-npm install -g pm2
-sudo pm2 save 
-sudo pm2 startup
-```
-* Step 5 Start PM2:
-`pm2 start`
-* Step 6  Set up https (certificate + serve html on port 443 etc)  TODO !important 
+---
 
+## Deployment
 
-## Authors
+The application supports multiple deployment targets:
 
-- Neka Toni-Uebari
+| Component | Platform | Configuration |
+|-----------|----------|--------------|
+| Backend + DB | [Render](https://render.com) | [`render.yaml`](render.yaml) (Blueprint auto-detection) |
+| Frontend | [Netlify](https://netlify.com) | [`netlify.toml`](app-frontend/netlify.toml) |
+| Frontend | [Vercel](https://vercel.com) | [`vercel.json`](app-frontend/vercel.json) |
+| Process Manager | PM2 | [`ecosystem.config.js`](ecosystem.config.js) |
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step instructions.
+
+---
+
+## Author
+
+**Neka Toni-Uebari**

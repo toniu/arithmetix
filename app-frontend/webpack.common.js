@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const GoogleFontsPlugin = require("@beyonk/google-fonts-webpack-plugin")
 
 module.exports = {
   entry: path.join(__dirname, 'src/main.js'),
@@ -34,9 +33,6 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              // 0 => no loaders (default);
-              // 1 => postcss-loader;
-              // 2 => postcss-loader, sass-loader
               importLoaders: 1,
             },
           },
@@ -44,15 +40,11 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|gif|pdf)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]'
-            }
-          }
-        ]
+        test: /\.(png|svg|jpg|jpeg|gif|pdf)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: '[name][ext]'
+        }
       }
     ],
   },
@@ -63,12 +55,6 @@ module.exports = {
       template: path.resolve(__dirname, 'public/index.html'),
     }),
     new MiniCssExtractPlugin(),
-    new GoogleFontsPlugin({
-      fonts: [
-        { family: 'Nunito' }
-      ]
-    })
-    
   ],
   output: {
     publicPath: "/",

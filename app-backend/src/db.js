@@ -3,16 +3,21 @@ const {Pool} = require('pg');
 var pool;
 
 /* Set the pool as the Postgres database */
-switch (process.env.NODE_ENV) {
-  default:
-    pool = new Pool({
-      user: 'arithmetix_admin',
-      host: 'localhost',
-      database: 'arithmetix_db',
-      password: 'admin',
-      port: 5432,
-    });
-    break;
+if (process.env.DATABASE_URL) {
+  // Production: Use DATABASE_URL from cloud platform (Render, Railway, etc.)
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  });
+} else {
+  // Development: Use local database
+  pool = new Pool({
+    user: process.env.DB_USER || 'arithmetix_admin',
+    host: process.env.DB_HOST || 'localhost',
+    database: process.env.DB_NAME || 'arithmetix_db',
+    password: process.env.DB_PASSWORD || 'admin',
+    port: process.env.DB_PORT || 5432,
+  });
 }
 
 /**

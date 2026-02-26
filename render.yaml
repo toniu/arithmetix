@@ -1,0 +1,45 @@
+# Render Blueprint for arithmetix backend deployment
+# https://render.com/docs/blueprint-spec
+
+services:
+  # Backend API Service
+  - type: web
+    name: arithmetix-api
+    runtime: node
+    plan: free # Change to 'starter' for production
+    buildCommand: cd app-backend && npm install
+    startCommand: cd app-backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: API_PORT
+        value: 3000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: arithmetix-db
+          property: connectionString
+      - key: SECRET
+        generateValue: true
+      - key: DOMAIN
+        sync: false # Set in Render dashboard
+      - key: EMAIL_SERVER
+        value: smtp.office365.com
+      - key: EMAIL_PORT
+        value: 587
+      - key: EMAIL_ADDRESS
+        sync: false # Set in Render dashboard
+      - key: EMAIL_USERNAME
+        sync: false # Set in Render dashboard
+      - key: EMAIL_PASSWORD
+        sync: false # Set in Render dashboard (use secret)
+      - key: EMAIL_OFFICE_RECIPIENTS
+        sync: false # Set in Render dashboard
+    healthCheckPath: /
+    
+databases:
+  # PostgreSQL Database
+  - name: arithmetix-db
+    plan: free # Change to 'starter' for production
+    databaseName: arithmetix_db
+    user: arithmetix
+    postgresMajorVersion: 16

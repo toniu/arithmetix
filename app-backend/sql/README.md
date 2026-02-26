@@ -1,12 +1,20 @@
-SQL scripts which generate the database for the system.
+# Database Scripts
 
-1-tables: creates the tables of the database
+SQL scripts for initialising the PostgreSQL database.
 
-2-tables: sets the user privileges for the database
+| Script | Purpose |
+|--------|---------|
+| `1-tables.sql` | Creates all tables, foreign keys, and enables the `pgcrypto` extension |
+| `2-user.sql` | Creates the `arithmetix_admin` database role with appropriate privileges |
+| `3-populate.sql` | Seeds the database with test data (schools, students, teachers, classes, assignments) |
 
-3-populate: populates the tables with test data (for development purposes; whoever is in use of this repository is free to configure the test data)
+## Usage
 
-Commands to run:
+From the project root:
 
-./factory-db (Runs the scripts to initialise database)
-./factory-db reset (Runs the scripts to initialise database and resets it)
+```bash
+./factory-db.sh          # Initialise the database
+./factory-db.sh reset    # Drop and recreate from scratch
+```
+
+The seed data in `3-populate.sql` is intended for development and testing. Modify it freely to suit your needs.

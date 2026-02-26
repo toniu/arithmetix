@@ -1,0 +1,18 @@
+{
+  "buildCommand": "cd app-frontend && npm install && npm run build:prod",
+  "outputDirectory": "app-frontend/dist",
+  "framework": null,
+  "devCommand": "cd app-frontend && npm run serve:dev",
+  "env": {
+    "VUE_APP_API_URL": {
+      "description": "Full URL to your backend API (e.g., https://arithmetix-api.onrender.com)",
+      "value": ""
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
