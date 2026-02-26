@@ -1,3 +1,5 @@
+# Ignore diary folder with private notes
+diary/
 # Dependencies
 node_modules/
 
