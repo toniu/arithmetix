@@ -3,12 +3,14 @@
 
 [build]
   base = "app-frontend"
-  command = "npm install && npm run build:prod"
+  command = "npm install --include=dev && npm run build:prod"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20"
   NPM_VERSION = "10"
+  NPM_FLAGS = "--include=dev"
+  VUE_APP_API_URL = "https://arithmetix-api.onrender.com"
 
 [[redirects]]
   from = "/*"
