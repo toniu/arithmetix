@@ -5,14 +5,10 @@ import './css/tailwind.css';
 
 import VueTailwind from 'vue-tailwind';
 import router from './router';
-import VueToastify from 'vue-toastify';
-import VueCookies from 'vue-cookies';
 import VueAxios from './plugins/axios';
 
 /* Vue libraries to use */
 Vue.use(VueTailwind);
-Vue.use(VueToastify);
-Vue.use(VueCookies);
 Vue.use(VueAxios);
 
 Vue.config.productionTip = false;

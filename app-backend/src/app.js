@@ -3,7 +3,6 @@
 const express = require('express');
 const config = require('./config');
 const jwt = require('jsonwebtoken');
-const bodyParser = require('body-parser');
 const path = require('path');
 
 const fs = require('fs');
@@ -44,8 +43,8 @@ const router = express.Router();
 express.static('./resources')
 app.use('/static', express.static('public'))
 
-router.use(bodyParser.urlencoded({extended: false}));
-router.use(bodyParser.json());
+router.use(express.urlencoded({extended: false}));
+router.use(express.json());
 
 /* Middle-ware for CORS - allow cross domain */
 const allowCD = function (req, res, next) {
